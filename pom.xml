@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.ozkanpakdil</groupId>
+    <artifactId>paint</artifactId>
+    <version>1.0.0</version>
+    <name>Paint</name>
+    <description>Simple Swing paint application</description>
+    <url>https://example.com/paintit</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.parameters>true</maven.compiler.parameters>
+        <graalvm.native.imageName>paint</graalvm.native.imageName>
+        <graalvm.native.mainClass>io.github.ozkanpakdil.paint.Main</graalvm.native.mainClass>
+    </properties>
+
+    <dependencies>
+        <!-- JUnit 5 (Jupiter) for tests that Surefire can run -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Robot Framework SwingLibrary available in test scope (kept as requested) -->
+        <dependency>
+            <groupId>org.robotframework</groupId>
+            <artifactId>swinglibrary</artifactId>
+            <version>2.3.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.github.ozkanpakdil.paint.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <properties>
+                <!-- You can switch to a GraalVM JDK by exporting JAVA_HOME before building -->
+                <!-- Optionally compile sources with a newer release when using GraalVM JDK -->
+                <maven.compiler.release>17</maven.compiler.release>
+                <graalvm.native.imageName>paintit</graalvm.native.imageName>
+                <graalvm.native.mainClass>Main</graalvm.native.mainClass>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>0.10.2</version>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <configuration>
+                                    <imageName>${graalvm.native.imageName}</imageName>
+                                    <mainClass>${graalvm.native.mainClass}</mainClass>
+                                    <fallback>false</fallback>
+                                    <verbose>true</verbose>
+                                    <buildArgs>
+                                        <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                                        <buildArg>--report-unsupported-elements-at-runtime</buildArg>
+                                        <buildArg>--initialize-at-run-time=java.awt,javax.swing,sun.awt,com.sun.java.swing,com.sun.awt,java.beans,javax.imageio</buildArg>
+                                    </buildArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
