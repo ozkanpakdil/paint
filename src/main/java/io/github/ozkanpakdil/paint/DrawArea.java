@@ -9,11 +9,18 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 public class DrawArea extends JPanel implements MouseListener, MouseMotionListener {
+
+    // ----- Undo/Redo history -----
+    private static final int HISTORY_LIMIT = 25;
+    private final Deque<BufferedImage> undoStack = new ArrayDeque<>();
+    private final Deque<BufferedImage> redoStack = new ArrayDeque<>();
 
     private static final String[][] TOOL_ICON_MAP = new String[][]{
             {"PENCIL", "pencil.png"},
@@ -64,6 +71,61 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     private BufferedImage selectionCutBackup = null; // pixels removed from cache for restoration on cancel
     private Rectangle selectionCutRect = null;
     private JTextField textEditor;
+
+    // ----- History helpers -----
+    private BufferedImage copyImage(BufferedImage src) {
+        if (src == null) return null;
+        BufferedImage dst = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = dst.createGraphics();
+        try {
+            g2.drawImage(src, 0, 0, null);
+        } finally {
+            g2.dispose();
+        }
+        return dst;
+    }
+
+    private void pushUndoSnapshot() {
+        ensureCache();
+        undoStack.push(copyImage(cache));
+        // Cap history size
+        while (undoStack.size() > HISTORY_LIMIT) {
+            undoStack.removeLast();
+        }
+        // New action invalidates redo history
+        redoStack.clear();
+    }
+
+    public boolean canUndo() { return !undoStack.isEmpty(); }
+    public boolean canRedo() { return !redoStack.isEmpty(); }
+
+    public void undo() {
+        if (!canUndo()) return;
+        // Drop any transient overlays (selection/paste placement) so UI matches history state
+        dropOverlayAndSelection();
+        ensureCache();
+        // Save current canvas to redo stack
+        redoStack.push(copyImage(cache));
+        // Restore previous canvas state
+        cache = undoStack.pop();
+        setPreferredSize(new Dimension(cache.getWidth(), cache.getHeight()));
+        revalidate();
+        repaint();
+    }
+
+    public void redo() {
+        if (!canRedo()) return;
+        // Drop any transient overlays before changing history state
+        dropOverlayAndSelection();
+        ensureCache();
+        // Save current canvas to undo stack
+        undoStack.push(copyImage(cache));
+        // Restore next canvas state
+        cache = redoStack.pop();
+        setPreferredSize(new Dimension(cache.getWidth(), cache.getHeight()));
+        revalidate();
+        repaint();
+    }
 
     DrawArea() {
         this(() -> null);
@@ -167,6 +229,22 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     }
 
     private void initialize() {
+        // Setup key bindings for Undo/Redo
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undoAction");
+        getActionMap().put("undoAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                undo();
+            }
+        });
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), "redoAction");
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK), "redoAction");
+        getActionMap().put("redoAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                redo();
+            }
+        });
         setBackground(Color.WHITE);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -359,6 +437,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
     private void commitPlacement() {
         if (!placingImage || pendingImage == null) return;
+        // History snapshot before placing
+        pushUndoSnapshot();
         ensureCache();
         int needW = Math.max(cache.getWidth(), pendingX + pendingImage.getWidth());
         int needH = Math.max(cache.getHeight(), pendingY + pendingImage.getHeight());
@@ -417,6 +497,21 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         updateCursorForCurrentTool();
     }
 
+    // Clear transient UI overlays (pending placement and selection marquee) without changing the canvas
+    private void dropOverlayAndSelection() {
+        // Do NOT restore selection cut back to cache here, otherwise redo history will break.
+        placingImage = false;
+        pendingImage = null;
+        pendingDragOffsetX = 0;
+        pendingDragOffsetY = 0;
+        selectionPlacement = false;
+        selectionCutBackup = null;
+        selectionCutRect = null;
+        selecting = false;
+        selectionRect = null;
+        updateCursorForCurrentTool();
+    }
+
     private boolean pointInPending(int px, int py) {
         if (!placingImage || pendingImage == null) return false;
         return px >= pendingX && py >= pendingY && px < pendingX + pendingImage.getWidth() && py < pendingY + pendingImage.getHeight();
@@ -425,6 +520,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     // Crop canvas to the last pasted image's size and position
     public void cropToImageSize() {
         if (cache == null || lastPastedRect == null) return;
+        // History snapshot before crop
+        pushUndoSnapshot();
         Rectangle r = lastPastedRect;
         // Clamp within cache bounds
         int x = Math.max(0, Math.min(r.x, cache.getWidth() - 1));
@@ -522,6 +619,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         remove(textEditor);
         repaint(r);
         if (commit && value != null && !value.isEmpty()) {
+            // Snapshot before committing text onto canvas
+            pushUndoSnapshot();
             ensureCache();
             var g2 = cache.createGraphics();
             try {
@@ -812,6 +911,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             isdragged = false;
             return;
         }
+        // For continuous tools, capture snapshot at the beginning of the stroke
+        if (tool == Tool.PENCIL || tool == Tool.ERASER) {
+            pushUndoSnapshot();
+        }
         ispressed = true;
     }
 
@@ -841,6 +944,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                     return;
                 }
                 // Cut selection into pending image
+                // History snapshot before cutting selection from cache
+                pushUndoSnapshot();
                 ensureCache();
                 int rx = Math.max(0, Math.min(selectionRect.x, cache.getWidth() - 1));
                 int ry = Math.max(0, Math.min(selectionRect.y, cache.getHeight() - 1));
@@ -893,6 +998,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         }
 
         // Commit the final shape onto the backing image
+        // Snapshot before finalizing non-continuous shape or bucket
+        if (toolNow != Tool.PENCIL && toolNow != Tool.ERASER) {
+            pushUndoSnapshot();
+        }
         ensureCache();
         var cg = cache.createGraphics();
         try {
@@ -906,6 +1015,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     // Utility API for future uses (e.g., File > New)
     public void clearCanvas() {
         if (cache == null) return;
+        // Snapshot before clearing the canvas
+        pushUndoSnapshot();
         var g = cache.createGraphics();
         try {
             g.setColor(Color.WHITE);
