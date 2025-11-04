@@ -1,0 +1,72 @@
+name: Build OS Installers with jpackage
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ "v*" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  jpackage:
+    name: jpackage on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            installerType: DEB
+          - os: macos-latest
+            installerType: DMG
+          - os: windows-latest
+            installerType: MSI
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK (Temurin 25)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: 'maven'
+
+      - name: Build JAR
+        run: mvn -B -DskipTests package
+
+      - name: Install packaging prerequisites (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y fakeroot rpm
+
+      - name: Install WiX Toolset (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install wixtoolset -y
+          echo "WIX installed"
+
+      - name: Build installer with jpackage
+        run: mvn -B -Pinstaller -Dinstaller.type=${{ matrix.installerType }} jpackage:jpackage
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-${{ matrix.os }}-${{ matrix.installerType }}
+          path: target/installers/**
+          if-no-files-found: error
+
+      - name: Publish installers to Development release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: development
+          name: Development Build
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: |
+            target/installers/**

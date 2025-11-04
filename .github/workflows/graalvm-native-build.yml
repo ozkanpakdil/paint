@@ -1,0 +1,120 @@
+name: Build GraalVM Native Images
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ "v*" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  native-build:
+    name: Build native image on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM (JDK 25)
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven (native profile)
+        run: mvn -B -Pnative -DskipTests package
+
+      # Package artifacts appropriately per-OS
+      - name: Package (Linux/macOS)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          APP_NAME="paint"
+          BIN_PATH="target/${APP_NAME}"
+          if [ ! -f "$BIN_PATH" ]; then
+            # Fallback: some setups may place the binary under target/native/
+            if [ -f "target/native/${APP_NAME}" ]; then
+              BIN_PATH="target/native/${APP_NAME}"
+            fi
+          fi
+          chmod +x "$BIN_PATH" || true
+          PKG_NAME="${APP_NAME}-${{ matrix.os }}.tar.gz"
+          tar -czf "$PKG_NAME" -C "$(dirname "$BIN_PATH")" "$(basename "$BIN_PATH")"
+          echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $app = 'paint.exe'
+          $bin = Join-Path 'target' $app
+          if (-not (Test-Path $bin)) {
+            $alt = Join-Path 'target/native' $app
+            if (Test-Path $alt) { $bin = $alt }
+          }
+          $pkg = "paint-${{ matrix.os }}.zip"
+          Compress-Archive -Path $bin -DestinationPath $pkg -Force
+          "PKG_NAME=$pkg" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Upload packaged artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-${{ matrix.os }}
+          path: ${{ env.PKG_NAME }}
+          if-no-files-found: error
+
+      # Also upload the raw binary as a separate artifact for convenience
+      - name: Upload raw binary (Linux/macOS)
+        if: runner.os != 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-binary-${{ matrix.os }}
+          path: |
+            target/paint
+            target/native/paint
+          if-no-files-found: ignore
+
+      - name: Upload raw binary (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-binary-${{ matrix.os }}
+          path: |
+            target/paint.exe
+            target/native/paint.exe
+          if-no-files-found: ignore
+
+      - name: Publish artifacts to Development release
+        if: github.event_name != 'pull_request'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: development
+          name: Development Build
+          prerelease: true
+          allowUpdates: true
+          removeArtifacts: true
+          artifactErrorsFailBuild: false
+          artifacts: |
+            ${{ env.PKG_NAME }}
+            target/paint
+            target/native/paint
+            target/paint.exe
+            target/native/paint.exe

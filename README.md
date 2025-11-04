@@ -120,3 +120,49 @@ Troubleshooting
   GRAALVM_OPTIONS="-Djava.awt.headless=false" ./target/paint
   ```
 - Share the first ~100 lines of output along with your distro and session type (x11/wayland).
+
+# Paint
+
+Simple Swing paint application.
+
+## Build
+
+- Standard jar: `mvn -B -DskipTests package`
+- GraalVM native (requires GraalVM + native-image): `mvn -B -Pnative -DskipTests package`
+
+## Installers with jpackage
+
+You can generate OS-level installers (bundled runtime) using `jpackage` via Maven.
+
+Prerequisites per OS:
+- Linux (Debian/Ubuntu): `sudo apt-get install fakeroot rpm` (rpm only if building RPM additionally)
+- Windows: Install WiX Toolset (v3.x) and make sure it's on PATH
+- macOS: Xcode command line tools (for codesign if you plan to sign)
+
+Commands:
+- Build jar: `mvn -B -DskipTests package`
+- Build installer (current OS type):
+  - Linux: `mvn -B -Pinstaller -Dinstaller.type=DEB jpackage:jpackage`
+  - macOS: `mvn -B -Pinstaller -Dinstaller.type=DMG jpackage:jpackage`
+  - Windows: `mvn -B -Pinstaller -Dinstaller.type=MSI jpackage:jpackage`
+
+Outputs are written to `target/installers`.
+
+Tip: The build now accepts installer types in either uppercase or lowercase. For example, both `-Dinstaller.type=DEB` and `-Dinstaller.type=deb` work the same. On macOS/Windows, similarly `DMG/dmg` and `MSI/msi` are accepted.
+
+Notes:
+- Installers are unsigned by default. To sign/notarize on macOS or sign on Windows, configure your local environment and add the appropriate `jpackage` options in `pom.xml` (codesign not yet configured in this project).
+- The app bundles a trimmed runtime (`java.base`, `java.desktop`) built via `jlink`.
+
+## CI
+
+Two GitHub Actions workflows are provided:
+- `.github/workflows/graalvm-native-build.yml` builds GraalVM native executables on Linux, macOS, and Windows, and uploads artifacts.
+- `.github/workflows/jpackage-installers.yml` builds platform-specific installers using `jpackage` on Linux (DEB), macOS (DMG), and Windows (MSI), and uploads artifacts.
+
+Development Release uploads:
+- On pushes to `main/master`, tags `v*`, and manual dispatch (not on PRs), both workflows also publish their outputs to a rolling GitHub Release with tag `development` (marked as a prerelease).
+- What you get there:
+  - Native builds: a packaged archive per OS (`tar.gz` on Linux/macOS, `zip` on Windows) and the raw binary/exe when present.
+  - Installers: all files from `target/installers/**` (e.g., `.deb`, `.dmg`, `.msi`).
+- Find them at: GitHub → Releases → "Development Build" (tag `development`).

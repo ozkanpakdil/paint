@@ -8,7 +8,8 @@
     <artifactId>paint</artifactId>
     <version>1.0.0</version>
     <name>Paint</name>
-    <description>Simple Swing paint application</description>
+    <description>Simple Swing paint application, find more details at https://github.com/ozkanpakdil/paint</description>
+    <url>https://github.com/ozkanpakdil/paint</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -99,6 +100,58 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+            <profile>
+            <id>installer</id>
+            <properties>
+                <!-- Default installer type to keep XML resolvable; overridden at build time -->
+                <installer.type>APP_IMAGE</installer.type>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>1.7.1</version>
+                        <executions>
+                            <execution>
+                                <id>make-installers</id>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- Basic app metadata -->
+                            <name>Paint</name>
+                            <vendor>io.github.ozkanpakdil</vendor>
+                            <appVersion>${project.version}</appVersion>
 
-</project>
+                            <!-- Where to find the built jar and where to place installers -->
+                            <input>${project.build.directory}</input>
+                            <destination>${project.build.directory}/installers</destination>
+
+                            <!-- Entry point -->
+                            <mainJar>${project.build.finalName}.jar</mainJar>
+                            <mainClass>io.github.ozkanpakdil.paint.Main</mainClass>
+
+                            <!-- Ask jpackage to create a trimmed runtime via jlink -->
+                            <addModules>java.base,java.desktop</addModules>
+                            <!-- jlink options can be added later if needed; omitted to match plugin schema -->
+
+                            <!-- Windows specific niceties (ignored on other OSes) -->
+                            <winMenu>true</winMenu>
+                            <winShortcut>true</winShortcut>
+                            <winDirChooser>true</winDirChooser>
+                            <winPerUserInstall>false</winPerUserInstall>
+
+                            <!-- macOS specific (safe when codesign not configured) -->
+                            <macPackageIdentifier>io.github.ozkanpakdil.paint</macPackageIdentifier>
+
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+ 
+ </project>
