@@ -295,6 +295,11 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         }
     }
 
+    // Public wrapper to trigger save from menus/shortcuts
+    public void triggerSave() {
+        saveImage();
+    }
+
     // New setters to allow ribbon to control text formatting
     public void setFontIndex(int idx) {
         int old = font;
