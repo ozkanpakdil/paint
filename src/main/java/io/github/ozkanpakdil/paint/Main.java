@@ -76,6 +76,7 @@ public class Main extends JFrame {
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
         JMenu tools = new JMenu("Tools");
+        JMenu textMenu = new JMenu("Text");
         JMenu help = new JMenu("Help");
         tools.setMnemonic(KeyEvent.VK_T);
         file.setMnemonic(KeyEvent.VK_F);
@@ -129,14 +130,128 @@ public class Main extends JFrame {
         });
         edit.add(redoItem);
 
-        // Tools > Move tool selector
+        // Tools > All tool selectors to mirror the RibbonBar
+        JMenuItem pencilToolItem = new JMenuItem("Pencil");
+        pencilToolItem.setToolTipText("Select Pencil tool");
+        pencilToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.PENCIL); });
+        tools.add(pencilToolItem);
+
+        JMenuItem lineToolItem = new JMenuItem("Line");
+        lineToolItem.setToolTipText("Select Line tool");
+        lineToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.LINE); });
+        tools.add(lineToolItem);
+
+        JMenuItem rectToolItem = new JMenuItem("Rectangle");
+        rectToolItem.setToolTipText("Select Rectangle tool");
+        rectToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.RECT); });
+        tools.add(rectToolItem);
+
+        JMenuItem ovalToolItem = new JMenuItem("Oval");
+        ovalToolItem.setToolTipText("Select Oval tool");
+        ovalToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.OVAL); });
+        tools.add(ovalToolItem);
+
+        JMenuItem polygonToolItem = new JMenuItem("Polygon");
+        polygonToolItem.setToolTipText("Select Polygon tool");
+        polygonToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.ROUNDED_RECT); });
+        tools.add(polygonToolItem);
+
+        JMenuItem eraserToolItem = new JMenuItem("Eraser");
+        eraserToolItem.setToolTipText("Select Eraser tool");
+        eraserToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.ERASER); });
+        tools.add(eraserToolItem);
+
+        JMenuItem textToolItem = new JMenuItem("Text");
+        textToolItem.setToolTipText("Select Text tool");
+        textToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.TEXT); });
+        tools.add(textToolItem);
+
+        JMenuItem rectFilledToolItem = new JMenuItem("Rectangle (Filled)");
+        rectFilledToolItem.setToolTipText("Select Filled Rectangle tool");
+        rectFilledToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.RECT_FILLED); });
+        tools.add(rectFilledToolItem);
+
+        JMenuItem ovalFilledToolItem = new JMenuItem("Oval (Filled)");
+        ovalFilledToolItem.setToolTipText("Select Filled Oval tool");
+        ovalFilledToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.OVAL_FILLED); });
+        tools.add(ovalFilledToolItem);
+
+        JMenuItem polygonFilledToolItem = new JMenuItem("Polygon (Filled)");
+        polygonFilledToolItem.setToolTipText("Select Filled Polygon tool");
+        polygonFilledToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.ROUNDED_RECT_FILLED); });
+        tools.add(polygonFilledToolItem);
+
+        JMenuItem bucketToolItem = new JMenuItem("Bucket");
+        bucketToolItem.setToolTipText("Select Bucket tool");
+        bucketToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.BUCKET); });
+        tools.add(bucketToolItem);
+
         JMenuItem moveToolItem = new JMenuItem("Move");
         moveToolItem.setName("moveTool");
         moveToolItem.setToolTipText("Select Move tool");
-        moveToolItem.addActionListener(_ -> {
-            if (gui != null) gui.getSideMenu().selectTool(Tool.MOVE);
-        });
+        moveToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.MOVE); });
         tools.add(moveToolItem);
+
+        // Colors chooser (matches ribbon "More…")
+        JMenuItem colorChooserItem = new JMenuItem("Choose Color…");
+        colorChooserItem.setToolTipText("Open color chooser");
+        colorChooserItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().triggerColorChooser(); });
+        tools.addSeparator();
+        tools.add(colorChooserItem);
+
+        // Stroke Size submenu (common presets)
+        JMenu strokeMenu = new JMenu("Stroke Size");
+        int[] strokes = {1, 2, 3, 5, 8, 12, 20};
+        for (int sz : strokes) {
+            JMenuItem sItem = new JMenuItem(sz + " px");
+            sItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().setStrokeSize(sz); });
+            strokeMenu.add(sItem);
+        }
+        tools.add(strokeMenu);
+
+        // Text menu mirrors ribbon text options
+        // Text > Choose Font…
+        JMenuItem chooseFontItem = new JMenuItem("Choose Font…");
+        chooseFontItem.addActionListener(_ -> {
+            if (gui == null) return;
+            String[] fonts = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+            JComboBox<String> combo = new JComboBox<>(fonts);
+            combo.setSelectedIndex(Math.max(0, Math.min(SideMenu.getSelectedFont(), fonts.length - 1)));
+            int res = JOptionPane.showConfirmDialog(this, combo, "Select Font", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (res == JOptionPane.OK_OPTION) {
+                int idx = combo.getSelectedIndex();
+                gui.getSideMenu().setFontIndex(idx);
+            }
+        });
+        textMenu.add(chooseFontItem);
+
+        // Text > Size presets
+        JMenu textSizeMenu = new JMenu("Size");
+        int[] sizes = {10, 12, 14, 16, 18, 24, 36};
+        for (int fs : sizes) {
+            JMenuItem fsItem = new JMenuItem(fs + " pt");
+            fsItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().setFontSize(fs); });
+            textSizeMenu.add(fsItem);
+        }
+        JMenuItem sizeMore = new JMenuItem("More…");
+        sizeMore.addActionListener(_ -> {
+            if (gui == null) return;
+            String input = JOptionPane.showInputDialog(this, "Enter font size (6–200):", SideMenu.getFontSize());
+            if (input != null) {
+                try {
+                    int val = Integer.parseInt(input.trim());
+                    gui.getSideMenu().setFontSize(val);
+                } catch (NumberFormatException ignored) {}
+            }
+        });
+        textSizeMenu.addSeparator();
+        textSizeMenu.add(sizeMore);
+        textMenu.add(textSizeMenu);
+
+        // Text > Color…
+        JMenuItem textColorItem = new JMenuItem("Text Color…");
+        textColorItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().triggerColorChooser(); });
+        textMenu.add(textColorItem);
 
         // Help > Keyboard Shortcuts
         JMenuItem shortcutsItem = new JMenuItem("Keyboard Shortcuts...");

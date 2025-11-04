@@ -147,12 +147,17 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
     }
 
     public static void setForeColor(Color c) {
+        for_color = c;
+    }
+
+    /**
+     * Change foreground color programmatically and notify listeners.
+     */
+    public void selectForeColor(Color c) {
         Color old = for_color;
         for_color = c;
-        // notify
-        // Using null as source is fine; this is a Swing component so firePropertyChange exists
-        // Triggered when eraser or chooser changes programmatically
-        // Consumers should also listen to explicit chooser events
+        colorChooserPanel.setBackground(for_color);
+        firePropertyChange("color", old, for_color);
     }
 
     public static int getFontSize() {
@@ -260,6 +265,13 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         }
     }
 
+    /**
+     * Public wrapper to open the color chooser from menus or other UI.
+     */
+    public void triggerColorChooser() {
+        colorchooser();
+    }
+
     private void uploadImage() {
 		/*	BufferedImage myPicture = ImageIO.read(new File("path-to-file"));
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
@@ -333,6 +345,14 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         System.out.println("Stroke Size Changed" + slider.getValue());
         pencil_size = slider.getValue();
 
+    }
+
+    /**
+     * Programmatically set stroke size (for menu parity with slider).
+     */
+    public void setStrokeSize(int size) {
+        pencil_size = Math.max(1, Math.min(20, size));
+        firePropertyChange("strokeSize", null, pencil_size);
     }
 
 }
