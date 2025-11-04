@@ -9,13 +9,11 @@
     <version>1.0.0</version>
     <name>Paint</name>
     <description>Simple Swing paint application</description>
-    <url>https://example.com/paintit</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
         <maven.compiler.parameters>true</maven.compiler.parameters>
-        <graalvm.native.imageName>paint</graalvm.native.imageName>
         <graalvm.native.mainClass>io.github.ozkanpakdil.paint.Main</graalvm.native.mainClass>
     </properties>
 
@@ -67,9 +65,9 @@
             <properties>
                 <!-- You can switch to a GraalVM JDK by exporting JAVA_HOME before building -->
                 <!-- Optionally compile sources with a newer release when using GraalVM JDK -->
-                <maven.compiler.release>17</maven.compiler.release>
-                <graalvm.native.imageName>paintit</graalvm.native.imageName>
-                <graalvm.native.mainClass>Main</graalvm.native.mainClass>
+                <maven.compiler.release>25</maven.compiler.release>
+                <graalvm.native.imageName>paint</graalvm.native.imageName>
+                <graalvm.native.mainClass>io.github.ozkanpakdil.paint.Main</graalvm.native.mainClass>
             </properties>
             <build>
                 <plugins>

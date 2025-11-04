@@ -1,4 +1,4 @@
-PaintIt
+Paint
 =======
 
 Paint Application in Java using Swing Components.
@@ -31,9 +31,9 @@ Commands:
   ```bash
   mvn -q clean package
   ```
-  The artifact will be created at `target/paintit-1.0.0.jar` and is executable:
+  The artifact will be created at `target/paint-1.0.0.jar` and is executable:
   ```bash
-  java -jar target/paintit-1.0.0.jar
+  java -jar target/paint-1.0.0.jar
   ```
 
 Notes:
@@ -62,11 +62,11 @@ Steps:
    ```
    This invokes the GraalVM Native Build Tools plugin and produces a binary at:
    ```
-   target/paintit
+   target/paint
    ```
 3) Run the app:
    ```bash
-   ./target/paintit
+   ./target/paint
    ```
 
 Notes for native-image:
@@ -93,18 +93,17 @@ Steps:
    ```bash
    export JAVA_HOME=/path/to/graalvm
    export PATH="$JAVA_HOME/bin:$PATH"
-   # Option A: First run (create configs)
    java \
      -Djava.awt.headless=false \
      -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image \
-     -jar target/paintit-1.0.0.jar
+     -jar target/paint-1.0.0.jar
 
    ```
    - When you are done trying features, close the app. You should see files like `reflect-config.json`, `jni-config.json`, `resource-config.json`, etc. under `src/main/resources/META-INF/native-image/`.
 3) Rebuild the native image using the collected configs:
    ```bash
    mvn -Pnative -DskipTests -q clean package
-   ./target/paintit
+   ./target/paint
    ```
 
 Troubleshooting
@@ -118,6 +117,6 @@ Troubleshooting
 - Ensure you ran the app with the agent and exercised key features so configs are generated.
 - If problems persist, run the native binary with `GRAALVM_OPTIONS` to increase logging:
   ```bash
-  GRAALVM_OPTIONS="-Djava.awt.headless=false" ./target/paintit
+  GRAALVM_OPTIONS="-Djava.awt.headless=false" ./target/paint
   ```
 - Share the first ~100 lines of output along with your distro and session type (x11/wayland).
