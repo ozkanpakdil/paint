@@ -20,14 +20,18 @@ public enum Tool {
 
     private final int index;
 
-    Tool(int index) { this.index = index; }
-
-    public int toIndex() { return index; }
+    Tool(int index) {
+        this.index = index;
+    }
 
     public static Tool fromIndex(int idx) {
         for (Tool t : values()) {
             if (t.index == idx) return t;
         }
         throw new IllegalArgumentException("Unknown tool index: " + idx);
+    }
+
+    public int toIndex() {
+        return index;
     }
 }

@@ -5,7 +5,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,14 +14,14 @@ import java.io.IOException;
 
 public class SideMenu extends JPanel implements MouseListener, ChangeListener {
 
+    private static final Color[] colors = {Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.WHITE, Color.YELLOW};
     private static Tool draw_tool = Tool.PENCIL;
     private static String text;
     private static int pencil_size = 2;
-    private static final Color[] colors = {Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.WHITE, Color.YELLOW};
     private static Color for_color = colors[0];
-    private final JPanel colorChooserPanel = new JPanel();
     private static int font;
     private static int fontSize = 15;
+    private final JPanel colorChooserPanel = new JPanel();
 
     SideMenu() throws IOException {
 
@@ -40,13 +41,13 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         color.add(colorChooserPanel);
         // Palette grid
         JPanel palette = new JPanel(new GridLayout(2, 7, 3, 3));
-        JPanel fore_color_panel[] = new JPanel[colors.length];
+        JPanel[] fore_color_panel = new JPanel[colors.length];
         for (int i = 0; i < fore_color_panel.length; i++) {
             fore_color_panel[i] = new JPanel();
             fore_color_panel[i].setPreferredSize(new Dimension(18, 18));
             fore_color_panel[i].setBackground(colors[i]);
             fore_color_panel[i].addMouseListener(this);
-            fore_color_panel[i].setName("F" + Integer.toString(i));
+            fore_color_panel[i].setName("F" + i);
             palette.add(fore_color_panel[i]);
         }
         color.add(palette);
@@ -56,7 +57,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
          * 	Tool Picker Starts
          */
 
-        String tool_names[] = {"pencil", "line-tool", "rectangle", "oval", "polygon", "eraser", "text", "rectangle_fill", "oval_fill", "polygon_fill", "bucket", "move"};
+        String[] tool_names = {"pencil", "line-tool", "rectangle", "oval", "polygon", "eraser", "text", "rectangle_fill", "oval_fill", "polygon_fill", "bucket", "move"};
         // Compact tools grid similar to MS Paint
         JPanel tool_panel = new JPanel(new GridLayout(0, 4, 4, 4));
         for (int i = 0; i < tool_names.length; i++) {
@@ -66,7 +67,8 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
                 if (in != null) {
                     myPicture = ImageIO.read(in);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             if (myPicture == null) {
                 // Fallback: generate a simple icon if resource is missing (e.g., for Move)
                 myPicture = generateToolIcon(tool_names[i], 28, 28);
@@ -76,7 +78,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
             toolLabel.setOpaque(true);
             toolLabel.setBackground(new Color(245, 245, 245));
             toolLabel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-            toolLabel.setName("T" + Integer.toString(i));
+            toolLabel.setName("T" + i);
             toolLabel.addMouseListener(this);
             tool_panel.add(toolLabel);
         }
@@ -122,6 +124,45 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         //i_e.add(upload);
         add(i_e);
 
+    }
+
+    public static int getSelectedFont() {
+        return font;
+    }
+
+    public static Color getSelectedForeColor() {
+        return for_color;
+    }
+
+    public static String getInputText() {
+        return text;
+    }
+
+    public static Tool getSelectedTool() {
+        return draw_tool;
+    }
+
+    public static int getStrokeSize() {
+        return pencil_size;
+    }
+
+    public static void setForeColor(Color c) {
+        Color old = for_color;
+        for_color = c;
+        // notify
+        // Using null as source is fine; this is a Swing component so firePropertyChange exists
+        // Triggered when eraser or chooser changes programmatically
+        // Consumers should also listen to explicit chooser events
+    }
+
+    public static int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(int size) {
+        int old = fontSize;
+        fontSize = Math.max(6, size);
+        firePropertyChange("fontSize", old, fontSize);
     }
 
     // Fallback icon generator (simple Adwaita-like glyphs for certain tools)
@@ -254,50 +295,11 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         }
     }
 
-    public static int getSelectedFont() {
-        return font;
-    }
-
-    public static Color getSelectedForeColor() {
-        return for_color;
-    }
-
-    public static String getInputText() {
-        return text;
-    }
-
-    public static Tool getSelectedTool() {
-        return draw_tool;
-    }
-
-    public static int getStrokeSize() {
-        return pencil_size;
-    }
-
-    public static void setForeColor(Color c) {
-        Color old = for_color;
-        for_color = c;
-        // notify
-        // Using null as source is fine; this is a Swing component so firePropertyChange exists
-        // Triggered when eraser or chooser changes programmatically
-        // Consumers should also listen to explicit chooser events
-    }
-
-    public static int getFontSize() {
-        return fontSize;
-    }
-
     // New setters to allow ribbon to control text formatting
     public void setFontIndex(int idx) {
         int old = font;
         font = Math.max(0, idx);
         firePropertyChange("font", old, font);
-    }
-
-    public void setFontSize(int size) {
-        int old = fontSize;
-        fontSize = Math.max(6, size);
-        firePropertyChange("fontSize", old, fontSize);
     }
 
     @Override

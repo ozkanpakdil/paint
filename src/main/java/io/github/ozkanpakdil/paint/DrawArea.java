@@ -1,46 +1,19 @@
 package io.github.ozkanpakdil.paint;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.AbstractAction;
-import javax.swing.TransferHandler;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.EnumMap;
 
 public class DrawArea extends JPanel implements MouseListener, MouseMotionListener {
-
-    // Cache of custom cursors per tool
-    private final Map<Tool, Cursor> toolCursorCache = new EnumMap<>(Tool.class);
 
     private static final String[][] TOOL_ICON_MAP = new String[][]{
             {"PENCIL", "pencil.png"},
@@ -56,20 +29,23 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             {"BUCKET", "bucket.png"},
             {"MOVE", "move.png"}
     };
-
+    private static final int ROUNDED_ARC = 10;
+    // Backing canvas; kept static to preserve existing usages (e.g., SideMenu save)
+    static BufferedImage cache;
+    // Cache of custom cursors per tool
+    private final Map<Tool, Cursor> toolCursorCache = new EnumMap<>(Tool.class);
+    // Text tool inline editor
+    private final java.util.function.Supplier<SideMenu> controllerSupplier;
     // Mouse and drawing state (kept package-private compatibility minimal)
     public int x1, x2, y1, y2; // kept names to avoid broad refactor
     public boolean ispressed = false;
     public boolean isdragged = false;
-
     // Brush cursor preview state
     private int cursorX = -1;
     private int cursorY = -1;
     private boolean cursorVisible = false;
-
     // Tracks the bounds of the most recently pasted image (for cropping)
     private Rectangle lastPastedRect = null;
-
     // Temporary placement state for pasted/dropped images OR selection move
     private BufferedImage pendingImage = null;
     private int pendingX = 0;
@@ -77,7 +53,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     private boolean placingImage = false;
     private int pendingDragOffsetX = 0;
     private int pendingDragOffsetY = 0;
-
     // Rectangular selection state for Move tool
     private boolean selecting = false;
     private int selStartX = 0;
@@ -88,14 +63,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     private boolean selectionPlacement = false; // true when pendingImage came from a selection cut
     private BufferedImage selectionCutBackup = null; // pixels removed from cache for restoration on cancel
     private Rectangle selectionCutRect = null;
-
-    // Backing canvas; kept static to preserve existing usages (e.g., SideMenu save)
-    static BufferedImage cache;
-
-    private static final int ROUNDED_ARC = 10;
-
-    // Text tool inline editor
-    private final java.util.function.Supplier<SideMenu> controllerSupplier;
     private JTextField textEditor;
 
     DrawArea() {
@@ -129,7 +96,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     private BufferedImage loadToolIcon(Tool tool) {
         String res = null;
         for (String[] m : TOOL_ICON_MAP) {
-            if (m[0].equals(tool.name())) { res = m[1]; break; }
+            if (m[0].equals(tool.name())) {
+                res = m[1];
+                break;
+            }
         }
         if (res == null) return null;
         try {
@@ -137,7 +107,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             if (in != null) {
                 return ImageIO.read(in);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         // Fallback for move icon: draw simple cross-arrows
         if (tool == Tool.MOVE) {
             int size = 32;
@@ -145,19 +116,24 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             Graphics2D g = img.createGraphics();
             try {
                 g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g.setColor(new Color(0,0,0,0));
-                g.fillRect(0,0,size,size);
-                g.setColor(new Color(40,40,40));
-                int cx = size/2, cy = size/2, arm = size/3;
+                g.setColor(new Color(0, 0, 0, 0));
+                g.fillRect(0, 0, size, size);
+                g.setColor(new Color(40, 40, 40));
+                int cx = size / 2, cy = size / 2, arm = size / 3;
                 g.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-                g.drawLine(cx-arm, cy, cx+arm, cy);
-                g.drawLine(cx, cy-arm, cx, cy+arm);
-                Polygon left = new Polygon(new int[]{cx-arm, cx-arm+6, cx-arm+6}, new int[]{cy, cy-4, cy+4}, 3);
-                Polygon right = new Polygon(new int[]{cx+arm, cx+arm-6, cx+arm-6}, new int[]{cy, cy-4, cy+4}, 3);
-                Polygon up = new Polygon(new int[]{cx, cx-4, cx+4}, new int[]{cy-arm, cy-arm+6, cy-arm+6}, 3);
-                Polygon down = new Polygon(new int[]{cx, cx-4, cx+4}, new int[]{cy+arm, cy+arm-6, cy+arm-6}, 3);
-                g.fill(left); g.fill(right); g.fill(up); g.fill(down);
-            } finally { g.dispose(); }
+                g.drawLine(cx - arm, cy, cx + arm, cy);
+                g.drawLine(cx, cy - arm, cx, cy + arm);
+                Polygon left = new Polygon(new int[]{cx - arm, cx - arm + 6, cx - arm + 6}, new int[]{cy, cy - 4, cy + 4}, 3);
+                Polygon right = new Polygon(new int[]{cx + arm, cx + arm - 6, cx + arm - 6}, new int[]{cy, cy - 4, cy + 4}, 3);
+                Polygon up = new Polygon(new int[]{cx, cx - 4, cx + 4}, new int[]{cy - arm, cy - arm + 6, cy - arm + 6}, 3);
+                Polygon down = new Polygon(new int[]{cx, cx - 4, cx + 4}, new int[]{cy + arm, cy + arm - 6, cy + arm - 6}, 3);
+                g.fill(left);
+                g.fill(right);
+                g.fill(up);
+                g.fill(down);
+            } finally {
+                g.dispose();
+            }
             return img;
         }
         return null;
@@ -171,7 +147,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         Cursor cached = toolCursorCache.get(tool);
         if (cached != null) return cached;
         BufferedImage img = loadToolIcon(tool);
-        Cursor cur = buildCursorFromImage(img, tool.name().toLowerCase(), new Point(1,1));
+        Cursor cur = buildCursorFromImage(img, tool.name().toLowerCase(), new Point(1, 1));
         toolCursorCache.put(tool, cur);
         return cur;
     }
@@ -296,7 +272,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                                     enterPlacement(bi, p.x, p.y);
                                     return true;
                                 }
-                            } catch (Exception ignored) {}
+                            } catch (Exception ignored) {
+                            }
                         }
                     }
                 } catch (Exception ignored) {
@@ -327,7 +304,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         repaint(textEditor.getBounds());
     }
 
-    public String getName() { return super.getName(); }
+    public String getName() {
+        return super.getName();
+    }
 
     public java.awt.image.BufferedImage getCacheImage() {
         ensureCache();
@@ -690,7 +669,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             case LINE -> { // Straight line preview/commit
                 g2.drawLine(x1, y1, x2, y2);
             }
-            case RECT, RECT_FILLED, ROUNDED_RECT, ROUNDED_RECT_FILLED, OVAL, OVAL_FILLED -> { // Rectangle/rounded/oval (+ filled variants)
+            case RECT, RECT_FILLED, ROUNDED_RECT, ROUNDED_RECT_FILLED, OVAL,
+                 OVAL_FILLED -> { // Rectangle/rounded/oval (+ filled variants)
                 int x = Math.min(x1, x2);
                 int y = Math.min(y1, y2);
                 int w = Math.abs(x2 - x1);
@@ -870,12 +850,20 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                 // backup the cut region for cancel
                 selectionCutBackup = new BufferedImage(rw, rh, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D bg = selectionCutBackup.createGraphics();
-                try { bg.drawImage(sub, 0, 0, null); } finally { bg.dispose(); }
+                try {
+                    bg.drawImage(sub, 0, 0, null);
+                } finally {
+                    bg.dispose();
+                }
                 selectionCutRect = new Rectangle(rx, ry, rw, rh);
                 // copy to pending image for placement
                 pendingImage = new BufferedImage(rw, rh, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D pg = pendingImage.createGraphics();
-                try { pg.drawImage(sub, 0, 0, null); } finally { pg.dispose(); }
+                try {
+                    pg.drawImage(sub, 0, 0, null);
+                } finally {
+                    pg.dispose();
+                }
                 // clear original area (cut)
                 Graphics2D cg2 = cache.createGraphics();
                 try {
