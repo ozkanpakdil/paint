@@ -62,11 +62,14 @@ jobs:
 
       - name: Publish installers to Development release
         if: github.event_name != 'pull_request'
-        uses: softprops/action-gh-release@v2
+        uses: ncipollo/release-action@v1
         with:
           tag_name: development
           name: Development Build
           prerelease: true
           fail_on_unmatched_files: true
+          allowUpdates: true
+          removeArtifacts: true
+          artifactErrorsFailBuild: false
           files: |
             target/installers/**
