@@ -110,11 +110,9 @@ jobs:
           name: Development Build
           prerelease: true
           allowUpdates: true
-          removeArtifacts: true
+          # Do not remove artifacts from previous matrix jobs; otherwise the last job wins
+          removeArtifacts: false
           artifactErrorsFailBuild: false
+          # Only upload the OS-specific packaged artifact (unique per OS)
           artifacts: |
             ${{ env.PKG_NAME }}
-            target/paint
-            target/native/paint
-            target/paint.exe
-            target/native/paint.exe

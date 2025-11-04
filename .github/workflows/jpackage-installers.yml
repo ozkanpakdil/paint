@@ -64,12 +64,13 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: ncipollo/release-action@v1
         with:
-          tag_name: development
+          tag: development
+          commit: ${{ github.sha }}
           name: Development Build
           prerelease: true
-          fail_on_unmatched_files: true
           allowUpdates: true
-          removeArtifacts: true
+          removeArtifacts: false
+          replacesArtifacts: true
           artifactErrorsFailBuild: false
-          files: |
-            target/installers/**
+          artifacts: |
+            paint-${{ matrix.os }}-${{ matrix.installerType }}
