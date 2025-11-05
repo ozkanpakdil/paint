@@ -51,7 +51,7 @@ jobs:
           echo "WIX installed"
 
       - name: Build installer with jpackage
-        run: mvn -B -Pinstaller -Dinstaller.type=${{ matrix.installerType }} jpackage:jpackage
+        run: mvn -B -Pinstaller "-Dinstaller.type=${{ matrix.installerType }}" jpackage:jpackage
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
