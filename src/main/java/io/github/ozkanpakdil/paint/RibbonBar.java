@@ -50,7 +50,6 @@ public class RibbonBar extends JPanel {
         topRow.add(groupShapes());
         topRow.add(groupSize());
         topRow.add(groupColors());
-        topRow.add(groupFile());
 
         // CONTEXT ROW: groups that appear conditionally (e.g., Text formatting)
         JPanel contextRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
@@ -107,14 +106,6 @@ public class RibbonBar extends JPanel {
 
         // No scrollbars: rows wrap using FlowLayout when space is tight
         return container;
-    }
-
-    private JComponent groupFile() throws IOException {
-        JPanel g = titledGroup("Image");
-        JLabel save = makeIconButton("Save.png", 24, "SAVE", "Save (PNG)");
-        save.addMouseListener(controller);
-        g.add(save);
-        return g;
     }
 
     private JComponent groupTools() throws IOException {
