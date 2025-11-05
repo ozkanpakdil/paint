@@ -72,5 +72,6 @@ jobs:
           removeArtifacts: false
           replacesArtifacts: true
           artifactErrorsFailBuild: false
+          # Upload the actual files produced by jpackage on this runner
           artifacts: |
-            paint-${{ matrix.os }}-${{ matrix.installerType }}
+            target/installers/**

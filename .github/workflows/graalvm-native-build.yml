@@ -47,6 +47,7 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
+          set -euo pipefail
           APP_NAME="paint"
           BIN_PATH="target/${APP_NAME}"
           if [ ! -f "$BIN_PATH" ]; then
@@ -56,22 +57,41 @@ jobs:
             fi
           fi
           chmod +x "$BIN_PATH" || true
+          # Create a staging directory to include required runtime libs (.so/.dylib)
+          STAGE_DIR="pack-${APP_NAME}"
+          rm -rf "$STAGE_DIR" && mkdir -p "$STAGE_DIR"
+          cp "$BIN_PATH" "$STAGE_DIR/" || true
+          # Copy any native libraries produced next to the binary
+          cp target/*.so "$STAGE_DIR/" 2>/dev/null || true
+          cp target/*.dylib "$STAGE_DIR/" 2>/dev/null || true
+          # Some plugins place libs under target/native
+          cp target/native/*.so "$STAGE_DIR/" 2>/dev/null || true
+          cp target/native/*.dylib "$STAGE_DIR/" 2>/dev/null || true
           PKG_NAME="${APP_NAME}-${{ matrix.os }}.tar.gz"
-          tar -czf "$PKG_NAME" -C "$(dirname "$BIN_PATH")" "$(basename "$BIN_PATH")"
+          tar -czf "$PKG_NAME" "$STAGE_DIR"
           echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
+          $ErrorActionPreference = 'Stop'
           $app = 'paint.exe'
           $bin = Join-Path 'target' $app
           if (-not (Test-Path $bin)) {
             $alt = Join-Path 'target/native' $app
             if (Test-Path $alt) { $bin = $alt }
           }
+          $stage = 'pack-paint'
+          if (Test-Path $stage) { Remove-Item -Recurse -Force $stage }
+          New-Item -ItemType Directory -Path $stage | Out-Null
+          Copy-Item $bin $stage/
+          # Include any DLLs produced next to the exe
+          Get-ChildItem -Path 'target' -Filter '*.dll' -ErrorAction SilentlyContinue | Copy-Item -Destination $stage -Force -ErrorAction SilentlyContinue
+          Get-ChildItem -Path 'target/native' -Filter '*.dll' -ErrorAction SilentlyContinue | Copy-Item -Destination $stage -Force -ErrorAction SilentlyContinue
           $pkg = "paint-${{ matrix.os }}.zip"
-          Compress-Archive -Path $bin -DestinationPath $pkg -Force
+          if (Test-Path $pkg) { Remove-Item -Force $pkg }
+          Compress-Archive -Path $stage -DestinationPath $pkg -Force
           "PKG_NAME=$pkg" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Upload packaged artifact
