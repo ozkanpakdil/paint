@@ -474,9 +474,6 @@
           "name": "VK_SPACE"
         },
         {
-          "name": "VK_TAB"
-        },
-        {
           "name": "VK_UP"
         },
         {
@@ -1068,17 +1065,6 @@
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicPopupMenuUI",
-      "methods": [
-        {
-          "name": "loadActionMap",
-          "parameterTypes": [
-            "javax.swing.plaf.basic.LazyActionMap"
-          ]
-        }
-      ]
-    },
-    {
       "type": "javax.swing.plaf.nimbus.ArrowButtonPainter",
       "methods": [
         {
@@ -1376,30 +1362,6 @@
       ]
     },
     {
-      "type": "javax.swing.plaf.nimbus.TabbedPaneTabAreaPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.TabbedPaneTabPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
       "type": "javax.swing.plaf.nimbus.TextFieldPainter",
       "methods": [
         {
@@ -1413,6 +1375,30 @@
     },
     {
       "type": "javax.swing.plaf.nimbus.ToggleButtonPainter",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.nimbus.ToolTipPainter",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.nimbus.TreeCellPainter",
       "methods": [
         {
           "name": "<init>",
