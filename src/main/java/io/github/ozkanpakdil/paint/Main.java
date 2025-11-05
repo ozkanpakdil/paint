@@ -1,9 +1,13 @@
 package io.github.ozkanpakdil.paint;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.imageio.ImageIO;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -259,6 +263,7 @@ public class Main extends JFrame {
             String msg = """
                     Shortcuts:
                     - New: Ctrl+N
+                    - Open: Ctrl+O
                     - Save: Ctrl+S
                     - Undo: Ctrl+Z
                     - Redo: Ctrl+Y or Ctrl+Shift+Z
@@ -268,6 +273,48 @@ public class Main extends JFrame {
         help.add(shortcutsItem);
 
         file.add(newMenuItem);
+        
+        // File > Open…
+        JMenuItem openMenuItem = new JMenuItem("Open…");
+        openMenuItem.setToolTipText("Open an image file (all formats supported by Java)");
+        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        openMenuItem.addActionListener(_ -> {
+            if (gui == null) return;
+            JFileChooser chooser = new JFileChooser();
+            // Dynamically include all image types supported by the current JVM
+            String[] suffixes = ImageIO.getReaderFileSuffixes();
+            java.util.Set<String> extSet = new java.util.LinkedHashSet<>();
+            for (String s : suffixes) {
+                if (s != null && !s.isEmpty()) extSet.add(s.toLowerCase());
+            }
+            // Fallback to common types if none detected (very unlikely)
+            if (extSet.isEmpty()) {
+                extSet.add("png");
+                extSet.add("jpg");
+                extSet.add("jpeg");
+                extSet.add("bmp");
+                extSet.add("gif");
+            }
+            String[] exts = extSet.toArray(new String[0]);
+            String label = "Image Files (" + String.join(", ", exts) + ")";
+            chooser.setFileFilter(new FileNameExtensionFilter(label, exts));
+            int res = chooser.showOpenDialog(this);
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File f = chooser.getSelectedFile();
+                try {
+                    BufferedImage img = ImageIO.read(f);
+                    if (img == null) {
+                        JOptionPane.showMessageDialog(this, "Unsupported or corrupted image.", "Open Image", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    gui.getDrawArea().startImagePlacement(img);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to open image: " + ex.getMessage(), "Open Image", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        file.add(openMenuItem);
+        
         file.add(saveMenuItem);
         file.add(exitMenuItem);
         jMenuBar.add(file);

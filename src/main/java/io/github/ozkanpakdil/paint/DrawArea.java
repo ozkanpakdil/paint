@@ -71,6 +71,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     private BufferedImage selectionCutBackup = null; // pixels removed from cache for restoration on cancel
     private Rectangle selectionCutRect = null;
     private JTextField textEditor;
+    // Tooltip state for persistent guidance during image placement
+    private Integer tooltipOriginalDismiss = null;
+    private Integer tooltipOriginalInitial = null;
 
     // ----- History helpers -----
     private BufferedImage copyImage(BufferedImage src) {
@@ -386,11 +389,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         return super.getName();
     }
 
-    public java.awt.image.BufferedImage getCacheImage() {
-        ensureCache();
-        return cache;
-    }
-
     // Paste image from system clipboard at current cursor location (or 0,0)
     private void pasteFromClipboard() {
         try {
@@ -398,11 +396,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             Transferable t = cb.getContents(null);
             if (t != null && t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                 Image img = (Image) t.getTransferData(DataFlavor.imageFlavor);
-                if (img == null) return;
                 BufferedImage bi = toBufferedImage(img);
                 if (bi == null) return;
-                int px = (cursorX >= 0 ? cursorX : 0);
-                int py = (cursorY >= 0 ? cursorY : 0);
+                int px = (Math.max(cursorX, 0));
+                int py = (Math.max(cursorY, 0));
                 enterPlacement(bi, px, py);
             }
         } catch (Exception ignore) {
@@ -432,7 +429,24 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         pendingY = y;
         placingImage = true;
         updateCursorForCurrentTool();
+        updatePlacementTooltip();
         repaint();
+    }
+
+    /**
+     * Start placing the given image on the canvas, centered in the visible area.
+     * The user can drag to reposition and press Enter to commit or Esc to cancel.
+     */
+    public void startImagePlacement(BufferedImage img) {
+        if (img == null) return;
+        // If there is an ongoing placement, commit it first to avoid losing it.
+        if (placingImage) {
+            commitPlacement();
+        }
+        Rectangle vr = getVisibleRect();
+        int x = Math.max(0, vr.x + (vr.width - img.getWidth()) / 2);
+        int y = Math.max(0, vr.y + (vr.height - img.getHeight()) / 2);
+        enterPlacement(img, x, y);
     }
 
     private void commitPlacement() {
@@ -495,6 +509,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         pendingDragOffsetX = 0;
         pendingDragOffsetY = 0;
         updateCursorForCurrentTool();
+        updatePlacementTooltip();
     }
 
     // Clear transient UI overlays (pending placement and selection marquee) without changing the canvas
@@ -510,6 +525,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         selecting = false;
         selectionRect = null;
         updateCursorForCurrentTool();
+        updatePlacementTooltip();
     }
 
     private boolean pointInPending(int px, int py) {
@@ -1025,5 +1041,27 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             g.dispose();
         }
         repaint();
+    }
+
+    // Helper to keep a persistent tooltip visible during image placement
+    private void updatePlacementTooltip() {
+        String tip = placingImage ? "Drag to position image. Press Enter to place, Esc to cancel." : null;
+        setToolTipText(tip);
+        ToolTipManager ttm = ToolTipManager.sharedInstance();
+        if (placingImage) {
+            if (tooltipOriginalDismiss == null) {
+                tooltipOriginalDismiss = ttm.getDismissDelay();
+                tooltipOriginalInitial = ttm.getInitialDelay();
+            }
+            // Keep tooltip visible for a long time and appear quickly
+            ttm.setDismissDelay(600000); // 10 minutes
+            ttm.setInitialDelay(200);
+        } else {
+            // Restore original delays if we modified them
+            if (tooltipOriginalDismiss != null) ttm.setDismissDelay(tooltipOriginalDismiss);
+            if (tooltipOriginalInitial != null) ttm.setInitialDelay(tooltipOriginalInitial);
+            tooltipOriginalDismiss = null;
+            tooltipOriginalInitial = null;
+        }
     }
 }
