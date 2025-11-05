@@ -252,4 +252,127 @@ public class MorePaintUiTests {
     private static void sleep(long ms) {
         try { Thread.sleep(ms); } catch (InterruptedException ignored) {}
     }
+
+    // --- Additional helpers for new tests ---
+    private static boolean regionHasColorAnywhere(DrawArea area, int rgb) {
+        int w = Math.max(1, area.getWidth());
+        int h = Math.max(1, area.getHeight());
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                try {
+                    if (area.getPixelRGB(i, j) == rgb) return true;
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+        return false;
+    }
+
+    // --- New tests covering Open/Placement, Move tool, and Esc/Cancel cases ---
+
+    @Test
+    @Order(6)
+    void imagePlacement_enterCommits_escCancels() throws Exception {
+        // Create a small solid image to place (distinct color)
+        final java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(40, 30, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        java.awt.Graphics2D g = img.createGraphics();
+        try {
+            g.setColor(Color.MAGENTA);
+            g.fillRect(0, 0, 40, 30);
+        } finally { g.dispose(); }
+
+        // Start placement (simulates File > Open… without JFileChooser UI)
+        SwingUtilities.invokeAndWait(() -> canvas.startImagePlacement(img));
+        // Commit with Enter
+        canvas.requestFocusInWindow();
+        dispatchKey(canvas, KeyEvent.KEY_PRESSED, KeyEvent.VK_ENTER, '\n');
+        dispatchKey(canvas, KeyEvent.KEY_RELEASED, KeyEvent.VK_ENTER, '\n');
+        sleep(200);
+        assertTrue(regionHasColorAnywhere(canvas, Color.MAGENTA.getRGB()), "Expected placed image pixels after Enter to commit");
+
+        // Clear and try Esc cancel path
+        SwingUtilities.invokeAndWait(canvas::clearCanvas);
+        SwingUtilities.invokeAndWait(() -> canvas.startImagePlacement(img));
+        canvas.requestFocusInWindow();
+        dispatchKey(canvas, KeyEvent.KEY_PRESSED, KeyEvent.VK_ESCAPE, (char)27);
+        dispatchKey(canvas, KeyEvent.KEY_RELEASED, KeyEvent.VK_ESCAPE, (char)27);
+        sleep(200);
+        assertFalse(regionHasColorAnywhere(canvas, Color.MAGENTA.getRGB()), "Expected no image pixels after Esc to cancel");
+    }
+
+    @Test
+    @Order(7)
+    void moveSelection_enterCommits_sourceCleared_destinationHasPixels() {
+        // Draw a filled rectangle (RED) to move
+        clickByName("F10"); // RED
+        clickByName("T7");  // filled rectangle
+        drag(canvas, 40, 40, 80, 70);
+        sleep(120);
+        assertTrue(regionHasNonWhite(canvas, 35, 35, 60, 50), "Expected some non-white pixels in the drawn area");
+
+        // Select MOVE tool
+        clickByName("T11");
+        // Create selection around the red rect
+        drag(canvas, 35, 35, 85, 75);
+        sleep(80);
+        // Drag the selection to a new position
+        drag(canvas, 50, 50, 120, 120);
+        sleep(80);
+        // Commit with Enter
+        canvas.requestFocusInWindow();
+        dispatchKey(canvas, KeyEvent.KEY_PRESSED, KeyEvent.VK_ENTER, '\n');
+        dispatchKey(canvas, KeyEvent.KEY_RELEASED, KeyEvent.VK_ENTER, '\n');
+        sleep(200);
+        // Destination should have non-white pixels
+        assertTrue(regionHasNonWhite(canvas, 110, 110, 50, 40), "Expected moved content at destination after Enter");
+        // Source should be cleared to white
+        assertFalse(regionHasNonWhite(canvas, 40, 40, 50, 40), "Expected source area cleared after move commit");
+    }
+
+    @Test
+    @Order(8)
+    void moveSelection_escCancels_restoresSource_noDestination() {
+        // Draw a filled rectangle (BLUE) to move
+        clickByName("F1"); // BLUE
+        clickByName("T7");  // filled rectangle
+        drag(canvas, 60, 90, 110, 130);
+        sleep(120);
+        assertTrue(regionHasNonWhite(canvas, 58, 88, 55, 45), "Expected non-white pixels in the drawn area");
+
+        // Select MOVE tool and create selection around it
+        clickByName("T11");
+        drag(canvas, 55, 85, 115, 135);
+        sleep(80);
+        // Drag to new place but then cancel
+        drag(canvas, 70, 100, 160, 180);
+        canvas.requestFocusInWindow();
+        dispatchKey(canvas, KeyEvent.KEY_PRESSED, KeyEvent.VK_ESCAPE, (char)27);
+        dispatchKey(canvas, KeyEvent.KEY_RELEASED, KeyEvent.VK_ESCAPE, (char)27);
+        sleep(200);
+        // Original area remains (still non-white)
+        assertTrue(regionHasNonWhite(canvas, 58, 88, 55, 45), "Expected original area restored after Esc");
+        // Destination area should be white
+        assertFalse(regionHasNonWhite(canvas, 150, 170, 60, 60), "Expected no moved content at destination after Esc");
+    }
+
+    @Test
+    @Order(9)
+    void textTool_escapeCancels_noPixelsCommitted() throws Exception {
+        clickByName("F10"); // RED
+        clickByName("T6");  // TEXT tool
+        click(canvas, 200, 220);
+        sleep(120);
+        JTextField editor = (JTextField) findChildOfType(canvas, JTextField.class);
+        assertNotNull(editor, "Inline text editor not found for text tool");
+        SwingUtilities.invokeAndWait(() -> {
+            editor.requestFocusInWindow();
+            editor.setText("CancelMe");
+        });
+        // Press ESC to cancel editing (no commit)
+        dispatchKey(editor, KeyEvent.KEY_PRESSED, KeyEvent.VK_ESCAPE, (char)27);
+        dispatchKey(editor, KeyEvent.KEY_RELEASED, KeyEvent.VK_ESCAPE, (char)27);
+        sleep(220);
+        // Verify region around where text would appear remains white (no red-ish pixels)
+        boolean redish = regionHasColorNear(canvas, 190, 200, 160, 80, Color.RED.getRGB(), 60);
+        assertFalse(redish, "Expected no red-ish pixels after Esc cancels text editing");
+    }
 }
