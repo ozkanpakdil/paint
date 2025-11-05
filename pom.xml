@@ -147,6 +147,27 @@
                             <!-- macOS specific (safe when codesign not configured) -->
                             <macPackageIdentifier>io.github.ozkanpakdil.paint</macPackageIdentifier>
 
+                            <!-- Cross-platform icon used by jpackage -->
+                            <icon>${project.basedir}/src/main/resources/images/pencil.png</icon>
+
+                            <!-- Linux desktop/menu integration -->
+                            <linuxShortcut>true</linuxShortcut>
+                            <linuxMenuGroup>Graphics</linuxMenuGroup>
+                            <linuxAppCategory>Graphics;</linuxAppCategory>
+                            <linuxDebMaintainer>Ozkan Pakdil &lt;ozkan.pakdil+paint@google.com&gt;</linuxDebMaintainer>
+                            <description>Simple Swing paint application
+ Features:
+  - Pencil and eraser tools
+  - Lines, rectangles, ovals, polygons (stroke or filled)
+  - Bucket fill (scanline flood fill)
+  - Text tool with font and size selection
+  - Color palette and custom color chooser
+  - Adjustable stroke width
+  - Open/Save image as PNG
+
+ Project website: https://github.com/ozkanpakdil/paint</description>
+
+
                         </configuration>
                     </plugin>
                 </plugins>
