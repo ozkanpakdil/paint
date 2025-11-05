@@ -147,9 +147,6 @@
                             <!-- macOS specific (safe when codesign not configured) -->
                             <macPackageIdentifier>io.github.ozkanpakdil.paint</macPackageIdentifier>
 
-                            <!-- Cross-platform icon used by jpackage -->
-                            <icon>${project.basedir}/src/main/resources/images/pencil.png</icon>
-
                             <!-- Linux desktop/menu integration -->
                             <linuxShortcut>true</linuxShortcut>
                             <linuxMenuGroup>Graphics</linuxMenuGroup>
@@ -158,6 +155,26 @@
                             <description>Simple Swing paint application featuring pencil, eraser, lines/rectangles/ovals/polygons (stroke or filled), bucket fill, text tool with font and size selection, color palette and custom colors, adjustable stroke width, and PNG open/save. Project website: https://github.com/ozkanpakdil/paint</description>
 
 
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>installer-linux-icon</id>
+            <activation>
+                <os>
+                    <name>Linux</name>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <!-- Use PNG icon only on Linux (macOS requires .icns, Windows requires .ico) -->
+                            <icon>${project.basedir}/src/main/resources/images/pencil.png</icon>
                         </configuration>
                     </plugin>
                 </plugins>
