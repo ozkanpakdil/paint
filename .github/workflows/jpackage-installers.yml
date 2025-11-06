@@ -36,9 +36,6 @@ jobs:
           java-version: '25'
           cache: 'maven'
 
-      - name: Build JAR
-        run: mvn -B -DskipTests package
-
       - name: Install packaging prerequisites (Linux)
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y fakeroot rpm
@@ -50,8 +47,8 @@ jobs:
           choco install wixtoolset -y
           echo "WIX installed"
 
-      - name: Build installer with jpackage
-        run: mvn -B -Pinstaller "-Dinstaller.type=${{ matrix.installerType }}" jpackage:jpackage
+      - name: Build installer with jpackage (clean build + package)
+        run: mvn -B -Pinstaller "-Dinstaller.type=${{ matrix.installerType }}" -DskipTests clean package jpackage:jpackage
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4

@@ -67,6 +67,24 @@
                     <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.basedir}/src/main/resources/installer.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -162,9 +180,7 @@
                             <linuxMenuGroup>Graphics</linuxMenuGroup>
                             <linuxAppCategory>Graphics</linuxAppCategory>
                             <linuxDebMaintainer>Ozkan Pakdil &lt;ozkan.pakdil+paint@google.com&gt;</linuxDebMaintainer>
-                            <description>Simple Swing paint application featuring pencil, eraser, lines/rectangles/ovals/polygons (stroke or filled), bucket fill, text tool with font and size selection, color palette and custom colors, adjustable stroke width, and PNG open/save. Project website: https://github.com/ozkanpakdil/paint</description>
-
-
+                            <description>${app.description}</description>
                         </configuration>
                     </plugin>
                 </plugins>

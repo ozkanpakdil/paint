@@ -141,15 +141,18 @@ Prerequisites per OS:
 - macOS: Xcode command line tools (for codesign if you plan to sign)
 
 Commands:
-- Build jar: `mvn -B -DskipTests package`
-- Build installer (current OS type):
-  - Linux: `mvn -B -Pinstaller -Dinstaller.type=DEB jpackage:jpackage`
-  - macOS: `mvn -B -Pinstaller -Dinstaller.type=DMG jpackage:jpackage`
-  - Windows: `mvn -B -Pinstaller -Dinstaller.type=MSI jpackage:jpackage`
+- One-shot (recommended): cleans, builds the jar, then runs jpackage in one go:
+  - Linux (DEB): `mvn -B -Pinstaller -Dinstaller.type=DEB -DskipTests clean package jpackage:jpackage`
+  - macOS (DMG): `mvn -B -Pinstaller -Dinstaller.type=DMG -DskipTests clean package jpackage:jpackage`
+  - Windows (MSI): `mvn -B -Pinstaller -Dinstaller.type=MSI -DskipTests clean package jpackage:jpackage`
+
+- Two-step (alternative):
+  1) Build jar: `mvn -B -DskipTests clean package`
+  2) Build installer: `mvn -B -Pinstaller -Dinstaller.type=<DEB|DMG|MSI> -DskipTests jpackage:jpackage`
 
 Outputs are written to `target/installers`.
 
-Tip: The build now accepts installer types in either uppercase or lowercase. For example, both `-Dinstaller.type=DEB` and `-Dinstaller.type=deb` work the same. On macOS/Windows, similarly `DMG/dmg` and `MSI/msi` are accepted.
+Tip: Installer types are case-insensitive in jpackage. You can use `DEB/deb`, `DMG/dmg`, or `MSI/msi`.
 
 Notes:
 - Installers are unsigned by default. To sign/notarize on macOS or sign on Windows, configure your local environment and add the appropriate `jpackage` options in `pom.xml` (codesign not yet configured in this project).
@@ -167,3 +170,20 @@ Development Release uploads:
   - Native builds: a packaged archive per OS (`tar.gz` on Linux/macOS, `zip` on Windows) and the raw binary/exe when present.
   - Installers: all files from `target/installers/**` (e.g., `.deb`, `.dmg`, `.msi`).
 - Find them at: GitHub → Releases → "Development Build" (tag `development`).
+
+
+### Formatting the DEB description (multi-line and blank lines)
+
+The Debian control file has strict rules for the `Description` field:
+- First line is a short synopsis (no leading space).
+- Subsequent lines must start with a single space.
+- A blank line must be represented as a line containing a single space and a dot: ` .`
+
+When authoring the description in `src/main/resources/installer.properties`, use literal `\n` to insert newlines and include the required leading space after each newline. To insert a blank line, use `\n .\n`.
+
+Example (used by this project):
+```
+app.description=Paint - simple Swing paint application\n A simple Swing paint program with common drawing tools.\n - Pencil\n - Eraser, lines/rectangles/ovals/polygons (stroke or filled)\n - Bucket fill\n - Text tool with font and size selection\n - Color palette and custom colors\n - Adjustable stroke width\n - Image open/save.\n .\n Project website: https://github.com/ozkanpakdil/paint
+```
+
+This ensures `jpackage` produces a DEB with a properly formatted multi-line description and a paragraph break before the website line.

@@ -3065,6 +3065,9 @@
       "glob": "images/Save.png"
     },
     {
+      "glob": "images/app.png"
+    },
+    {
       "glob": "images/bucket.png"
     },
     {
