@@ -104,11 +104,6 @@
     <profiles>
         <profile>
             <id>native</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
             <properties>
                 <!-- You can switch to a GraalVM JDK by exporting JAVA_HOME before building -->
                 <!-- Optionally compile sources with a newer release when using GraalVM JDK -->
