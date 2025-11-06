@@ -248,7 +248,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                 redo();
             }
         });
-        setBackground(Color.WHITE);
+        setBackground(new Color(230, 230, 230)); // non-paintable area background
+        setOpaque(true);
         addMouseListener(this);
         addMouseMotionListener(this);
         setPreferredSize(new Dimension(700, 100));
@@ -559,7 +560,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             int prefH = getPreferredSize() != null ? getPreferredSize().height : 0;
             int w = Math.max(1, prefW);
             int h = Math.max(1, prefH);
-            cache = (BufferedImage) createImage(w, h);
+            cache = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D gc = cache.createGraphics();
             try {
                 gc.setColor(Color.WHITE);
@@ -576,7 +577,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         int w = Math.max(needW, cache.getWidth());
         int h = Math.max(needH, cache.getHeight());
         if (w == cache.getWidth() && h == cache.getHeight()) return;
-        BufferedImage grown = (BufferedImage) createImage(w, h);
+        BufferedImage grown = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = grown.createGraphics();
         try {
             g.setColor(Color.WHITE);
@@ -665,6 +666,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         // Keep cache content-driven only; do not auto-grow with window size
         ensureCache();
         g2.drawImage(cache, 0, 0, null);
+        // Draw a subtle border around the canvas to delineate from non-paintable area
+        g2.setColor(new Color(180, 180, 180));
+        g2.drawRect(0, 0, cache.getWidth() - 1, cache.getHeight() - 1);
 
         // While placing an image, render it above the cache
         if (placingImage && pendingImage != null) {
@@ -1021,6 +1025,46 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         repaint();
     }
 
+    // Expose current canvas size
+    public int getCanvasWidth() {
+        ensureCache();
+        return cache.getWidth();
+    }
+
+    public int getCanvasHeight() {
+        ensureCache();
+        return cache.getHeight();
+    }
+
+    // Resize canvas to exact width/height, preserving existing pixels at (0,0)
+    // If new size is smaller, content beyond bounds will be clipped.
+    public void resizeCanvas(int newW, int newH) {
+        newW = Math.max(1, newW);
+        newH = Math.max(1, newH);
+        ensureCache();
+        if (newW == cache.getWidth() && newH == cache.getHeight()) {
+            return;
+        }
+        // Snapshot before resizing
+        pushUndoSnapshot();
+        // Drop transient overlays/placement so state is consistent
+        dropOverlayAndSelection();
+
+        BufferedImage resized = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resized.createGraphics();
+        try {
+            g2.setColor(Color.WHITE);
+            g2.fillRect(0, 0, newW, newH);
+            g2.drawImage(cache, 0, 0, null);
+        } finally {
+            g2.dispose();
+        }
+        cache = resized;
+        setPreferredSize(new Dimension(newW, newH));
+        revalidate();
+        repaint();
+    }
+
     // Helper to keep a persistent tooltip visible during image placement
     private void updatePlacementTooltip() {
         String tip = placingImage ? "Drag to position image. Press Enter to place, Esc to cancel." : null;
@@ -1041,5 +1085,5 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             tooltipOriginalDismiss = null;
             tooltipOriginalInitial = null;
         }
-    }
+        }
 }

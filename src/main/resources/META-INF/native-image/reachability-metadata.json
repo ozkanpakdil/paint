@@ -307,6 +307,35 @@
       "type": "io.github.ozkanpakdil.paint.DrawArea"
     },
     {
+      "type": "io.github.ozkanpakdil.paint.DrawAreaResizeTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "enlarge_preservesPixels_and_fillsNewAreaWhite",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "shrink_clipsOutsideArea",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        },
+        {
+          "name": "undoRedo_restoresSizesAndPixels",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "io.github.ozkanpakdil.paint.GUI"
     },
     {
