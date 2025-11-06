@@ -19,6 +19,19 @@
     </properties>
 
     <dependencies>
+        <!-- FlatLaf for modern, OS-friendly Swing look & feel -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+        <!-- FlatLaf extras: OS dark mode detection, animated theme switch, etc. -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+
         <!-- JUnit 5 (Jupiter) for tests that Surefire can run -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

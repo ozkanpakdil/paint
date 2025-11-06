@@ -1,8 +1,11 @@
 package io.github.ozkanpakdil.paint;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -11,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
 
 public class Main extends JFrame {
     private GUI gui;
@@ -36,15 +38,24 @@ public class Main extends JFrame {
                     Example: export DISPLAY=:0""");
             System.exit(1);
         }
+        // Setup modern, OS-aware look and feel (FlatLaf) with simple OS dark-mode detection
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            boolean useDark = isDarkThemePreferred();
+            if (useDark) {
+                FlatDarkLaf.setup();
+            } else {
+                FlatLightLaf.setup();
             }
-        } catch (Exception ex) {
-            // Fallback to default LAF if Nimbus is not available
+            // Ensure consistent font antialiasing
+            System.setProperty("swing.aatext", "true");
+            System.setProperty("awt.useSystemAAFontSettings", "on");
+        } catch (Exception ignore) {
+            // If FlatLaf fails for any reason, fallback to system LAF
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ignored) {
+                // last resort: do nothing
+            }
         }
         javax.swing.SwingUtilities.invokeLater(() -> {
             try {
@@ -53,6 +64,37 @@ public class Main extends JFrame {
                 e.printStackTrace();
             }
         });
+    }
+
+    private static boolean isDarkThemePreferred() {
+        // 1) Allow user override via system property or env var
+        String override = System.getProperty("paint.theme");
+        if (override == null) override = System.getenv("PAINT_THEME");
+        if (override != null) {
+            return override.equalsIgnoreCase("dark") || override.equalsIgnoreCase("darcula");
+        }
+
+        // 2) Try FlatLaf Extras (Windows/macOS OS dark mode) via reflection if present
+        try {
+            Class<?> flatDesktop = Class.forName("com.formdev.flatlaf.extras.FlatDesktop");
+            boolean supported = (Boolean) flatDesktop.getMethod("isDarkThemeSupported").invoke(null);
+            if (supported) {
+                return (Boolean) flatDesktop.getMethod("isDarkThemeEnabled").invoke(null);
+            }
+        } catch (Throwable ignore) {
+            // extras not on classpath or not supported on this OS
+        }
+
+        // 3) Linux heuristic: check GTK theme name for "dark"
+        String os = System.getProperty("os.name", "").toLowerCase();
+        if (os.contains("linux")) {
+            String gtk = System.getenv("GTK_THEME");
+            if (gtk != null && gtk.toLowerCase().contains("dark")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void initializeGUI() throws IOException {
