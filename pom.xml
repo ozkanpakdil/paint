@@ -75,10 +75,31 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <argLine>-Djava.awt.headless=false -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image</argLine>
+                    <argLine>-Djava.awt.headless=false -Dswing.defaultlaf=com.formdev.flatlaf.FlatLightLaf -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image</argLine>
                     <!-- JUnit 5 runs on provider autodetection; module path off for simplicity -->
                     <useModulePath>false</useModulePath>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>io.github.ozkanpakdil.paint.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

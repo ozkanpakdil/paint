@@ -1,172 +1,13 @@
 {
   "reflection": [
     {
-      "type": "ArrowButton"
+      "type": "byte[]"
     },
     {
-      "type": "Button"
+      "type": "char[]"
     },
     {
-      "type": "CheckBox"
-    },
-    {
-      "type": "CheckBoxMenuItem"
-    },
-    {
-      "type": "ColorChooser"
-    },
-    {
-      "type": "ComboBox"
-    },
-    {
-      "type": "DesktopIcon"
-    },
-    {
-      "type": "DesktopPane"
-    },
-    {
-      "type": "EditorPane"
-    },
-    {
-      "type": "FileChooser"
-    },
-    {
-      "type": "FormattedTextField"
-    },
-    {
-      "type": "InternalFrame"
-    },
-    {
-      "type": "InternalFrameTitlePane"
-    },
-    {
-      "type": "Label"
-    },
-    {
-      "type": "List"
-    },
-    {
-      "type": "Menu"
-    },
-    {
-      "type": "MenuBar"
-    },
-    {
-      "type": "MenuItem"
-    },
-    {
-      "type": "MenuItemAccelerator"
-    },
-    {
-      "type": "OptionPane"
-    },
-    {
-      "type": "Panel"
-    },
-    {
-      "type": "PasswordField"
-    },
-    {
-      "type": "PopupMenu"
-    },
-    {
-      "type": "PopupMenuSeparator"
-    },
-    {
-      "type": "ProgressBar"
-    },
-    {
-      "type": "RadioButton"
-    },
-    {
-      "type": "RadioButtonMenuItem"
-    },
-    {
-      "type": "RootPane"
-    },
-    {
-      "type": "ScrollBar"
-    },
-    {
-      "type": "ScrollBarThumb"
-    },
-    {
-      "type": "ScrollBarTrack"
-    },
-    {
-      "type": "ScrollPane"
-    },
-    {
-      "type": "Separator"
-    },
-    {
-      "type": "Slider"
-    },
-    {
-      "type": "SliderThumb"
-    },
-    {
-      "type": "SliderTrack"
-    },
-    {
-      "type": "Spinner"
-    },
-    {
-      "type": "SplitPane"
-    },
-    {
-      "type": "SplitPaneDivider"
-    },
-    {
-      "type": "TabbedPane"
-    },
-    {
-      "type": "TabbedPaneContent"
-    },
-    {
-      "type": "TabbedPaneTab"
-    },
-    {
-      "type": "TabbedPaneTabArea"
-    },
-    {
-      "type": "Table"
-    },
-    {
-      "type": "TableHeader"
-    },
-    {
-      "type": "TextArea"
-    },
-    {
-      "type": "TextField"
-    },
-    {
-      "type": "TextPane"
-    },
-    {
-      "type": "ToggleButton"
-    },
-    {
-      "type": "ToolBar"
-    },
-    {
-      "type": "ToolBarSeparator"
-    },
-    {
-      "type": "ToolTip"
-    },
-    {
-      "type": "Tree"
-    },
-    {
-      "type": "TreeCell"
-    },
-    {
-      "type": "Viewport"
-    },
-    {
-      "type": "com.intellij.junit5.JUnit5IdeaTestRunner",
+      "type": "com.formdev.flatlaf.FlatLightLaf",
       "methods": [
         {
           "name": "<init>",
@@ -175,28 +16,550 @@
       ]
     },
     {
-      "type": "com.intellij.rt.debugger.agent.CaptureStorage"
+      "type": "com.formdev.flatlaf.extras.FlatDesktop"
     },
     {
-      "type": "com.intellij.rt.execution.application.AppMainV2$Agent",
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserDetailsViewIcon",
       "methods": [
         {
-          "name": "premain",
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserHomeFolderIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserListViewIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserNewFolderIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserUpFolderIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewComputerIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewDirectoryIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewFileIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewFloppyDriveIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewHardDriveIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatHelpButtonIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatMenuArrowIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatMenuItemArrowIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatOptionPaneQuestionIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatRadioButtonIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatTabbedPaneCloseIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.resources.Bundle"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatArrowButton"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatButtonBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatButtonUI",
+      "methods": [
+        {
+          "name": "createUI",
           "parameterTypes": [
-            "java.lang.String",
-            "java.lang.instrument.Instrumentation"
+            "javax.swing.JComponent"
           ]
         }
       ]
     },
     {
-      "type": "com.intellij.rt.junit.JUnitStarter",
-      "jniAccessible": true,
+      "type": "com.formdev.flatlaf.ui.FlatColorChooserUI",
       "methods": [
         {
-          "name": "main",
+          "name": "createUI",
           "parameterTypes": [
-            "java.lang.String[]"
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboBoxButton"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboPopup"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatFileChooserUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatFileChooserUI$FlatShortcutsPanel"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatFormattedTextFieldUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatLabelUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatListCellBorder$Default",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatListUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMarginBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMenuBarBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMenuBarUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMenuItemBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMenuItemUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMenuUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatOptionPaneUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatPanelUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatPopupMenuBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatPopupMenuSeparatorUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatPopupMenuUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatRadioButtonUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatRootPaneUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatRoundBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatScrollBarUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatScrollBarUI$FlatScrollBarButton"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatScrollPaneBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatScrollPaneUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatSliderUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatSpinnerUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatSpinnerUI$1"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatTabbedPaneUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatTextBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatTextFieldUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToggleButtonUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToolBarBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToolBarUI",
+      "fields": [
+        {
+          "name": "hoverButtonGroupBackground"
+        }
+      ],
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToolTipUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatViewportUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
           ]
         }
       ]
@@ -274,13 +637,46 @@
       ]
     },
     {
+      "type": "com.sun.imageio.plugins.jpeg.JPEGImageWriter",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "grabPixels",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "warningOccurred",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "warningWithMessage",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "writeMetadata",
+          "parameterTypes": []
+        },
+        {
+          "name": "writeOutputData",
+          "parameterTypes": [
+            "byte[]",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.sun.swing.internal.plaf.basic.resources.basic"
     },
     {
       "type": "com.sun.swing.internal.plaf.metal.resources.metal"
-    },
-    {
-      "type": "com.sun.swing.internal.plaf.synth.resources.synth"
     },
     {
       "type": "io.github.ozkanpakdil.paint.CropBehaviorTest",
@@ -526,6 +922,9 @@
       ]
     },
     {
+      "type": "java.awt.Image"
+    },
+    {
       "type": "java.awt.Rectangle",
       "jniAccessible": true,
       "methods": [
@@ -638,6 +1037,9 @@
           "name": "VK_SPACE"
         },
         {
+          "name": "VK_TAB"
+        },
+        {
           "name": "VK_UP"
         },
         {
@@ -653,6 +1055,9 @@
     },
     {
       "type": "java.awt.event.MouseMotionListener[]"
+    },
+    {
+      "type": "java.awt.event.WindowFocusListener[]"
     },
     {
       "type": "java.awt.geom.AffineTransform",
@@ -981,6 +1386,12 @@
       ]
     },
     {
+      "type": "java.io.InputStream"
+    },
+    {
+      "type": "java.io.Reader"
+    },
+    {
       "type": "java.lang.Boolean",
       "jniAccessible": true,
       "methods": [
@@ -993,19 +1404,7 @@
       ]
     },
     {
-      "type": "java.lang.InternalError",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.lang.String[]"
+      "type": "java.lang.String"
     },
     {
       "type": "java.lang.System",
@@ -1028,6 +1427,21 @@
           "parameterTypes": []
         }
       ]
+    },
+    {
+      "type": "java.nio.ByteBuffer"
+    },
+    {
+      "type": "java.nio.CharBuffer"
+    },
+    {
+      "type": "java.rmi.MarshalledObject"
+    },
+    {
+      "type": "java.rmi.Remote"
+    },
+    {
+      "type": "java.util.List"
     },
     {
       "type": "javax.imageio.plugins.jpeg.JPEGHuffmanTable",
@@ -1054,204 +1468,47 @@
       "type": "javax.imageio.spi.ImageReaderSpi"
     },
     {
+      "type": "javax.imageio.spi.ImageReaderWriterSpi",
+      "methods": [
+        {
+          "name": "getMIMETypes",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "javax.imageio.spi.ImageWriterSpi"
     },
     {
-      "type": "javax.swing.JArrowButton"
-    },
-    {
-      "type": "javax.swing.JButton"
-    },
-    {
-      "type": "javax.swing.JCheckBox"
-    },
-    {
-      "type": "javax.swing.JCheckBoxMenuItem"
-    },
-    {
-      "type": "javax.swing.JColorChooser"
-    },
-    {
-      "type": "javax.swing.JComboBox"
-    },
-    {
-      "type": "javax.swing.JDesktopIcon"
-    },
-    {
-      "type": "javax.swing.JDesktopPane"
-    },
-    {
-      "type": "javax.swing.JEditorPane"
-    },
-    {
-      "type": "javax.swing.JFileChooser"
-    },
-    {
-      "type": "javax.swing.JFormattedTextField"
-    },
-    {
-      "type": "javax.swing.JInternalFrame"
-    },
-    {
-      "type": "javax.swing.JInternalFrameTitlePane"
-    },
-    {
-      "type": "javax.swing.JLabel"
-    },
-    {
-      "type": "javax.swing.JList"
-    },
-    {
-      "type": "javax.swing.JMenu"
-    },
-    {
-      "type": "javax.swing.JMenuBar"
-    },
-    {
-      "type": "javax.swing.JMenuItem"
-    },
-    {
-      "type": "javax.swing.JMenuItemAccelerator"
-    },
-    {
-      "type": "javax.swing.JOptionPane"
-    },
-    {
-      "type": "javax.swing.JPanel"
-    },
-    {
-      "type": "javax.swing.JPasswordField"
-    },
-    {
-      "type": "javax.swing.JPopupMenu"
-    },
-    {
-      "type": "javax.swing.JPopupMenuSeparator"
-    },
-    {
-      "type": "javax.swing.JProgressBar"
-    },
-    {
-      "type": "javax.swing.JRadioButton"
-    },
-    {
-      "type": "javax.swing.JRadioButtonMenuItem"
-    },
-    {
-      "type": "javax.swing.JRootPane"
-    },
-    {
-      "type": "javax.swing.JScrollBar"
-    },
-    {
-      "type": "javax.swing.JScrollBarThumb"
-    },
-    {
-      "type": "javax.swing.JScrollBarTrack"
-    },
-    {
-      "type": "javax.swing.JScrollPane"
-    },
-    {
-      "type": "javax.swing.JSeparator"
-    },
-    {
-      "type": "javax.swing.JSlider"
-    },
-    {
-      "type": "javax.swing.JSliderThumb"
-    },
-    {
-      "type": "javax.swing.JSliderTrack"
-    },
-    {
-      "type": "javax.swing.JSpinner"
-    },
-    {
-      "type": "javax.swing.JSplitPane"
-    },
-    {
-      "type": "javax.swing.JSplitPaneDivider"
-    },
-    {
-      "type": "javax.swing.JTabbedPane"
-    },
-    {
-      "type": "javax.swing.JTabbedPaneContent"
-    },
-    {
-      "type": "javax.swing.JTabbedPaneTab"
-    },
-    {
-      "type": "javax.swing.JTabbedPaneTabArea"
-    },
-    {
-      "type": "javax.swing.JTable"
-    },
-    {
-      "type": "javax.swing.JTableHeader"
-    },
-    {
-      "type": "javax.swing.JTextArea"
-    },
-    {
-      "type": "javax.swing.JTextField"
-    },
-    {
-      "type": "javax.swing.JTextPane"
-    },
-    {
-      "type": "javax.swing.JToggleButton"
-    },
-    {
-      "type": "javax.swing.JToolBar"
-    },
-    {
-      "type": "javax.swing.JToolBarSeparator"
-    },
-    {
-      "type": "javax.swing.JToolTip"
-    },
-    {
-      "type": "javax.swing.JTree"
-    },
-    {
-      "type": "javax.swing.JTreeCell"
-    },
-    {
-      "type": "javax.swing.JViewport"
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicFormattedTextFieldUI",
+      "type": "javax.swing.PopupFactory",
       "methods": [
         {
-          "name": "createUI",
+          "name": "getPopup",
           "parameterTypes": [
-            "javax.swing.JComponent"
+            "java.awt.Component",
+            "java.awt.Component",
+            "int",
+            "int",
+            "boolean"
           ]
         }
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicListUI",
+      "type": "javax.swing.filechooser.FileSystemView",
       "methods": [
         {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
+          "name": "getChooserShortcutPanelFiles",
+          "parameterTypes": []
         }
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicMenuItemUI",
+      "type": "javax.swing.filechooser.UnixFileSystemView"
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicButtonListener",
       "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        },
         {
           "name": "loadActionMap",
           "parameterTypes": [
@@ -1261,12 +1518,39 @@
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicMenuUI",
+      "type": "javax.swing.plaf.basic.BasicGraphicsUtils",
       "methods": [
         {
-          "name": "createUI",
+          "name": "drawStringUnderlineCharAt",
           "parameterTypes": [
-            "javax.swing.JComponent"
+            "javax.swing.JComponent",
+            "java.awt.Graphics2D",
+            "java.lang.String",
+            "int",
+            "float",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicMenuBarUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicMenuItemUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
           ]
         }
       ]
@@ -1283,514 +1567,40 @@
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicPanelUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
       "type": "javax.swing.plaf.basic.BasicPopupMenuUI",
       "methods": [
         {
-          "name": "createUI",
+          "name": "loadActionMap",
           "parameterTypes": [
-            "javax.swing.JComponent"
+            "javax.swing.plaf.basic.LazyActionMap"
           ]
         }
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicSpinnerUI",
+      "type": "javax.swing.plaf.basic.BasicRootPaneUI",
       "methods": [
         {
-          "name": "createUI",
+          "name": "loadActionMap",
           "parameterTypes": [
-            "javax.swing.JComponent"
+            "javax.swing.plaf.basic.LazyActionMap"
           ]
         }
       ]
     },
     {
-      "type": "javax.swing.plaf.basic.BasicViewportUI",
+      "type": "javax.swing.plaf.basic.BasicTabbedPaneUI",
       "methods": [
         {
-          "name": "createUI",
+          "name": "loadActionMap",
           "parameterTypes": [
-            "javax.swing.JComponent"
+            "javax.swing.plaf.basic.LazyActionMap"
           ]
         }
       ]
     },
     {
-      "type": "javax.swing.plaf.metal.MetalButtonUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalComboBoxUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalLabelUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalMenuBarUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalPopupMenuSeparatorUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalRootPaneUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalScrollBarUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalScrollPaneUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalSliderUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalTextFieldUI",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ArrowButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ComboBoxArrowButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ComboBoxPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.FileChooserPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.FormattedTextFieldPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.MenuBarMenuPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.MenuBarPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.MenuItemPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.MenuPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.NimbusLookAndFeel",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.OptionPanePainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.PopupMenuPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.PopupMenuSeparatorPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.RadioButtonMenuItemPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ScrollBarButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ScrollBarThumbPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ScrollBarTrackPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ScrollPanePainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.SeparatorPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.SliderThumbPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.SliderTrackPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.SpinnerNextButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.SpinnerPanelSpinnerFormattedTextFieldPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.SpinnerPreviousButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.TextFieldPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ToggleButtonPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.ToolTipPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.nimbus.TreeCellPainter",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "javax.swing.plaf.nimbus.AbstractRegionPainter$PaintContext",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.synth.SynthLookAndFeel",
-      "methods": [
-        {
-          "name": "createUI",
-          "parameterTypes": [
-            "javax.swing.JComponent"
-          ]
-        }
-      ]
+      "type": "net.miginfocom.swing.MigLayout"
     },
     {
       "type": "org.apache.maven.surefire.booter.spi.LegacyMasterProcessChannelProcessorFactory"
@@ -1863,9 +1673,6 @@
     },
     {
       "type": "org.junit.platform.launcher.listeners.UniqueIdTrackingListener"
-    },
-    {
-      "type": "org.junit.vintage.engine.VintageTestEngine"
     },
     {
       "type": "sun.awt.SunHints",
@@ -1973,6 +1780,9 @@
           "name": "target"
         }
       ]
+    },
+    {
+      "type": "sun.awt.X11.XWindowPeer"
     },
     {
       "type": "sun.awt.X11GraphicsConfig",
@@ -2135,57 +1945,6 @@
       ]
     },
     {
-      "type": "sun.font.FontConfigManager$FcCompFont",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "allFonts"
-        },
-        {
-          "name": "fcName"
-        },
-        {
-          "name": "firstFont"
-        }
-      ]
-    },
-    {
-      "type": "sun.font.FontConfigManager$FontConfigFont",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "familyName"
-        },
-        {
-          "name": "fontFile"
-        },
-        {
-          "name": "fullName"
-        },
-        {
-          "name": "styleStr"
-        }
-      ],
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "sun.font.FontConfigManager$FontConfigInfo",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "cacheDirs"
-        },
-        {
-          "name": "fcVersion"
-        }
-      ]
-    },
-    {
       "type": "sun.font.FontStrike",
       "jniAccessible": true,
       "methods": [
@@ -2321,47 +2080,6 @@
           "name": "readFile",
           "parameterTypes": [
             "java.nio.ByteBuffer"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.instrument.InstrumentationImpl",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "boolean",
-            "boolean",
-            "boolean"
-          ]
-        },
-        {
-          "name": "loadClassAndCallAgentmain",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "loadClassAndCallPremain",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "transform",
-          "parameterTypes": [
-            "java.lang.Module",
-            "java.lang.ClassLoader",
-            "java.lang.String",
-            "java.lang.Class",
-            "java.security.ProtectionDomain",
-            "byte[]",
-            "boolean"
           ]
         }
       ]
@@ -2948,39 +2666,6 @@
       ]
     },
     {
-      "type": "sun.launcher.LauncherHelper",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "isStaticMain"
-        },
-        {
-          "name": "noArgMain"
-        }
-      ],
-      "methods": [
-        {
-          "name": "checkAndLoadMain",
-          "parameterTypes": [
-            "boolean",
-            "int",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "getApplicationClass",
-          "parameterTypes": []
-        },
-        {
-          "name": "makePlatformString",
-          "parameterTypes": [
-            "boolean",
-            "byte[]"
-          ]
-        }
-      ]
-    },
-    {
       "type": "sun.management.VMManagementImpl",
       "jniAccessible": true,
       "fields": [
@@ -3007,6 +2692,19 @@
         },
         {
           "name": "threadContentionMonitoringSupport"
+        }
+      ]
+    },
+    {
+      "type": "sun.reflect.misc.Trampoline",
+      "methods": [
+        {
+          "name": "invoke",
+          "parameterTypes": [
+            "java.lang.reflect.Method",
+            "java.lang.Object",
+            "java.lang.Object[]"
+          ]
         }
       ]
     },
@@ -3041,16 +2739,12 @@
     },
     {
       "type": "sun.util.resources.cldr.CurrencyNames_en"
-    },
-    {
-      "type": {
-        "proxy": [
-          "java.lang.Runnable"
-        ]
-      }
     }
   ],
   "resources": [
+    {
+      "glob": "META-INF/services/com.formdev.flatlaf.FlatDefaultsAddon"
+    },
     {
       "glob": "META-INF/services/java.awt.im.spi.InputMethodDescriptor"
     },
@@ -3089,6 +2783,21 @@
     },
     {
       "glob": "META-INF/services/org.junit.platform.launcher.TestExecutionListener"
+    },
+    {
+      "glob": "com/formdev/flatlaf/FlatLaf.properties"
+    },
+    {
+      "glob": "com/formdev/flatlaf/FlatLightLaf.properties"
+    },
+    {
+      "glob": "com/formdev/flatlaf/resources/Bundle.properties"
+    },
+    {
+      "glob": "com/formdev/flatlaf/resources/Bundle_en.properties"
+    },
+    {
+      "glob": "com/formdev/flatlaf/resources/Bundle_en_GB.properties"
     },
     {
       "glob": "images/Save.png"
@@ -3143,6 +2852,14 @@
       "glob": "java/util/currency.data"
     },
     {
+      "module": "java.datatransfer",
+      "glob": "sun/datatransfer/resources/flavormap.properties"
+    },
+    {
+      "module": "java.desktop",
+      "glob": "com/formdev/flatlaf/resources/Bundle.properties"
+    },
+    {
       "module": "java.desktop",
       "glob": "com/sun/swing/internal/plaf/basic/resources/basic_en.properties"
     },
@@ -3160,11 +2877,7 @@
     },
     {
       "module": "java.desktop",
-      "glob": "com/sun/swing/internal/plaf/synth/resources/synth_en.properties"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "com/sun/swing/internal/plaf/synth/resources/synth_en_GB.properties"
+      "glob": "javax/swing/text/html/default.css"
     },
     {
       "module": "java.desktop",
@@ -3175,13 +2888,13 @@
       "glob": "sun/awt/resources/awt_en_GB.properties"
     },
     {
+      "bundle": "com.formdev.flatlaf.resources.Bundle"
+    },
+    {
       "bundle": "com.sun.swing.internal.plaf.basic.resources.basic"
     },
     {
       "bundle": "com.sun.swing.internal.plaf.metal.resources.metal"
-    },
-    {
-      "bundle": "com.sun.swing.internal.plaf.synth.resources.synth"
     },
     {
       "bundle": "sun.awt.resources.awt"
