@@ -9,8 +9,8 @@ public class GUI extends JPanel {
     static DrawArea drawAreaPanel;
     static SideMenu sidemenu;
     public JLabel message;
-    private JSpinner wSpin;
-    private JSpinner hSpin;
+    private final JSpinner wSpin;
+    private final JSpinner hSpin;
     private boolean initialSized = false;
 
     public GUI() throws IOException {
@@ -70,10 +70,10 @@ public class GUI extends JPanel {
                         JOptionPane.ERROR_MESSAGE);
             }
         };
-        apply.addActionListener((ActionEvent e) -> doResize.run());
+        apply.addActionListener((ActionEvent _) -> doResize.run());
         // Update message on spinner change; Enter to apply
-        wSpin.addChangeListener(e -> message.setText("W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
-        hSpin.addChangeListener(e -> message.setText("W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
+        wSpin.addChangeListener(_ -> message.setText("W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
+        hSpin.addChangeListener(_ -> message.setText("W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
         wSpin.addKeyListener(new java.awt.event.KeyAdapter() { public void keyPressed(java.awt.event.KeyEvent e){ if(e.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER) doResize.run(); }});
         hSpin.addKeyListener(new java.awt.event.KeyAdapter() { public void keyPressed(java.awt.event.KeyEvent e){ if(e.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER) doResize.run(); }});
 
