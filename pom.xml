@@ -146,6 +146,8 @@
             <properties>
                 <!-- Default installer type to keep XML resolvable; overridden at build time -->
                 <installer.type>APP_IMAGE</installer.type>
+                <!-- Default to Windows-safe one-line description; OS-specific profiles may override -->
+                <app.description>${app.description.win}</app.description>
             </properties>
             <build>
                 <plugins>
@@ -206,6 +208,10 @@
                     <name>Linux</name>
                 </os>
             </activation>
+            <properties>
+                <!-- On Linux we can use a nicely formatted multi-line description -->
+                <app.description>${app.description.unix}</app.description>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -218,6 +224,18 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>installer-macos-desc</id>
+            <activation>
+                <os>
+                    <name>Mac OS X</name>
+                </os>
+            </activation>
+            <properties>
+                <!-- macOS installers also handle multi-line descriptions fine -->
+                <app.description>${app.description.unix}</app.description>
+            </properties>
         </profile>
     </profiles>
  
