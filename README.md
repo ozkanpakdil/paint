@@ -49,6 +49,7 @@ Requirements:
 - GraalVM JDK (22+ recommended) installed and on PATH
 - `native-image` installed (`gu install native-image`)
 - Linux or macOS recommended for GUI native images (AWT/Swing). On Linux make sure X11/GTK libs are present.
+- Windows should have https://aka.ms/vs/17/release/vc_redist.x64.exe for native-image to work.
 
 Steps:
 1) Point Maven to GraalVM (either set `JAVA_HOME` or run Maven from the GraalVM installation):
