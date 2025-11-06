@@ -758,9 +758,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                 x1 = x2;
                 y1 = y2;
             }
-            case LINE -> { // Straight line preview/commit
-                g2.drawLine(x1, y1, x2, y2);
-            }
+            case LINE -> // Straight line preview/commit
+                    g2.drawLine(x1, y1, x2, y2);
             case RECT, RECT_FILLED, ROUNDED_RECT, ROUNDED_RECT_FILLED, OVAL,
                  OVAL_FILLED -> { // Rectangle/rounded/oval (+ filled variants)
                 int x = Math.min(x1, x2);
@@ -785,8 +784,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             case TEXT -> { // Text
                 // Inline editor handles rendering on commit; no preview drawing here
             }
-            case BUCKET -> { // Bucket fill
-                cache = new ScanlineFloodFill().fill(cache, x1, y1, SideMenu.getSelectedForeColor());
+            case BUCKET -> // Bucket fill
+                    cache = new ScanlineFloodFill().fill(cache, x1, y1, SideMenu.getSelectedForeColor());
+            case MOVE -> {
             }
             default -> {
                 // no-op
