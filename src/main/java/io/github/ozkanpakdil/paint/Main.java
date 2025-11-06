@@ -3,12 +3,14 @@ package io.github.ozkanpakdil.paint;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 
 public class Main extends JFrame {
@@ -70,6 +72,32 @@ public class Main extends JFrame {
                 confirmAndExit();
             }
         });
+
+        // Set app/window icon so Alt-Tab/taskbar shows our custom icon instead of the Java Duke
+        try {
+            URL iconUrl = getClass().getResource("/images/app.png");
+            if (iconUrl != null) {
+                BufferedImage icon = ImageIO.read(iconUrl);
+                if (icon != null) {
+                    // Window icon (affects Windows taskbar and many Linux WMs)
+                    setIconImage(icon);
+                    // Taskbar/Dock icon (Java 9+) where supported (e.g., macOS Dock, some Linux desktops)
+                    try {
+                        if (Taskbar.isTaskbarSupported()) {
+                            Taskbar taskbar = Taskbar.getTaskbar();
+                            if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                                taskbar.setIconImage(icon);
+                            }
+                        }
+                    } catch (UnsupportedOperationException | SecurityException ignore) {
+                        // Best-effort; safely ignore if not allowed/supported
+                    }
+                }
+            }
+        } catch (IOException ignore) {
+            // If the icon can't be loaded, continue without failing the app
+        }
+
         setLocation(100, 0);
         setResizable(true);
         setVisible(true);
@@ -273,7 +301,7 @@ public class Main extends JFrame {
         help.add(shortcutsItem);
 
         file.add(newMenuItem);
-        
+
         // File > Open…
         JMenuItem openMenuItem = new JMenuItem("Open…");
         openMenuItem.setToolTipText("Open an image file (all formats supported by Java)");
@@ -314,7 +342,7 @@ public class Main extends JFrame {
             }
         });
         file.add(openMenuItem);
-        
+
         file.add(saveMenuItem);
         file.add(exitMenuItem);
         jMenuBar.add(file);

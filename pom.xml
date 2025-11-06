@@ -184,7 +184,7 @@
                         <artifactId>jpackage-maven-plugin</artifactId>
                         <configuration>
                             <!-- Use PNG icon only on Linux (macOS requires .icns, Windows requires .ico) -->
-                            <icon>${project.basedir}/src/main/resources/images/pencil.png</icon>
+                            <icon>${project.basedir}/src/main/resources/images/app.png</icon>
                         </configuration>
                     </plugin>
                 </plugins>
