@@ -453,21 +453,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         if (!placingImage || pendingImage == null) return;
         // History snapshot before placing
         pushUndoSnapshot();
-        ensureCache();
-        int needW = Math.max(cache.getWidth(), pendingX + pendingImage.getWidth());
-        int needH = Math.max(cache.getHeight(), pendingY + pendingImage.getHeight());
-        if (needW > cache.getWidth() || needH > cache.getHeight()) {
-            BufferedImage grown = (BufferedImage) createImage(needW, needH);
-            var g = grown.createGraphics();
-            try {
-                g.setColor(Color.WHITE);
-                g.fillRect(0, 0, needW, needH);
-                g.drawImage(cache, 0, 0, null);
-            } finally {
-                g.dispose();
-            }
-            cache = grown;
-        }
+        // Ensure canvas can contain the placed image at its target position
+        ensureCapacity(pendingX + pendingImage.getWidth(), pendingY + pendingImage.getHeight());
         var g2 = cache.createGraphics();
         try {
             applyRenderHints(g2);
@@ -567,29 +554,38 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     }
 
     private void ensureCache() {
-        int w = Math.max(1, getWidth());
-        int h = Math.max(1, getHeight() + 100);
         if (cache == null) {
+            int prefW = getPreferredSize() != null ? getPreferredSize().width : 0;
+            int prefH = getPreferredSize() != null ? getPreferredSize().height : 0;
+            int w = Math.max(1, prefW);
+            int h = Math.max(1, prefH);
             cache = (BufferedImage) createImage(w, h);
-            var gc = cache.createGraphics();
+            Graphics2D gc = cache.createGraphics();
             try {
                 gc.setColor(Color.WHITE);
                 gc.fillRect(0, 0, w, h);
             } finally {
                 gc.dispose();
             }
-        } else if (cache.getWidth() < w || cache.getHeight() < h) {
-            var grown = (BufferedImage) createImage(w, h);
-            var gg = grown.createGraphics();
-            try {
-                gg.setColor(Color.WHITE);
-                gg.fillRect(0, 0, w, h);
-                gg.drawImage(cache, 0, 0, null);
-            } finally {
-                gg.dispose();
-            }
-            cache = grown;
         }
+    }
+
+    // Grow backing cache only when content requires more space (never on window resize)
+    private void ensureCapacity(int needW, int needH) {
+        ensureCache();
+        int w = Math.max(needW, cache.getWidth());
+        int h = Math.max(needH, cache.getHeight());
+        if (w == cache.getWidth() && h == cache.getHeight()) return;
+        BufferedImage grown = (BufferedImage) createImage(w, h);
+        Graphics2D g = grown.createGraphics();
+        try {
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, w, h);
+            g.drawImage(cache, 0, 0, null);
+        } finally {
+            g.dispose();
+        }
+        cache = grown;
     }
 
     private void startTextEditorAt(int x, int y) {
@@ -637,7 +633,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         if (commit && value != null && !value.isEmpty()) {
             // Snapshot before committing text onto canvas
             pushUndoSnapshot();
-            ensureCache();
+            // Ensure capacity for the text bounds
+            ensureCapacity(r.x + r.width, r.y + r.height);
             var g2 = cache.createGraphics();
             try {
                 applyRenderHints(g2);
@@ -665,32 +662,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         super.paintComponent(g);
         var g2 = (Graphics2D) g;
 
-        // Ensure cache exists and matches (or exceeds) current component size
-        int w = Math.max(1, getWidth());
-        int h = Math.max(1, getHeight() + 100); // historical +100 kept for compatibility
-        if (cache == null) {
-            cache = (BufferedImage) createImage(w, h);
-            var gc = cache.createGraphics();
-            try {
-                gc.setColor(Color.WHITE);
-                gc.fillRect(0, 0, w, h);
-            } finally {
-                gc.dispose();
-            }
-        } else if (cache.getWidth() < w || cache.getHeight() < h) {
-            // Grow canvas preserving existing content
-            var grown = (BufferedImage) createImage(w, h);
-            var gg = grown.createGraphics();
-            try {
-                gg.setColor(Color.WHITE);
-                gg.fillRect(0, 0, w, h);
-                gg.drawImage(cache, 0, 0, null);
-            } finally {
-                gg.dispose();
-            }
-            cache = grown;
-        }
-
+        // Keep cache content-driven only; do not auto-grow with window size
+        ensureCache();
         g2.drawImage(cache, 0, 0, null);
 
         // While placing an image, render it above the cache
@@ -844,8 +817,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
         Tool tool = SideMenu.getSelectedTool();
         if (tool == Tool.PENCIL || tool == Tool.ERASER) {
-            // Ensure backing cache exists before drawing
-            ensureCache();
+            // Ensure backing cache exists before drawing and grow only if stroke would exceed bounds
+            int needW = Math.max(x1, x2) + SideMenu.getStrokeSize() + 1;
+            int needH = Math.max(y1, y2) + SideMenu.getStrokeSize() + 1;
+            ensureCapacity(needW, needH);
             // Commit continuous tools directly to cache for smooth drawing
             var cg = cache.createGraphics();
             try {
@@ -1018,7 +993,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         if (toolNow != Tool.PENCIL && toolNow != Tool.ERASER) {
             pushUndoSnapshot();
         }
-        ensureCache();
+        // Ensure the canvas is large enough for the final shape
+        int maxX = Math.max(x1, x2) + SideMenu.getStrokeSize() + 1;
+        int maxY = Math.max(y1, y2) + SideMenu.getStrokeSize() + 1;
+        ensureCapacity(maxX, maxY);
         var cg = cache.createGraphics();
         try {
             drawShape(cg);

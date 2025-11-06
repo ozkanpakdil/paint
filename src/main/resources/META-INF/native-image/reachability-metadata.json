@@ -166,6 +166,42 @@
       "type": "Viewport"
     },
     {
+      "type": "com.intellij.junit5.JUnit5IdeaTestRunner",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.intellij.rt.debugger.agent.CaptureStorage"
+    },
+    {
+      "type": "com.intellij.rt.execution.application.AppMainV2$Agent",
+      "methods": [
+        {
+          "name": "premain",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.instrument.Instrumentation"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.intellij.rt.junit.JUnitStarter",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "main",
+          "parameterTypes": [
+            "java.lang.String[]"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.sun.imageio.plugins.jpeg.JPEGImageReader",
       "jniAccessible": true,
       "methods": [
@@ -245,6 +281,27 @@
     },
     {
       "type": "com.sun.swing.internal.plaf.synth.resources.synth"
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.CropBehaviorTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "cropToLastPastedImage_thenResizeWindow_noWhiteMarginsAndNoRegrow",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "io.github.ozkanpakdil.paint.DrawArea"
@@ -905,6 +962,21 @@
           ]
         }
       ]
+    },
+    {
+      "type": "java.lang.InternalError",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "java.lang.String[]"
     },
     {
       "type": "java.lang.System",
@@ -1764,6 +1836,9 @@
       "type": "org.junit.platform.launcher.listeners.UniqueIdTrackingListener"
     },
     {
+      "type": "org.junit.vintage.engine.VintageTestEngine"
+    },
+    {
       "type": "sun.awt.SunHints",
       "jniAccessible": true,
       "fields": [
@@ -2217,6 +2292,47 @@
           "name": "readFile",
           "parameterTypes": [
             "java.nio.ByteBuffer"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sun.instrument.InstrumentationImpl",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "boolean",
+            "boolean",
+            "boolean"
+          ]
+        },
+        {
+          "name": "loadClassAndCallAgentmain",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "loadClassAndCallPremain",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "transform",
+          "parameterTypes": [
+            "java.lang.Module",
+            "java.lang.ClassLoader",
+            "java.lang.String",
+            "java.lang.Class",
+            "java.security.ProtectionDomain",
+            "byte[]",
+            "boolean"
           ]
         }
       ]
@@ -2803,6 +2919,39 @@
       ]
     },
     {
+      "type": "sun.launcher.LauncherHelper",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "isStaticMain"
+        },
+        {
+          "name": "noArgMain"
+        }
+      ],
+      "methods": [
+        {
+          "name": "checkAndLoadMain",
+          "parameterTypes": [
+            "boolean",
+            "int",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "getApplicationClass",
+          "parameterTypes": []
+        },
+        {
+          "name": "makePlatformString",
+          "parameterTypes": [
+            "boolean",
+            "byte[]"
+          ]
+        }
+      ]
+    },
+    {
       "type": "sun.management.VMManagementImpl",
       "jniAccessible": true,
       "fields": [
@@ -2863,6 +3012,13 @@
     },
     {
       "type": "sun.util.resources.cldr.CurrencyNames_en"
+    },
+    {
+      "type": {
+        "proxy": [
+          "java.lang.Runnable"
+        ]
+      }
     }
   ],
   "resources": [
