@@ -190,6 +190,9 @@
                             <vendor>io.github.ozkanpakdil</vendor>
                             <appVersion>${project.version}</appVersion>
 
+                            <!-- Explicitly set installer type (DEB/DMG/MSI) via -Dinstaller.type -->
+                            <type>${installer.type}</type>
+
                             <!-- Where to find the built jar and where to place installers -->
                             <input>${project.build.directory}</input>
                             <destination>${project.build.directory}/installers</destination>
@@ -214,7 +217,7 @@
                             <!-- Linux desktop/menu integration -->
                             <linuxShortcut>true</linuxShortcut>
                             <linuxMenuGroup>Graphics</linuxMenuGroup>
-                            <linuxAppCategory>Graphics</linuxAppCategory>
+                            <linuxAppCategory>Graphics;</linuxAppCategory>
                             <linuxDebMaintainer>Ozkan Pakdil &lt;ozkan.pakdil+paint@google.com&gt;</linuxDebMaintainer>
                             <description>${app.description}</description>
                         </configuration>
@@ -232,6 +235,8 @@
             <properties>
                 <!-- On Linux we can use a nicely formatted multi-line description -->
                 <app.description>${app.description.unix}</app.description>
+                <!-- Default to DEB on Linux so users need not pass -Dinstaller.type -->
+                <installer.type>DEB</installer.type>
             </properties>
             <build>
                 <plugins>
@@ -241,6 +246,11 @@
                         <configuration>
                             <!-- Use PNG icon only on Linux (macOS requires .icns, Windows requires .ico) -->
                             <icon>${project.basedir}/src/main/resources/images/app.png</icon>
+                            <!-- Include auxiliary resources (if used by app image) -->
+                            <resourceDir>${project.basedir}/src/installer/linux</resourceDir>
+                            <!-- Ensure Debian maintainer post-install/uninstall scripts are used -->
+                            <linuxPostInstall>${project.basedir}/src/installer/linux/postinst</linuxPostInstall>
+                            <linuxPostUninstall>${project.basedir}/src/installer/linux/postrm</linuxPostUninstall>
                         </configuration>
                     </plugin>
                 </plugins>

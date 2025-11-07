@@ -1,0 +1,45 @@
+#!/bin/sh
+set -e
+
+# Ensure applications directory exists
+mkdir -p /usr/share/applications
+
+# Prepare a clean, freedesktop-compliant desktop entry in a temp file
+TMP_DESKTOP="/tmp/paint.desktop.$$"
+cat > "$TMP_DESKTOP" <<'EOF'
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Paint
+GenericName=Paint
+Comment=Simple Swing paint application
+Exec=/opt/paint/bin/Paint %F
+TryExec=/opt/paint/bin/Paint
+Icon=/opt/paint/lib/Paint.png
+Terminal=false
+Categories=Graphics;
+StartupWMClass=Paint
+Keywords=draw;paint;image;graphics;editor;
+EOF
+
+# Install the desktop entry directly (avoid desktop-file-install temp name issues)
+install -m 0644 "$TMP_DESKTOP" /usr/share/applications/paint.desktop || true
+
+# Optionally validate, but never fail the install on validation output
+if command -v desktop-file-validate >/dev/null 2>&1; then
+  desktop-file-validate /usr/share/applications/paint.desktop >/dev/null 2>&1 || true
+fi
+
+# Ensure proper permissions
+chmod 0644 /usr/share/applications/paint.desktop || true
+chown root:root /usr/share/applications/paint.desktop 2>/dev/null || true
+
+# Refresh desktop database if available (no error if missing)
+if command -v update-desktop-database >/dev/null 2>&1; then
+  update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
+fi
+
+# Cleanup temp file
+rm -f "$TMP_DESKTOP" || true
+
+exit 0

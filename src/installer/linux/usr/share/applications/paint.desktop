@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Paint
+GenericName=Paint
+Comment=Simple Swing paint application
+Exec=/opt/paint/bin/Paint %F
+Icon=/opt/paint/lib/Paint.png
+Terminal=false
+Categories=Graphics;
+StartupWMClass=Paint
+Keywords=draw;paint;image;graphics;editor;
