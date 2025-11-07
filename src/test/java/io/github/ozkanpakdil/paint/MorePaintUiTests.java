@@ -1,15 +1,19 @@
 package io.github.ozkanpakdil.paint;
 
 import org.junit.jupiter.api.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
+ 
+ import javax.imageio.ImageIO;
+ import javax.swing.*;
+ import java.awt.*;
+ import java.awt.event.KeyEvent;
+ import java.awt.event.MouseEvent;
+ import java.awt.image.BufferedImage;
+ import java.io.File;
+ import java.io.IOException;
+ import java.nio.file.Files;
+ 
+ import static org.junit.jupiter.api.Assertions.*;
+ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MorePaintUiTests {
@@ -33,7 +37,7 @@ public class MorePaintUiTests {
 
         Component c = findByName(frame, "drawArea");
         assertNotNull(c, "drawArea component not found");
-        assertTrue(c instanceof DrawArea, "drawArea is not a DrawArea instance");
+        assertInstanceOf(DrawArea.class, c, "drawArea is not a DrawArea instance");
         canvas = (DrawArea) c;
         // Clear canvas to isolate each test
         SwingUtilities.invokeAndWait(canvas::clearCanvas);
@@ -120,7 +124,7 @@ public class MorePaintUiTests {
         dispatchKey(editor, KeyEvent.KEY_RELEASED, KeyEvent.VK_ENTER, '\n');
         sleep(220);
         // Verify pixels around the text area are close to RED (allow anti-aliased shades)
-        boolean foundRed = regionHasColorNear(canvas, 90, 160, 140, 70, Color.RED.getRGB(), 60);
+        boolean foundRed = regionHasColorNear(canvas, 90, 160, 140, 70, Color.RED.getRGB());
         assertTrue(foundRed, "Expected to find red-ish pixels from committed text");
     }
 
@@ -197,21 +201,6 @@ public class MorePaintUiTests {
         EventQueue.invokeLater(() -> target.dispatchEvent(ev));
     }
 
-    private static boolean regionHasColor(DrawArea area, int x, int y, int w, int h, int rgb) {
-        int x2 = x + w;
-        int y2 = y + h;
-        for (int i = Math.max(0, x); i < x2; i++) {
-            for (int j = Math.max(0, y); j < y2; j++) {
-                try {
-                    if (area.getPixelRGB(i, j) == rgb) return true;
-                } catch (IllegalArgumentException ignored) {
-                    // outside image; skip
-                }
-            }
-        }
-        return false;
-    }
-
     private static boolean regionHasNonWhite(DrawArea area, int x, int y, int w, int h) {
         int x2 = x + w;
         int y2 = y + h;
@@ -226,7 +215,7 @@ public class MorePaintUiTests {
         return false;
     }
 
-    private static boolean regionHasColorNear(DrawArea area, int x, int y, int w, int h, int targetRgb, int tolerancePerChannel) {
+    private static boolean regionHasColorNear(DrawArea area, int x, int y, int w, int h, int targetRgb) {
         int x2 = x + w;
         int y2 = y + h;
         int tr = (targetRgb >> 16) & 0xFF;
@@ -239,7 +228,7 @@ public class MorePaintUiTests {
                     int r = (rgb >> 16) & 0xFF;
                     int g = (rgb >> 8) & 0xFF;
                     int b = (rgb) & 0xFF;
-                    if (Math.abs(r - tr) <= tolerancePerChannel && Math.abs(g - tg) <= tolerancePerChannel && Math.abs(b - tb) <= tolerancePerChannel) {
+                    if (Math.abs(r - tr) <= 60 && Math.abs(g - tg) <= 60 && Math.abs(b - tb) <= 60) {
                         return true;
                     }
                 } catch (IllegalArgumentException ignored) {
@@ -265,6 +254,31 @@ public class MorePaintUiTests {
             }
         }
         return false;
+    }
+
+    private void saveCanvasScreenshot() {
+        try {
+            // Ensure directory exists
+            File dir = new File("target/test-screenshots");
+            if (!dir.exists()) {
+                Files.createDirectories(dir.toPath());
+            }
+            // Render the canvas component to image
+            int w = Math.max(1, canvas.getWidth());
+            int h = Math.max(1, canvas.getHeight());
+            BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = img.createGraphics();
+            try {
+                canvas.paintAll(g2);
+            } finally {
+                g2.dispose();
+            }
+            String filename = String.format("%s/%s-%d.png", dir.getPath(), "text-switch", System.currentTimeMillis());
+            ImageIO.write(img, "png", new File(filename));
+            System.out.println("[DEBUG_LOG] Saved canvas screenshot: " + filename);
+        } catch (Exception ex) {
+            System.out.println("[DEBUG_LOG] Failed to save screenshot: " + ex);
+        }
     }
 
     // --- New tests covering Open/Placement, Move tool, and Esc/Cancel cases ---
@@ -356,6 +370,31 @@ public class MorePaintUiTests {
 
     @Test
     @Order(9)
+    void switchingToTextDoesNotBlankCanvas_andCapturesScreenshot() {
+        // Draw a short black stroke with Pencil
+        clickByName("T0");
+        drag(canvas, 20, 20, 120, 20);
+        sleep(120);
+        assertTrue(regionHasNonWhite(canvas, 15, 15, 120, 20), "Precondition: stroke should be visible before switching tool");
+
+        // Switch to Text tool, which expands the ribbon and used to reflow layout
+        clickByName("T6");
+        // Allow UI to settle
+        sleep(300);
+
+        // Ensure canvas still has non-white pixels where we drew
+        boolean stillVisible = regionHasNonWhite(canvas, 15, 15, 120, 20);
+
+        // Always capture a screenshot for diagnostics
+        saveCanvasScreenshot();
+
+        assertTrue(stillVisible, "Canvas lost drawn content after switching to Text (see screenshot in target/test-screenshots)");
+        // Also sanity-check that the canvas size is non-zero and cache is intact
+        assertTrue(canvas.getCanvasWidth() > 0 && canvas.getCanvasHeight() > 0, "Canvas size should remain > 0 after switching tools");
+    }
+
+    @Test
+    @Order(10)
     void textTool_escapeCancels_noPixelsCommitted() throws Exception {
         clickByName("F10"); // RED
         clickByName("T6");  // TEXT tool
@@ -372,7 +411,7 @@ public class MorePaintUiTests {
         dispatchKey(editor, KeyEvent.KEY_RELEASED, KeyEvent.VK_ESCAPE, (char)27);
         sleep(220);
         // Verify region around where text would appear remains white (no red-ish pixels)
-        boolean redish = regionHasColorNear(canvas, 190, 200, 160, 80, Color.RED.getRGB(), 60);
+        boolean redish = regionHasColorNear(canvas, 190, 200, 160, 80, Color.RED.getRGB());
         assertFalse(redish, "Expected no red-ish pixels after Esc cancels text editing");
     }
 }

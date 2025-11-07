@@ -219,7 +219,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
     private void updateCursorForCurrentTool() {
         try {
-            if (!isShowing()) return; // no need if not visible
+            // Even if the component is not currently showing (e.g., during layout changes),
+            // apply the cursor so that once it becomes visible the correct cursor is already set.
             Tool t = SideMenu.getSelectedTool();
             if (placingImage) {
                 setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -229,6 +230,35 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         } catch (Exception ignored) {
             setCursor(Cursor.getDefaultCursor());
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        // Prefer the backing cache size; this keeps layout stable across ribbon reflows
+        try {
+            if (cache != null) {
+                return new Dimension(cache.getWidth(), cache.getHeight());
+            }
+            // Fallback to whatever was explicitly set or super's default without initializing cache
+            Dimension d = super.getPreferredSize();
+            if (d != null && d.width > 0 && d.height > 0) return d;
+            return new Dimension(700, 100);
+        } catch (Throwable ignored) {
+            return new Dimension(700, 100);
+        }
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        // Guard against collapse to nearly zero during layout churn
+        try {
+            if (cache != null) {
+                int w = Math.max(32, cache.getWidth());
+                int h = Math.max(32, cache.getHeight());
+                return new Dimension(w, h);
+            }
+        } catch (Throwable ignored) {}
+        return new Dimension(32, 32);
     }
 
     private void initialize() {
@@ -252,7 +282,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         setOpaque(true);
         addMouseListener(this);
         addMouseMotionListener(this);
+        // Initial fallback preferred size; actual preferred size derives from cache via getPreferredSize()
         setPreferredSize(new Dimension(700, 100));
+        // Prevent layout from collapsing the canvas to 0x0 when the ribbon expands/contracts
+        setMinimumSize(new Dimension(10, 10));
         // Use default OS cursor initially; we will update based on selected tool
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         // Set initial cursor based on current tool
@@ -292,6 +325,18 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                         }
                         // Update cursor to reflect selected tool (or placement state)
                         updateCursorForCurrentTool();
+                        // After ribbon expands/contracts on tool change, ensure layout stabilizes
+                        SwingUtilities.invokeLater(() -> {
+                            try {
+                                Container p = getParent();
+                                if (p != null) {
+                                    p.revalidate();
+                                    p.repaint();
+                                }
+                                revalidate();
+                                repaint();
+                            } catch (Exception ignored) {}
+                        });
                     }
                     case "font", "fontSize" -> updateEditorFontFromState();
                     case "color" -> updateEditorColorFromState();
