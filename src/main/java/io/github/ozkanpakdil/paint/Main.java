@@ -19,9 +19,18 @@ public class Main extends JFrame {
     private GUI gui;
 
     public Main() throws IOException {
+        this(null);
+    }
+
+    public Main(String filename) throws IOException {
         initializeGUI();
         Menu();
         initializeWindow();
+
+        // If a filename was provided, attempt to open it
+        if (filename != null && !filename.isEmpty()) {
+            openImageFile(filename);
+        }
     }
 
     static void main(String[] args) {
@@ -57,9 +66,13 @@ public class Main extends JFrame {
                 // last resort: do nothing
             }
         }
+
+        // Check if a filename was provided as command-line argument
+        String fileToOpen = (args.length > 0) ? args[0] : null;
+
         javax.swing.SwingUtilities.invokeLater(() -> {
             try {
-                new Main();
+                new Main(fileToOpen);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -415,6 +428,40 @@ public class Main extends JFrame {
             // Dispose window and exit
             dispose();
             System.exit(0);
+        }
+    }
+
+    private void openImageFile(String filename) {
+        if (gui == null) return;
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.err.println("File not found: " + filename);
+            JOptionPane.showMessageDialog(this, 
+                "File not found: " + filename, 
+                "Open Image", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            BufferedImage img = ImageIO.read(file);
+            if (img == null) {
+                System.err.println("Unsupported or corrupted image: " + filename);
+                JOptionPane.showMessageDialog(this, 
+                    "Unsupported or corrupted image: " + filename, 
+                    "Open Image", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            gui.getDrawArea().startImagePlacement(img);
+            System.out.println("Loaded image: " + filename);
+        } catch (Exception ex) {
+            System.err.println("Failed to open image: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Failed to open image: " + ex.getMessage(), 
+                "Open Image", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 
