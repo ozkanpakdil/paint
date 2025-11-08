@@ -445,7 +445,86 @@
       "type": "com.sun.swing.internal.plaf.basic.resources.basic"
     },
     {
+      "type": "io.github.ozkanpakdil.paint.CropBehaviorTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "cropToLastPastedImage_thenResizeWindow_noWhiteMarginsAndNoRegrow",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.CropSelectionTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "cropToSelection_duringPastedImagePlacement_resizesToImage",
+          "parameterTypes": []
+        },
+        {
+          "name": "cropToSelection_duringPlacement_resizesToSelection",
+          "parameterTypes": []
+        },
+        {
+          "name": "cropToSelection_withoutAnySelection_isNoOpForSize",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "io.github.ozkanpakdil.paint.DrawArea"
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.DrawAreaResizeTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "enlarge_preservesPixels_and_fillsNewAreaWhite",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "shrink_clipsOutsideArea",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        },
+        {
+          "name": "undoRedo_restoresSizesAndPixels",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "io.github.ozkanpakdil.paint.GUI"
@@ -515,6 +594,31 @@
         },
         {
           "name": "writesTextWithSelectedRed",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.PaintUiTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "bucketFillsInsideADrawnRectangle",
+          "parameterTypes": []
+        },
+        {
+          "name": "drawsALineOnTheCanvas",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
           "parameterTypes": []
         }
       ]
@@ -1190,10 +1294,33 @@
       ]
     },
     {
+      "type": "junit.framework.ComparisonFailure"
+    },
+    {
       "type": "net.miginfocom.swing.MigLayout"
     },
     {
+      "type": "org.apache.maven.surefire.booter.spi.LegacyMasterProcessChannelProcessorFactory"
+    },
+    {
+      "type": "org.apache.maven.surefire.booter.spi.SurefireMasterProcessChannelProcessorFactory"
+    },
+    {
+      "type": "org.apache.maven.surefire.junitplatform.JUnitPlatformProvider",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.maven.surefire.api.provider.ProviderParameters"
+          ]
+        }
+      ]
+    },
+    {
       "type": "org.apiguardian.api.API"
+    },
+    {
+      "type": "org.junit.ComparisonFailure"
     },
     {
       "type": "org.junit.internal.AssumptionViolatedException"
@@ -1223,14 +1350,48 @@
       "type": "org.junit.platform.commons.annotation.Testable"
     },
     {
+      "type": "org.junit.platform.engine.discovery.NestedClassSelector"
+    },
+    {
+      "type": "org.junit.platform.launcher.LauncherSession",
+      "methods": [
+        {
+          "name": "getLauncher",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "org.junit.platform.launcher.TestIdentifier$SerializedForm",
       "serializable": true
+    },
+    {
+      "type": "org.junit.platform.launcher.core.LauncherFactory",
+      "methods": [
+        {
+          "name": "openSession",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.junit.platform.launcher.listeners.UniqueIdTrackingListener"
     },
     {
       "type": "org.junit.vintage.engine.VintageTestEngine"
+    },
+    {
+      "type": "org.opentest4j.AssertionFailedError",
+      "methods": [
+        {
+          "name": "isActualDefined",
+          "parameterTypes": []
+        },
+        {
+          "name": "isExpectedDefined",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "sun.awt.SunHints",
@@ -2274,6 +2435,36 @@
       ]
     },
     {
+      "type": "sun.management.VMManagementImpl",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "compTimeMonitoringSupport"
+        },
+        {
+          "name": "currentThreadCpuTimeSupport"
+        },
+        {
+          "name": "objectMonitorUsageSupport"
+        },
+        {
+          "name": "otherThreadCpuTimeSupport"
+        },
+        {
+          "name": "remoteDiagnosticCommandsSupport"
+        },
+        {
+          "name": "synchronizerUsageSupport"
+        },
+        {
+          "name": "threadAllocatedMemorySupport"
+        },
+        {
+          "name": "threadContentionMonitoringSupport"
+        }
+      ]
+    },
+    {
       "type": "sun.reflect.misc.Trampoline",
       "methods": [
         {
@@ -2350,6 +2541,9 @@
     },
     {
       "glob": "META-INF/services/javax.imageio.spi.ImageWriterSpi"
+    },
+    {
+      "glob": "META-INF/services/org.apache.maven.surefire.spi.MasterProcessChannelProcessorFactory"
     },
     {
       "glob": "META-INF/services/org.junit.platform.engine.TestEngine"

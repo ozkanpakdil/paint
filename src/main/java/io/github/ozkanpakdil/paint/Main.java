@@ -186,6 +186,17 @@ public class Main extends JFrame {
         });
         edit.add(cropMenuItem);
 
+        // Crop to Selection menu item
+        JMenuItem cropSelItem = new JMenuItem("Crop to Selection");
+        cropSelItem.setName("cropToSelection");
+        int menuMask2 = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+        cropSelItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, menuMask2 | KeyEvent.SHIFT_DOWN_MASK));
+        cropSelItem.setToolTipText("Crop canvas to the current selection rectangle");
+        cropSelItem.addActionListener(_ -> {
+            if (gui != null) gui.getDrawArea().cropToSelection();
+        });
+        edit.add(cropSelItem);
+
         // Edit > Undo / Redo
         JMenuItem undoItem = new JMenuItem("Undo");
         undoItem.setToolTipText("Undo the last action");

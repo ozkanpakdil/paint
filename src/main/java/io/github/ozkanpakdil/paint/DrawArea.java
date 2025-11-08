@@ -591,6 +591,78 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         repaint();
     }
 
+    // Crop canvas to the current selection rectangle (from Move tool)
+    public void cropToSelection() {
+        System.out.println("[CropToSelection] Invoked");
+        if (cache == null) {
+            System.out.println("[CropToSelection] No cache; nothing to crop.");
+            return;
+        }
+
+        // Case A: Any placement in progress (selection move OR pasted image)
+        // In this state, selectionRect is cleared, and we have: placingImage=true, pendingImage != null
+        if (placingImage) {
+            if (pendingImage == null) {
+                System.out.println("[CropToSelection] In placement state but pendingImage is null; aborting.");
+                Toolkit.getDefaultToolkit().beep();
+                return;
+            }
+            // Crop to the content being placed (copy pendingImage into a new canvas at 0,0)
+            pushUndoSnapshot();
+            int w = Math.max(1, pendingImage.getWidth());
+            int h = Math.max(1, pendingImage.getHeight());
+            BufferedImage copy = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = copy.createGraphics();
+            try {
+                g2.drawImage(pendingImage, 0, 0, null);
+            } finally {
+                g2.dispose();
+            }
+            cache = copy;
+            setPreferredSize(new Dimension(w, h));
+            // Clear overlays/selection/placement completely
+            dropOverlayAndSelection();
+            revalidate();
+            repaint();
+            System.out.println("[CropToSelection] Cropped to placement (" + (selectionPlacement ? "selection" : "pasted image") + "): " + w + "x" + h);
+            return;
+        }
+
+        // Case B: We still have a marquee selection rectangle (no placement in progress)
+        if (selectionRect == null || selectionRect.width <= 0 || selectionRect.height <= 0) {
+            System.out.println("[CropToSelection] No active selection rectangle; nothing to crop.");
+            Toolkit.getDefaultToolkit().beep();
+            return;
+        }
+
+        // History snapshot before crop
+        pushUndoSnapshot();
+        // Clamp selection within cache bounds
+        int x = Math.max(0, Math.min(selectionRect.x, cache.getWidth() - 1));
+        int y = Math.max(0, Math.min(selectionRect.y, cache.getHeight() - 1));
+        int w = Math.max(1, Math.min(selectionRect.width, cache.getWidth() - x));
+        int h = Math.max(1, Math.min(selectionRect.height, cache.getHeight() - y));
+        BufferedImage sub = cache.getSubimage(x, y, w, h);
+        BufferedImage copy = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = copy.createGraphics();
+        try {
+            g2.drawImage(sub, 0, 0, null);
+        } finally {
+            g2.dispose();
+        }
+        cache = copy;
+        setPreferredSize(new Dimension(w, h));
+        // Clear overlays/selection state
+        selecting = false;
+        selectionRect = null;
+        selectionPlacement = false;
+        selectionCutBackup = null;
+        selectionCutRect = null;
+        revalidate();
+        repaint();
+        System.out.println("[CropToSelection] Cropped to marquee selection: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+    }
+
     public int getPixelRGB(int x, int y) {
         ensureCache();
         if (x < 0 || y < 0 || x >= cache.getWidth() || y >= cache.getHeight()) {
