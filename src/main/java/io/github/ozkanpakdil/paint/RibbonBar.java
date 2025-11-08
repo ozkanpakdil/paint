@@ -23,6 +23,12 @@ public class RibbonBar extends JPanel {
     private JPanel textColorBtn;
     private JPanel colorPreview;
 
+    // Size group controls: separate Stroke and Opacity sliders
+    private JLabel strokeLabel;
+    private JSlider strokeSlider;
+    private JLabel opacityLabel;
+    private JSlider opacitySlider;
+
     public RibbonBar(SideMenu controller) throws IOException {
         this.controller = controller;
         setLayout(new BorderLayout());
@@ -41,15 +47,20 @@ public class RibbonBar extends JPanel {
     }
 
     private JComponent buildRibbon() throws IOException {
-        // TOP ROW: main groups that can wrap when the window is narrow
-        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
+        // TOP AREA: left groups (Tools/Shapes/Size) and fixed Colors group on the right
+        JPanel topLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
+        topLeft.setOpaque(false);
+        topLeft.add(groupTools());
+        topLeft.add(groupShapes());
+        topLeft.add(groupSize());
+
+        JComponent colorsGroup = groupColors();
+
+        JPanel topRow = new JPanel(new BorderLayout());
         topRow.setBorder(new EmptyBorder(6, 8, 0, 8));
         topRow.setOpaque(false);
-
-        topRow.add(groupTools());
-        topRow.add(groupShapes());
-        topRow.add(groupSize());
-        topRow.add(groupColors());
+        topRow.add(topLeft, BorderLayout.CENTER);
+        topRow.add(colorsGroup, BorderLayout.EAST);
 
         // CONTEXT ROW: groups that appear conditionally (e.g., Text formatting)
         JPanel contextRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
@@ -73,6 +84,8 @@ public class RibbonBar extends JPanel {
                     if (textGroup != null) textGroup.setVisible(showText);
                     // Keep the context row visible only if at least one child is visible
                     contextRow.setVisible(showText);
+                    // Reconfigure size slider between Stroke and Opacity
+                    configureSizeSliderForTool(tool);
                     revalidate();
                     repaint();
                 }
@@ -82,6 +95,16 @@ public class RibbonBar extends JPanel {
                     if (colorPreview != null) {
                         colorPreview.setBackground(c);
                         colorPreview.repaint();
+                    }
+                }
+                case "strokeSize" -> {
+                    if (strokeSlider != null) {
+                        strokeSlider.setValue(SideMenu.getStrokeSize());
+                    }
+                }
+                case "opacity" -> {
+                    if (opacitySlider != null) {
+                        opacitySlider.setValue(SideMenu.getHighlighterOpacity());
                     }
                 }
                 case "font" -> {
@@ -108,12 +131,25 @@ public class RibbonBar extends JPanel {
         return container;
     }
 
+    record ToolDef(String name, String icon, int index) {
+        ToolDef(String name, int index) {
+            this(name, name + ".png", index);
+        }
+    }
+
     private JComponent groupTools() throws IOException {
         JPanel g = titledGroup("Tools");
-        String[] names = {"pencil", "eraser", "text", "bucket", "move"};
-        int[] indices = {0, 5, 6, 10, 11};
-        for (int i = 0; i < names.length; i++) {
-            JLabel b = makeIconButton(names[i] + ".png", 24, "T" + indices[i], capitalizeFirstLetter(names[i]));
+        ToolDef[] tools = {
+            new ToolDef("pencil", 0),
+            new ToolDef("highlighter", "highlight.png", 12),
+            new ToolDef("eraser", 5),
+            new ToolDef("text", 6),
+            new ToolDef("bucket", 10),
+            new ToolDef("move", 11),
+            new ToolDef("arrow", "arrow.png", 13)
+        };
+        for (ToolDef tool : tools) {
+            JLabel b = makeIconButton(tool.icon, 24, "T" + tool.index, capitalizeFirstLetter(tool.name));
             b.addMouseListener(controller);
             g.add(b);
         }
@@ -122,27 +158,82 @@ public class RibbonBar extends JPanel {
 
     private JComponent groupShapes() throws IOException {
         JPanel g = titledGroup("Shapes");
-        // rectangle(2), oval(3), rounded(4), filled rect(7), filled oval(8), rounded filled(9)
-        String[] names = {"rectangle", "oval", "polygon", "rectangle_fill", "oval_fill", "polygon_fill", "line-tool"};
-        int[] indices = {2, 3, 4, 7, 8, 9, 1};
-        for (int i = 0; i < names.length; i++) {
-            JLabel b = makeIconButton(names[i] + ".png", 24, "T" + indices[i], sanitizeAndFormat(names[i]));
+        ToolDef[] shapes = {
+            new ToolDef("rectangle", 2),
+            new ToolDef("oval", 3),
+            new ToolDef("polygon", 4),
+            new ToolDef("rectangle_fill", 7),
+            new ToolDef("oval_fill", 8),
+            new ToolDef("polygon_fill", 9),
+            new ToolDef("line-tool", 1),
+            new ToolDef("arrow", "arrow.png", 13)
+        };
+        for (ToolDef shape : shapes) {
+            String tip = shape.name.equals("line-tool") ? "Line" : sanitizeAndFormat(shape.name);
+            JLabel b = makeIconButton(shape.icon, 24, "T" + shape.index, tip);
             b.addMouseListener(controller);
             g.add(b);
         }
         return g;
     }
 
+    private void configureSizeSliderForTool(Tool tool) {
+        // Enable opacity slider only for Highlighter; Stroke is always enabled
+        if (opacitySlider != null) {
+            boolean enableOpacity = (tool == Tool.HIGHLIGHTER);
+            opacitySlider.setEnabled(enableOpacity);
+            opacityLabel.setEnabled(enableOpacity);
+            if (enableOpacity) {
+                opacitySlider.setToolTipText("Highlighter opacity (%)");
+            } else {
+                opacitySlider.setToolTipText("Opacity is only used by Highlighter");
+            }
+        }
+        if (strokeSlider != null) {
+            strokeSlider.setToolTipText("Stroke width (px)");
+        }
+    }
+
     private JComponent groupSize() {
         JPanel g = titledGroup("Size");
-        JLabel lbl = new JLabel("Stroke");
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 20, 2);
-        slider.setPreferredSize(new Dimension(140, 28));
-        slider.setPaintTicks(false);
-        slider.setPaintLabels(false);
-        slider.addChangeListener(controller);
-        g.add(lbl);
-        g.add(slider);
+
+        // A vertical stack: Stroke row on top, Opacity row below it
+        JPanel rows = new JPanel();
+        rows.setOpaque(false);
+        rows.setLayout(new BoxLayout(rows, BoxLayout.Y_AXIS));
+
+        // Stroke width controls
+        JPanel row1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        row1.setOpaque(false);
+        strokeLabel = new JLabel("Stroke");
+        strokeSlider = new JSlider(JSlider.HORIZONTAL, 1, 20, SideMenu.getStrokeSize());
+        strokeSlider.setName("stroke");
+        strokeSlider.setPreferredSize(new Dimension(140, 28));
+        strokeSlider.setPaintTicks(false);
+        strokeSlider.setPaintLabels(false);
+        strokeSlider.addChangeListener(controller);
+        row1.add(strokeLabel);
+        row1.add(strokeSlider);
+        rows.add(row1);
+
+        // Opacity controls (for Highlighter)
+        JPanel row2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        row2.setOpaque(false);
+        opacityLabel = new JLabel("Opacity");
+        opacitySlider = new JSlider(JSlider.HORIZONTAL, 5, 100, SideMenu.getHighlighterOpacity());
+        opacitySlider.setName("opacity");
+        opacitySlider.setPreferredSize(new Dimension(140, 28));
+        opacitySlider.setPaintTicks(false);
+        opacitySlider.setPaintLabels(false);
+        opacitySlider.addChangeListener(controller);
+        row2.add(opacityLabel);
+        row2.add(opacitySlider);
+        rows.add(row2);
+
+        g.add(rows);
+
+        // initialize enabled state according to current tool
+        configureSizeSliderForTool(SideMenu.getSelectedTool());
         return g;
     }
 

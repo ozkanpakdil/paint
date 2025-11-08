@@ -445,6 +445,27 @@
       "type": "com.sun.swing.internal.plaf.basic.resources.basic"
     },
     {
+      "type": "io.github.ozkanpakdil.paint.ArrowToolTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "arrow_drawsLineAndHead",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "io.github.ozkanpakdil.paint.CropBehaviorTest",
       "methods": [
         {
@@ -528,6 +549,35 @@
     },
     {
       "type": "io.github.ozkanpakdil.paint.GUI"
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.HighlighterDrawTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "flattenedImage_containsHighlightOverWhite",
+          "parameterTypes": []
+        },
+        {
+          "name": "highlighter_drawsOnSeparateLayer_andDoesNotAccumulate",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        },
+        {
+          "name": "undoRedo_restoresHighlightLayer_independently",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "io.github.ozkanpakdil.paint.Main",
@@ -631,6 +681,31 @@
     },
     {
       "type": "io.github.ozkanpakdil.paint.RibbonBar$RibbonGroup"
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.RibbonOpacityControlTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "colorsGroup_presentOnTopRight",
+          "parameterTypes": []
+        },
+        {
+          "name": "opacityEnabledOnlyForHighlighter_strokeAlwaysEnabled",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "io.github.ozkanpakdil.paint.SideMenu"
@@ -1384,11 +1459,32 @@
       "type": "org.opentest4j.AssertionFailedError",
       "methods": [
         {
+          "name": "getActual",
+          "parameterTypes": []
+        },
+        {
+          "name": "getExpected",
+          "parameterTypes": []
+        },
+        {
           "name": "isActualDefined",
           "parameterTypes": []
         },
         {
           "name": "isExpectedDefined",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.opentest4j.ValueWrapper",
+      "methods": [
+        {
+          "name": "getStringRepresentation",
+          "parameterTypes": []
+        },
+        {
+          "name": "getValue",
           "parameterTypes": []
         }
       ]
@@ -2582,10 +2678,19 @@
       "glob": "images/app.png"
     },
     {
+      "glob": "images/arrow.png"
+    },
+    {
       "glob": "images/bucket.png"
     },
     {
       "glob": "images/eraser.png"
+    },
+    {
+      "glob": "images/highlight.png"
+    },
+    {
+      "glob": "images/highlighter.png"
     },
     {
       "glob": "images/line-tool.png"

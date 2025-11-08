@@ -18,6 +18,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
     private static Tool draw_tool = Tool.PENCIL;
     private static String text;
     private static int pencil_size = 2;
+    private static int highlighter_opacity = 30; // 5..100 percent
     private static Color for_color = colors[0];
     private static int font;
     private static int fontSize = 15;
@@ -57,7 +58,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
          * 	Tool Picker Starts
          */
 
-        String[] tool_names = {"pencil", "line-tool", "rectangle", "oval", "polygon", "eraser", "text", "rectangle_fill", "oval_fill", "polygon_fill", "bucket", "move"};
+        String[] tool_names = {"pencil", "line-tool", "rectangle", "oval", "polygon", "eraser", "text", "rectangle_fill", "oval_fill", "polygon_fill", "bucket", "move", "highlighter", "arrow"};
         // Compact tools grid similar to MS Paint
         JPanel tool_panel = new JPanel(new GridLayout(0, 4, 4, 4));
         for (int i = 0; i < tool_names.length; i++) {
@@ -144,6 +145,16 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
 
     public static int getStrokeSize() {
         return pencil_size;
+    }
+
+    public static int getHighlighterOpacity() {
+        return highlighter_opacity;
+    }
+
+    public void setHighlighterOpacity(int percent) {
+        int old = highlighter_opacity;
+        highlighter_opacity = Math.max(5, Math.min(100, percent));
+        firePropertyChange("opacity", old, highlighter_opacity);
     }
 
     public static void setForeColor(Color c) {
@@ -298,7 +309,12 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
                     int answer = JOptionPane.showConfirmDialog(this, "Replace existing file?", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (answer != JOptionPane.YES_OPTION) return;
                 }
-                ImageIO.write(DrawArea.cache, "png", file);
+                java.awt.image.BufferedImage out = DrawArea.getFlattenedImage();
+                if (out == null) {
+                    JOptionPane.showMessageDialog(this, "Nothing to save yet.", "Save", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                ImageIO.write(out, "png", file);
                 System.out.println("File Saved: " + file.getAbsolutePath());
             }
         } catch (IOException e) {
@@ -340,11 +356,19 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
 
     @Override
     public void stateChanged(ChangeEvent e) {
-
         JSlider slider = (JSlider) e.getSource();
-        System.out.println("Stroke Size Changed" + slider.getValue());
-        pencil_size = slider.getValue();
-
+        String name = slider.getName();
+        if ("opacity".equals(name)) {
+            int old = highlighter_opacity;
+            highlighter_opacity = Math.max(5, Math.min(100, slider.getValue()));
+            System.out.println("Highlighter Opacity Changed " + highlighter_opacity);
+            firePropertyChange("opacity", old, highlighter_opacity);
+        } else {
+            // Default behavior: treat as stroke width slider (works for SideMenu's own slider and Ribbon stroke slider)
+            System.out.println("Stroke Size Changed " + slider.getValue());
+            pencil_size = Math.max(1, Math.min(20, slider.getValue()));
+            firePropertyChange("strokeSize", null, pencil_size);
+        }
     }
 
     /**

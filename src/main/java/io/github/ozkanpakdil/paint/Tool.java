@@ -16,7 +16,9 @@ public enum Tool {
     OVAL_FILLED(8),
     ROUNDED_RECT_FILLED(9),
     BUCKET(10),
-    MOVE(11);
+    MOVE(11),
+    HIGHLIGHTER(12),
+    ARROW(13);
 
     private final int index;
 

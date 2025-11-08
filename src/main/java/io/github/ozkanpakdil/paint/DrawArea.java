@@ -19,8 +19,16 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
     // ----- Undo/Redo history -----
     private static final int HISTORY_LIMIT = 25;
-    private final Deque<BufferedImage> undoStack = new ArrayDeque<>();
-    private final Deque<BufferedImage> redoStack = new ArrayDeque<>();
+    private static class LayerState {
+        final BufferedImage base;
+        final BufferedImage highlight;
+        LayerState(BufferedImage base, BufferedImage highlight) {
+            this.base = base;
+            this.highlight = highlight;
+        }
+    }
+    private final Deque<LayerState> undoStack = new ArrayDeque<>();
+    private final Deque<LayerState> redoStack = new ArrayDeque<>();
 
     private static final String[][] TOOL_ICON_MAP = new String[][]{
             {"PENCIL", "pencil.png"},
@@ -34,11 +42,15 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             {"ERASER", "eraser.png"},
             {"TEXT", "text.png"},
             {"BUCKET", "bucket.png"},
-            {"MOVE", "move.png"}
+            {"MOVE", "move.png"},
+            {"HIGHLIGHTER", "highlight.png"},
+            {"ARROW", "arrow.png"}
     };
     private static final int ROUNDED_ARC = 10;
     // Backing canvas; kept static to preserve existing usages (e.g., SideMenu save)
     static BufferedImage cache;
+    // Separate persistent layer for non-accumulating highlights (drawn above base)
+    static BufferedImage highlightLayer;
     // Cache of custom cursors per tool
     private final Map<Tool, Cursor> toolCursorCache = new EnumMap<>(Tool.class);
     // Text tool inline editor
@@ -90,7 +102,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
     private void pushUndoSnapshot() {
         ensureCache();
-        undoStack.push(copyImage(cache));
+        if (highlightLayer == null || highlightLayer.getWidth() != cache.getWidth() || highlightLayer.getHeight() != cache.getHeight()) {
+            // keep highlight layer in sync
+            highlightLayer = new BufferedImage(cache.getWidth(), cache.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        }
+        undoStack.push(new LayerState(copyImage(cache), copyImage(highlightLayer)));
         // Cap history size
         while (undoStack.size() > HISTORY_LIMIT) {
             undoStack.removeLast();
@@ -108,9 +124,14 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         dropOverlayAndSelection();
         ensureCache();
         // Save current canvas to redo stack
-        redoStack.push(copyImage(cache));
+        if (highlightLayer == null || highlightLayer.getWidth() != cache.getWidth() || highlightLayer.getHeight() != cache.getHeight()) {
+            highlightLayer = new BufferedImage(cache.getWidth(), cache.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        }
+        redoStack.push(new LayerState(copyImage(cache), copyImage(highlightLayer)));
         // Restore previous canvas state
-        cache = undoStack.pop();
+        LayerState prev = undoStack.pop();
+        cache = copyImage(prev.base);
+        highlightLayer = copyImage(prev.highlight);
         setPreferredSize(new Dimension(cache.getWidth(), cache.getHeight()));
         revalidate();
         repaint();
@@ -121,10 +142,15 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         // Drop any transient overlays before changing history state
         dropOverlayAndSelection();
         ensureCache();
+        if (highlightLayer == null || highlightLayer.getWidth() != cache.getWidth() || highlightLayer.getHeight() != cache.getHeight()) {
+            highlightLayer = new BufferedImage(cache.getWidth(), cache.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        }
         // Save current canvas to undo stack
-        undoStack.push(copyImage(cache));
+        undoStack.push(new LayerState(copyImage(cache), copyImage(highlightLayer)));
         // Restore next canvas state
-        cache = redoStack.pop();
+        LayerState next = redoStack.pop();
+        cache = copyImage(next.base);
+        highlightLayer = copyImage(next.highlight);
         setPreferredSize(new Dimension(cache.getWidth(), cache.getHeight()));
         revalidate();
         repaint();
@@ -685,6 +711,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             } finally {
                 gc.dispose();
             }
+            // initialize highlight layer same size (transparent)
+            highlightLayer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         }
     }
 
@@ -704,6 +732,17 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             g.dispose();
         }
         cache = grown;
+        // grow highlight layer as transparent canvas
+        BufferedImage hl = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        if (highlightLayer != null) {
+            Graphics2D gh = hl.createGraphics();
+            try {
+                gh.drawImage(highlightLayer, 0, 0, null);
+            } finally {
+                gh.dispose();
+            }
+        }
+        highlightLayer = hl;
     }
 
     private void startTextEditorAt(int x, int y) {
@@ -783,6 +822,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         // Keep cache content-driven only; do not auto-grow with window size
         ensureCache();
         g2.drawImage(cache, 0, 0, null);
+        // Render highlight layer above base
+        if (highlightLayer != null) {
+            g2.drawImage(highlightLayer, 0, 0, null);
+        }
         // Draw a subtle border around the canvas to delineate from non-paintable area
         g2.setColor(new Color(180, 180, 180));
         g2.drawRect(0, 0, cache.getWidth() - 1, cache.getHeight() - 1);
@@ -871,12 +914,52 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         Tool tool = SideMenu.getSelectedTool();
         switch (tool) {
             case PENCIL -> { // Pencil (free draw, commits as we drag)
+                g2.setStroke(new BasicStroke(SideMenu.getStrokeSize(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 g2.drawLine(x1, y1, x2, y2);
+                x1 = x2;
+                y1 = y2;
+            }
+            case HIGHLIGHTER -> { // Semi-transparent marker, continuous, non-accumulating
+                Graphics2D g = (Graphics2D) g2.create();
+                try {
+                    applyRenderHints(g);
+                    float alpha = Math.max(0.05f, Math.min(1f, SideMenu.getHighlighterOpacity() / 100f));
+                    float w = Math.max(2f, SideMenu.getStrokeSize() * 1.6f);
+                    // Use SRC to overwrite previous highlight so overlapping strokes don't darken
+                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, alpha));
+                    g.setColor(SideMenu.getSelectedForeColor());
+                    g.setStroke(new BasicStroke(w, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                    g.drawLine(x1, y1, x2, y2);
+                } finally {
+                    g.dispose();
+                }
                 x1 = x2;
                 y1 = y2;
             }
             case LINE -> // Straight line preview/commit
                     g2.drawLine(x1, y1, x2, y2);
+            case ARROW -> { // Line with arrowhead (preview or commit)
+                // base line
+                g2.drawLine(x1, y1, x2, y2);
+                // arrow head
+                double dx = x2 - x1;
+                double dy = y2 - y1;
+                double angle = Math.atan2(dy, dx);
+                int stroke = Math.max(1, SideMenu.getStrokeSize());
+                double len = Math.hypot(dx, dy);
+                double headLen = Math.min(len * 0.35, 6 + stroke * 3.0); // size scales with stroke and length
+                double headAngle = Math.toRadians(28);
+                int hx1 = (int) Math.round(x2 - headLen * Math.cos(angle - headAngle));
+                int hy1 = (int) Math.round(y2 - headLen * Math.sin(angle - headAngle));
+                int hx2 = (int) Math.round(x2 - headLen * Math.cos(angle + headAngle));
+                int hy2 = (int) Math.round(y2 - headLen * Math.sin(angle + headAngle));
+                // Thicker stroke for head looks better
+                Stroke old = g2.getStroke();
+                g2.setStroke(new BasicStroke(stroke, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                g2.drawLine(x2, y2, hx1, hy1);
+                g2.drawLine(x2, y2, hx2, hy2);
+                g2.setStroke(old);
+            }
             case RECT, RECT_FILLED, ROUNDED_RECT, ROUNDED_RECT_FILLED, OVAL,
                  OVAL_FILLED -> { // Rectangle/rounded/oval (+ filled variants)
                 int x = Math.min(x1, x2);
@@ -894,6 +977,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             case ERASER -> { // Eraser draws in white and moves like pencil
                 // Do not mutate global color; just render with white locally
                 g2.setColor(Color.WHITE);
+                g2.setStroke(new BasicStroke(SideMenu.getStrokeSize(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 g2.drawLine(x1, y1, x2, y2);
                 x1 = x2;
                 y1 = y2;
@@ -937,13 +1021,22 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         y2 = ev.getY();
 
         Tool tool = SideMenu.getSelectedTool();
-        if (tool == Tool.PENCIL || tool == Tool.ERASER) {
+        if (tool == Tool.PENCIL || tool == Tool.ERASER || tool == Tool.HIGHLIGHTER) {
             // Ensure backing cache exists before drawing and grow only if stroke would exceed bounds
-            int needW = Math.max(x1, x2) + SideMenu.getStrokeSize() + 1;
-            int needH = Math.max(y1, y2) + SideMenu.getStrokeSize() + 1;
+            int extra = Math.max(1, SideMenu.getStrokeSize() * 2);
+            int needW = Math.max(x1, x2) + extra + 1;
+            int needH = Math.max(y1, y2) + extra + 1;
             ensureCapacity(needW, needH);
-            // Commit continuous tools directly to cache for smooth drawing
-            var cg = cache.createGraphics();
+            // Commit continuous tools directly for smooth drawing
+            Graphics2D cg;
+            if (tool == Tool.HIGHLIGHTER) {
+                if (highlightLayer == null) {
+                    highlightLayer = new BufferedImage(cache.getWidth(), cache.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                }
+                cg = highlightLayer.createGraphics();
+            } else {
+                cg = cache.createGraphics();
+            }
             try {
                 drawShape(cg);
             } finally {
@@ -1024,7 +1117,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             return;
         }
         // For continuous tools, capture snapshot at the beginning of the stroke
-        if (tool == Tool.PENCIL || tool == Tool.ERASER) {
+        if (tool == Tool.PENCIL || tool == Tool.ERASER || tool == Tool.HIGHLIGHTER) {
             pushUndoSnapshot();
         }
         ispressed = true;
@@ -1111,20 +1204,47 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
         // Commit the final shape onto the backing image
         // Snapshot before finalizing non-continuous shape or bucket
-        if (toolNow != Tool.PENCIL && toolNow != Tool.ERASER) {
+        if (toolNow != Tool.PENCIL && toolNow != Tool.ERASER && toolNow != Tool.HIGHLIGHTER) {
             pushUndoSnapshot();
         }
         // Ensure the canvas is large enough for the final shape
         int maxX = Math.max(x1, x2) + SideMenu.getStrokeSize() + 1;
         int maxY = Math.max(y1, y2) + SideMenu.getStrokeSize() + 1;
         ensureCapacity(maxX, maxY);
-        var cg = cache.createGraphics();
+        // Commit final shape to appropriate layer
+        Graphics2D cg;
+        if (toolNow == Tool.HIGHLIGHTER) {
+            if (highlightLayer == null) {
+                highlightLayer = new BufferedImage(cache.getWidth(), cache.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            }
+            cg = highlightLayer.createGraphics();
+        } else {
+            cg = cache.createGraphics();
+        }
         try {
             drawShape(cg);
         } finally {
             cg.dispose();
         }
         repaint();
+    }
+
+    // Return a flattened image that includes base and highlight layers
+    public static BufferedImage getFlattenedImage() {
+        if (cache == null) return null;
+        int w = cache.getWidth();
+        int h = cache.getHeight();
+        BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = out.createGraphics();
+        try {
+            g.drawImage(cache, 0, 0, null);
+            if (highlightLayer != null) {
+                g.drawImage(highlightLayer, 0, 0, null);
+            }
+        } finally {
+            g.dispose();
+        }
+        return out;
     }
 
     // Utility API for future uses (e.g., File > New)
@@ -1177,6 +1297,17 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             g2.dispose();
         }
         cache = resized;
+        // Resize highlight layer as transparent image and copy existing
+        BufferedImage newHL = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+        if (highlightLayer != null) {
+            Graphics2D gh = newHL.createGraphics();
+            try {
+                gh.drawImage(highlightLayer, 0, 0, null);
+            } finally {
+                gh.dispose();
+            }
+        }
+        highlightLayer = newHL;
         setPreferredSize(new Dimension(newW, newH));
         revalidate();
         repaint();
