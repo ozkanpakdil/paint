@@ -5,12 +5,14 @@ import org.junit.jupiter.api.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -46,7 +48,10 @@ public class ArrowToolTest {
     @AfterEach
     void tearDown() {
         if (frame != null) {
-            try { frame.dispose(); } catch (Exception ignored) {}
+            try {
+                frame.dispose();
+            } catch (Exception ignored) {
+            }
             frame = null;
         }
         canvas = null;
@@ -63,8 +68,8 @@ public class ArrowToolTest {
             sideMenu.setStrokeSize(6);
 
             // Draw from (30,30) to (150,80)
-            press(canvas, 30, 30);
-            drag(canvas, 30, 30, 150, 80);
+            press(canvas);
+            drag(canvas);
             release(canvas, 150, 80);
 
             // Allow repaint to flush
@@ -93,24 +98,27 @@ public class ArrowToolTest {
                         ImageIO.write(out, "png", f);
                         System.out.println("[DEBUG_LOG] Saved arrow test screenshot to: " + f.getAbsolutePath());
                     }
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
             }
         });
     }
 
     // --- simple mouse helpers ---
-    private static void press(Component c, int x, int y) {
-        c.dispatchEvent(new java.awt.event.MouseEvent(c, java.awt.event.MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, java.awt.event.MouseEvent.BUTTON1));
+    private static void press(Component c) {
+        c.dispatchEvent(new MouseEvent(c, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, 30, 30, 1, false, MouseEvent.BUTTON1));
     }
-    private static void drag(Component c, int x1, int y1, int x2, int y2) {
+
+    private static void drag(Component c) {
         int steps = 14;
         for (int i = 1; i <= steps; i++) {
-            int xi = x1 + (x2 - x1) * i / steps;
-            int yi = y1 + (y2 - y1) * i / steps;
-            c.dispatchEvent(new java.awt.event.MouseEvent(c, java.awt.event.MouseEvent.MOUSE_DRAGGED, System.currentTimeMillis(), java.awt.event.InputEvent.BUTTON1_DOWN_MASK, xi, yi, 0, false, java.awt.event.MouseEvent.BUTTON1));
+            int xi = 30 + (150 - 30) * i / steps;
+            int yi = 30 + (80 - 30) * i / steps;
+            c.dispatchEvent(new MouseEvent(c, MouseEvent.MOUSE_DRAGGED, System.currentTimeMillis(), InputEvent.BUTTON1_DOWN_MASK, xi, yi, 0, false, MouseEvent.BUTTON1));
         }
     }
+
     private static void release(Component c, int x, int y) {
-        c.dispatchEvent(new java.awt.event.MouseEvent(c, java.awt.event.MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, x, y, 1, false, java.awt.event.MouseEvent.BUTTON1));
+        c.dispatchEvent(new MouseEvent(c, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, x, y, 1, false, MouseEvent.BUTTON1));
     }
 }

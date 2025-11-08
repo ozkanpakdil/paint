@@ -100,7 +100,7 @@ public class HighlighterDrawTest {
             assertTrue(Math.abs(alpha - expectedAlpha) <= 30, "Alpha should be near configured opacity (got=" + alpha + ")");
 
             // Optional screenshot when visualization is enabled
-            maybeSaveScreenshot("highlighter-layer");
+            maybeSaveScreenshot();
         });
     }
 
@@ -120,9 +120,9 @@ public class HighlighterDrawTest {
             release(canvas, 60, 60);
 
             // Flatten
-            Image img = DrawArea.getFlattenedImage();
+            BufferedImage img = DrawArea.getFlattenedImage();
             assertNotNull(img, "Flattened image should not be null");
-            int out = ((java.awt.image.BufferedImage) img).getRGB(30, 60);
+            int out = img.getRGB(30, 60);
             // Over white background with 50% green highlight -> resulting green channel should be high
             int r = (out >> 16) & 0xFF;
             int g = (out >> 8) & 0xFF;
@@ -186,14 +186,14 @@ public class HighlighterDrawTest {
     }
 
     // --- optional screenshot helper (enabled when -DshowUITests=true) ---
-    private static void maybeSaveScreenshot(String prefix) {
+    private static void maybeSaveScreenshot() {
         if (!Boolean.parseBoolean(System.getProperty("showUITests", "false"))) return;
         try {
             BufferedImage out = DrawArea.getFlattenedImage();
             if (out != null) {
                 new File("target/test-screenshots").mkdirs();
                 String ts = new SimpleDateFormat("yyyyMMdd-HHmmssSSS").format(new Date());
-                File f = new File("target/test-screenshots/" + prefix + "-" + ts + ".png");
+                File f = new File("target/test-screenshots/" + "highlighter-layer" + "-" + ts + ".png");
                 ImageIO.write(out, "png", f);
                 System.out.println("[DEBUG_LOG] Saved highlighter test screenshot to: " + f.getAbsolutePath());
             }

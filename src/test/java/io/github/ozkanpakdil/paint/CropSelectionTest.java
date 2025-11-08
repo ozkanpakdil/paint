@@ -35,7 +35,7 @@ public class CropSelectionTest {
         assertTrue(latch.await(10, TimeUnit.SECONDS), "Main window did not initialize in time");
 
         // Wait until frame is visible and ready
-        waitFor(() -> frame != null && frame.isShowing(), 5000, "Main frame not visible");
+        waitFor(() -> frame != null && frame.isShowing());
 
         // Find draw area by name
         Component c = findByName(frame, "drawArea");
@@ -62,7 +62,7 @@ public class CropSelectionTest {
         sleep(60);
         drag(canvas, 40, 40, 160, 40);
         // Basic sanity: we have some non-white on canvas
-        assertTrue(regionHasNonWhite(canvas, 0, 0, Math.max(200, canvas.getWidth()), Math.max(200, canvas.getHeight())),
+        assertTrue(regionHasNonWhite(canvas, Math.max(200, canvas.getWidth()), Math.max(200, canvas.getHeight())),
                 "Expected drawn content before selection");
 
         // 2) Switch to MOVE and drag a selection rectangle; on release it enters placement state
@@ -84,7 +84,7 @@ public class CropSelectionTest {
         assertEquals(expectedH, DrawArea.cache.getHeight(), "Cache height should match selection height");
 
         // 5) And there should be some non-white content inside
-        assertTrue(regionHasNonWhite(canvas, 0, 0, expectedW, expectedH),
+        assertTrue(regionHasNonWhite(canvas, expectedW, expectedH),
                 "Expected non-white pixels after crop");
     }
 
@@ -98,7 +98,7 @@ public class CropSelectionTest {
         // Ensure we are not in placement and no marquee exists; select PENCIL and click once
         clickByName(frame, "T0"); // Pencil
         sleep(60);
-        click(canvas, 10, 10);
+        click(canvas);
         sleep(40);
 
         // Call cropToSelection (should beep/no-op), and verify size unchanged
@@ -138,7 +138,7 @@ public class CropSelectionTest {
         assertEquals(img.getHeight(), DrawArea.cache.getHeight(), "Height should match pasted image height");
 
         // And ensure there are non-white pixels (the black rect)
-        assertTrue(regionHasNonWhite(canvas, 0, 0, img.getWidth(), img.getHeight()),
+        assertTrue(regionHasNonWhite(canvas, img.getWidth(), img.getHeight()),
                 "Expected non-white content from pasted image after crop");
     }
 
@@ -177,12 +177,12 @@ public class CropSelectionTest {
         sleep(30);
     }
 
-    private static void click(Component target, int x, int y) {
-        dispatchMouse(target, MouseEvent.MOUSE_MOVED, x, y, 0);
-        dispatchMouse(target, MouseEvent.MOUSE_ENTERED, x, y, 0);
-        dispatchMouse(target, MouseEvent.MOUSE_PRESSED, x, y, MouseEvent.BUTTON1_DOWN_MASK);
-        dispatchMouse(target, MouseEvent.MOUSE_RELEASED, x, y, MouseEvent.BUTTON1_DOWN_MASK);
-        dispatchMouse(target, MouseEvent.MOUSE_CLICKED, x, y, 0);
+    private static void click(Component target) {
+        dispatchMouse(target, MouseEvent.MOUSE_MOVED, 10, 10, 0);
+        dispatchMouse(target, MouseEvent.MOUSE_ENTERED, 10, 10, 0);
+        dispatchMouse(target, MouseEvent.MOUSE_PRESSED, 10, 10, MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_RELEASED, 10, 10, MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_CLICKED, 10, 10, 0);
         sleep(30);
     }
 
@@ -208,11 +208,11 @@ public class CropSelectionTest {
         EventQueue.invokeLater(() -> target.dispatchEvent(ev));
     }
 
-    private static boolean regionHasNonWhite(DrawArea area, int x, int y, int w, int h) {
-        int x2 = x + w;
-        int y2 = y + h;
-        for (int i = Math.max(0, x); i < x2; i++) {
-            for (int j = Math.max(0, y); j < y2; j++) {
+    private static boolean regionHasNonWhite(DrawArea area, int w, int h) {
+        int x2 = 0 + w;
+        int y2 = 0 + h;
+        for (int i = Math.max(0, 0); i < x2; i++) {
+            for (int j = Math.max(0, 0); j < y2; j++) {
                 try {
                     if (area.getPixelRGB(i, j) != Color.WHITE.getRGB()) return true;
                 } catch (IllegalArgumentException ignored) {
@@ -222,13 +222,13 @@ public class CropSelectionTest {
         return false;
     }
 
-    private static void waitFor(Check cond, long timeoutMs, String message) throws InterruptedException {
-        long deadline = System.currentTimeMillis() + timeoutMs;
+    private static void waitFor(Check cond) throws InterruptedException {
+        long deadline = System.currentTimeMillis() + (long) 5000;
         while (System.currentTimeMillis() < deadline) {
             if (cond.ok()) return;
             sleep(50);
         }
-        fail(message);
+        fail("Main frame not visible");
     }
 
     private static void sleep(long ms) {

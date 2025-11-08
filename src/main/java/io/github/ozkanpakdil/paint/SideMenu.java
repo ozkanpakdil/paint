@@ -16,7 +16,6 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
 
     private static final Color[] colors = {Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.WHITE, Color.YELLOW};
     private static Tool draw_tool = Tool.PENCIL;
-    private static String text;
     private static int pencil_size = 2;
     private static int highlighter_opacity = 30; // 5..100 percent
     private static Color for_color = colors[0];
@@ -135,10 +134,6 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
         return for_color;
     }
 
-    public static String getInputText() {
-        return text;
-    }
-
     public static Tool getSelectedTool() {
         return draw_tool;
     }
@@ -195,7 +190,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
                 g.setColor(new Color(60, 60, 60));
                 int cx = 28 / 2;
                 int cy = 28 / 2;
-                int arm = Math.min(28, 28) / 3;
+                int arm = 28 / 3;
                 g.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 // vertical and horizontal lines
                 g.drawLine(cx - arm, cy, cx + arm, cy);

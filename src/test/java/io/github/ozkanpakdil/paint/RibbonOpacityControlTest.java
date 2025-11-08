@@ -59,7 +59,7 @@ public class RibbonOpacityControlTest {
         // Click Highlighter tool button (T12)
         Component highlighterBtn = findByName(frame, "T12");
         assertNotNull(highlighterBtn, "Highlighter button (T12) not found");
-        click(highlighterBtn, 5, 5);
+        click(highlighterBtn);
         sleep(120);
 
         assertTrue(stroke.isEnabled(), "Stroke should remain enabled for Highlighter");
@@ -68,7 +68,7 @@ public class RibbonOpacityControlTest {
         // Click Line tool (T1)
         Component lineBtn = findByName(frame, "T1");
         assertNotNull(lineBtn, "Line tool (T1) not found");
-        click(lineBtn, 5, 5);
+        click(lineBtn);
         sleep(120);
 
         assertTrue(stroke.isEnabled(), "Stroke should be enabled for non-highlighter tools");
@@ -93,12 +93,12 @@ public class RibbonOpacityControlTest {
         return null;
     }
 
-    private static void click(Component target, int x, int y) {
-        dispatchMouse(target, MouseEvent.MOUSE_MOVED, x, y, 0);
-        dispatchMouse(target, MouseEvent.MOUSE_ENTERED, x, y, 0);
-        dispatchMouse(target, MouseEvent.MOUSE_PRESSED, x, y, MouseEvent.BUTTON1_DOWN_MASK);
-        dispatchMouse(target, MouseEvent.MOUSE_RELEASED, x, y, MouseEvent.BUTTON1_DOWN_MASK);
-        dispatchMouse(target, MouseEvent.MOUSE_CLICKED, x, y, 0);
+    private static void click(Component target) {
+        dispatchMouse(target, MouseEvent.MOUSE_MOVED, 5, 5, 0);
+        dispatchMouse(target, MouseEvent.MOUSE_ENTERED, 5, 5, 0);
+        dispatchMouse(target, MouseEvent.MOUSE_PRESSED, 5, 5, MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_RELEASED, 5, 5, MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_CLICKED, 5, 5, 0);
         sleep(40);
     }
 
@@ -109,7 +109,7 @@ public class RibbonOpacityControlTest {
         EventQueue.invokeLater(() -> target.dispatchEvent(ev));
     }
 
-    private static void waitForShowing(Window w) throws Exception {
+    private static void waitForShowing(Window w) {
         long deadline = System.currentTimeMillis() + 5000;
         while (System.currentTimeMillis() < deadline) {
             if (w != null && w.isShowing()) return;

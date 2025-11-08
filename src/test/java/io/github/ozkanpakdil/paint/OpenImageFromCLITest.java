@@ -25,7 +25,7 @@ public class OpenImageFromCLITest {
     private File tempImageFile;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         // Skip in headless environments (CI without DISPLAY)
         assumeFalse(GraphicsEnvironment.isHeadless(), "UI tests require a display (not headless)");
     }

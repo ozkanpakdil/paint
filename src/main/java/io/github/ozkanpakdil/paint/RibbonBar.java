@@ -23,8 +23,6 @@ public class RibbonBar extends JPanel {
     private JPanel textColorBtn;
     private JPanel colorPreview;
 
-    // Size group controls: separate Stroke and Opacity sliders
-    private JLabel strokeLabel;
     private JSlider strokeSlider;
     private JLabel opacityLabel;
     private JSlider opacitySlider;
@@ -46,7 +44,7 @@ public class RibbonBar extends JPanel {
         return capitalizeFirstLetter(s.replace('-', ' ')).replace("_", " ");
     }
 
-    private JComponent buildRibbon() throws IOException {
+    private JComponent buildRibbon() {
         // TOP AREA: left groups (Tools/Shapes/Size) and fixed Colors group on the right
         JPanel topLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 6));
         topLeft.setOpaque(false);
@@ -137,7 +135,7 @@ public class RibbonBar extends JPanel {
         }
     }
 
-    private JComponent groupTools() throws IOException {
+    private JComponent groupTools() {
         JPanel g = titledGroup("Tools");
         ToolDef[] tools = {
             new ToolDef("pencil", 0),
@@ -156,7 +154,7 @@ public class RibbonBar extends JPanel {
         return g;
     }
 
-    private JComponent groupShapes() throws IOException {
+    private JComponent groupShapes() {
         JPanel g = titledGroup("Shapes");
         ToolDef[] shapes = {
             new ToolDef("rectangle", 2),
@@ -205,7 +203,8 @@ public class RibbonBar extends JPanel {
         // Stroke width controls
         JPanel row1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
         row1.setOpaque(false);
-        strokeLabel = new JLabel("Stroke");
+        // Size group controls: separate Stroke and Opacity sliders
+        JLabel strokeLabel = new JLabel("Stroke");
         strokeSlider = new JSlider(JSlider.HORIZONTAL, 1, 20, SideMenu.getStrokeSize());
         strokeSlider.setName("stroke");
         strokeSlider.setPreferredSize(new Dimension(140, 28));
@@ -357,7 +356,7 @@ public class RibbonBar extends JPanel {
         if (img == null) {
             // Fallbacks for missing resources
             if ("move.png".equalsIgnoreCase(resource)) {
-                img = generateMoveIcon(24, 24);
+                img = generateMoveIcon();
             } else {
                 img = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = img.createGraphics();
@@ -383,17 +382,17 @@ public class RibbonBar extends JPanel {
         return lab;
     }
 
-    private BufferedImage generateMoveIcon(int w, int h) {
-        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    private BufferedImage generateMoveIcon() {
+        BufferedImage img = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
         try {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(new Color(245, 245, 245));
-            g.fillRect(0, 0, w, h);
+            g.fillRect(0, 0, 24, 24);
             g.setColor(new Color(60, 60, 60));
-            int cx = w / 2;
-            int cy = h / 2;
-            int arm = Math.min(w, h) / 3;
+            int cx = 24 / 2;
+            int cy = 24 / 2;
+            int arm = 24 / 3;
             g.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             g.drawLine(cx - arm, cy, cx + arm, cy);
             g.drawLine(cx, cy - arm, cx, cy + arm);

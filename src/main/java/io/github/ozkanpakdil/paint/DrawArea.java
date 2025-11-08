@@ -1284,8 +1284,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         }
         // Snapshot before resizing
         pushUndoSnapshot();
-        // Drop transient overlays/placement so state is consistent
-        dropOverlayAndSelection();
 
         BufferedImage resized = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resized.createGraphics();
