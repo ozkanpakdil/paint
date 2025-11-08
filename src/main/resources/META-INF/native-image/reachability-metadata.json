@@ -19,6 +19,96 @@
       "type": "com.formdev.flatlaf.extras.FlatDesktop"
     },
     {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserDetailsViewIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserHomeFolderIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserListViewIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserNewFolderIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileChooserUpFolderIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewComputerIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewDirectoryIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewFileIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewFloppyDriveIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatFileViewHardDriveIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.icons.FlatHelpButtonIcon",
       "methods": [
         {
@@ -38,6 +128,42 @@
     },
     {
       "type": "com.formdev.flatlaf.icons.FlatMenuItemArrowIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatOptionPaneInformationIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatOptionPaneQuestionIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatRadioButtonIcon",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.icons.FlatTabbedPaneCloseIcon",
       "methods": [
         {
           "name": "<init>",
@@ -72,6 +198,17 @@
       ]
     },
     {
+      "type": "com.formdev.flatlaf.ui.FlatColorChooserUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.ui.FlatComboBoxUI",
       "methods": [
         {
@@ -87,6 +224,20 @@
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatComboBoxUI$FlatComboPopup"
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatFileChooserUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatFileChooserUI$FlatShortcutsPanel"
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatFormattedTextFieldUI",
@@ -120,6 +271,15 @@
       ]
     },
     {
+      "type": "com.formdev.flatlaf.ui.FlatListCellBorder$Selected",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.ui.FlatListUI",
       "methods": [
         {
@@ -127,6 +287,15 @@
           "parameterTypes": [
             "javax.swing.JComponent"
           ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatMarginBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
         }
       ]
     },
@@ -182,6 +351,17 @@
       ]
     },
     {
+      "type": "com.formdev.flatlaf.ui.FlatOptionPaneUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.ui.FlatPanelUI",
       "methods": [
         {
@@ -214,6 +394,17 @@
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatPopupMenuUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatRadioButtonUI",
       "methods": [
         {
           "name": "createUI",
@@ -303,6 +494,17 @@
       "type": "com.formdev.flatlaf.ui.FlatSpinnerUI$1"
     },
     {
+      "type": "com.formdev.flatlaf.ui.FlatTabbedPaneUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.ui.FlatTextBorder",
       "methods": [
         {
@@ -313,6 +515,53 @@
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatTextFieldUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToggleButtonUI",
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToolBarBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToolBarUI",
+      "fields": [
+        {
+          "name": "hoverButtonGroupBackground"
+        }
+      ],
+      "methods": [
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.formdev.flatlaf.ui.FlatToolTipUI",
       "methods": [
         {
           "name": "createUI",
@@ -334,40 +583,13 @@
       ]
     },
     {
-      "type": "com.intellij.junit5.JUnit5IdeaTestRunner",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "com.intellij.codeInsight.editorActions.FoldingData"
     },
     {
-      "type": "com.intellij.rt.debugger.agent.CaptureStorage"
+      "type": "com.intellij.openapi.editor.RawText"
     },
     {
-      "type": "com.intellij.rt.execution.application.AppMainV2$Agent",
-      "methods": [
-        {
-          "name": "premain",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.instrument.Instrumentation"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "com.intellij.rt.junit.JUnitStarter",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "main",
-          "parameterTypes": [
-            "java.lang.String[]"
-          ]
-        }
-      ]
+      "type": "com.intellij.openapi.editor.impl.EditorCopyPasteHelperImpl$CopyPasteOptionsTransferableData"
     },
     {
       "type": "com.sun.imageio.plugins.jpeg.JPEGImageReader",
@@ -442,7 +664,46 @@
       ]
     },
     {
+      "type": "com.sun.imageio.plugins.jpeg.JPEGImageWriter",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "grabPixels",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "warningOccurred",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "warningWithMessage",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "writeMetadata",
+          "parameterTypes": []
+        },
+        {
+          "name": "writeOutputData",
+          "parameterTypes": [
+            "byte[]",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.sun.swing.internal.plaf.basic.resources.basic"
+    },
+    {
+      "type": "com.sun.swing.internal.plaf.metal.resources.metal"
     },
     {
       "type": "io.github.ozkanpakdil.paint.ArrowToolTest",
@@ -860,6 +1121,12 @@
           "name": "VK_F10"
         },
         {
+          "name": "VK_F2"
+        },
+        {
+          "name": "VK_F5"
+        },
+        {
           "name": "VK_H"
         },
         {
@@ -905,6 +1172,9 @@
           "name": "VK_SPACE"
         },
         {
+          "name": "VK_TAB"
+        },
+        {
           "name": "VK_UP"
         },
         {
@@ -920,6 +1190,9 @@
     },
     {
       "type": "java.awt.event.MouseMotionListener[]"
+    },
+    {
+      "type": "java.awt.event.WindowFocusListener[]"
     },
     {
       "type": "java.awt.geom.AffineTransform",
@@ -1266,22 +1539,7 @@
       ]
     },
     {
-      "type": "java.lang.InternalError",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        }
-      ]
-    },
-    {
       "type": "java.lang.String"
-    },
-    {
-      "type": "java.lang.String[]"
     },
     {
       "type": "java.lang.System",
@@ -1312,6 +1570,12 @@
       "type": "java.nio.CharBuffer"
     },
     {
+      "type": "java.rmi.MarshalledObject"
+    },
+    {
+      "type": "java.rmi.Remote"
+    },
+    {
       "type": "java.util.List"
     },
     {
@@ -1339,7 +1603,54 @@
       "type": "javax.imageio.spi.ImageReaderSpi"
     },
     {
+      "type": "javax.imageio.spi.ImageReaderWriterSpi",
+      "methods": [
+        {
+          "name": "getMIMETypes",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "javax.imageio.spi.ImageWriterSpi"
+    },
+    {
+      "type": "javax.swing.PopupFactory",
+      "methods": [
+        {
+          "name": "getPopup",
+          "parameterTypes": [
+            "java.awt.Component",
+            "java.awt.Component",
+            "int",
+            "int",
+            "boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.filechooser.FileSystemView",
+      "methods": [
+        {
+          "name": "getChooserShortcutPanelFiles",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.filechooser.UnixFileSystemView"
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicButtonListener",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
     },
     {
       "type": "javax.swing.plaf.basic.BasicGraphicsUtils",
@@ -1369,7 +1680,70 @@
       ]
     },
     {
-      "type": "junit.framework.ComparisonFailure"
+      "type": "javax.swing.plaf.basic.BasicMenuItemUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicOptionPaneUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicPopupMenuUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicRootPaneUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicSpinnerUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTabbedPaneUI",
+      "methods": [
+        {
+          "name": "loadActionMap",
+          "parameterTypes": [
+            "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
     },
     {
       "type": "net.miginfocom.swing.MigLayout"
@@ -1393,9 +1767,6 @@
     },
     {
       "type": "org.apiguardian.api.API"
-    },
-    {
-      "type": "org.junit.ComparisonFailure"
     },
     {
       "type": "org.junit.internal.AssumptionViolatedException"
@@ -1425,9 +1796,6 @@
       "type": "org.junit.platform.commons.annotation.Testable"
     },
     {
-      "type": "org.junit.platform.engine.discovery.NestedClassSelector"
-    },
-    {
       "type": "org.junit.platform.launcher.LauncherSession",
       "methods": [
         {
@@ -1451,43 +1819,6 @@
     },
     {
       "type": "org.junit.platform.launcher.listeners.UniqueIdTrackingListener"
-    },
-    {
-      "type": "org.junit.vintage.engine.VintageTestEngine"
-    },
-    {
-      "type": "org.opentest4j.AssertionFailedError",
-      "methods": [
-        {
-          "name": "getActual",
-          "parameterTypes": []
-        },
-        {
-          "name": "getExpected",
-          "parameterTypes": []
-        },
-        {
-          "name": "isActualDefined",
-          "parameterTypes": []
-        },
-        {
-          "name": "isExpectedDefined",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "org.opentest4j.ValueWrapper",
-      "methods": [
-        {
-          "name": "getStringRepresentation",
-          "parameterTypes": []
-        },
-        {
-          "name": "getValue",
-          "parameterTypes": []
-        }
-      ]
     },
     {
       "type": "sun.awt.SunHints",
@@ -1545,6 +1876,9 @@
       "type": "sun.awt.X11.XContentWindow"
     },
     {
+      "type": "sun.awt.X11.XDialogPeer"
+    },
+    {
       "type": "sun.awt.X11.XErrorHandlerUtil",
       "jniAccessible": true,
       "methods": [
@@ -1592,6 +1926,9 @@
           "name": "target"
         }
       ]
+    },
+    {
+      "type": "sun.awt.X11.XWindowPeer"
     },
     {
       "type": "sun.awt.X11GraphicsConfig",
@@ -1694,6 +2031,15 @@
         },
         {
           "name": "type"
+        }
+      ]
+    },
+    {
+      "type": "sun.awt.shell.ShellFolderManager",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
         }
       ]
     },
@@ -1880,47 +2226,6 @@
           "name": "readFile",
           "parameterTypes": [
             "java.nio.ByteBuffer"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.instrument.InstrumentationImpl",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "boolean",
-            "boolean",
-            "boolean"
-          ]
-        },
-        {
-          "name": "loadClassAndCallAgentmain",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "loadClassAndCallPremain",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "transform",
-          "parameterTypes": [
-            "java.lang.Module",
-            "java.lang.ClassLoader",
-            "java.lang.String",
-            "java.lang.Class",
-            "java.security.ProtectionDomain",
-            "byte[]",
-            "boolean"
           ]
         }
       ]
@@ -2471,6 +2776,15 @@
       ]
     },
     {
+      "type": "sun.java2d.pipe.ShapeSpanIterator",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "pData"
+        }
+      ]
+    },
+    {
       "type": "sun.java2d.xr.XRBackendNative",
       "jniAccessible": true,
       "fields": [
@@ -2494,39 +2808,6 @@
         },
         {
           "name": "xid"
-        }
-      ]
-    },
-    {
-      "type": "sun.launcher.LauncherHelper",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "isStaticMain"
-        },
-        {
-          "name": "noArgMain"
-        }
-      ],
-      "methods": [
-        {
-          "name": "checkAndLoadMain",
-          "parameterTypes": [
-            "boolean",
-            "int",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "getApplicationClass",
-          "parameterTypes": []
-        },
-        {
-          "name": "makePlatformString",
-          "parameterTypes": [
-            "boolean",
-            "byte[]"
-          ]
         }
       ]
     },
@@ -2604,13 +2885,6 @@
     },
     {
       "type": "sun.util.resources.cldr.CurrencyNames_en"
-    },
-    {
-      "type": {
-        "proxy": [
-          "java.lang.Runnable"
-        ]
-      }
     }
   ],
   "resources": [
@@ -2750,6 +3024,14 @@
     },
     {
       "module": "java.desktop",
+      "glob": "com/sun/swing/internal/plaf/metal/resources/metal_en.properties"
+    },
+    {
+      "module": "java.desktop",
+      "glob": "com/sun/swing/internal/plaf/metal/resources/metal_en_GB.properties"
+    },
+    {
+      "module": "java.desktop",
       "glob": "javax/swing/text/html/default.css"
     },
     {
@@ -2765,6 +3047,9 @@
     },
     {
       "bundle": "com.sun.swing.internal.plaf.basic.resources.basic"
+    },
+    {
+      "bundle": "com.sun.swing.internal.plaf.metal.resources.metal"
     },
     {
       "bundle": "sun.awt.resources.awt"

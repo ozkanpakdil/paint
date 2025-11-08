@@ -72,7 +72,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
             }
             if (myPicture == null) {
                 // Fallback: generate a simple icon if resource is missing (e.g., for Move)
-                myPicture = generateToolIcon(tool_names[i], 28, 28);
+                myPicture = generateToolIcon(tool_names[i]);
             }
             Image dimg = myPicture.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
             JLabel toolLabel = new JLabel(new ImageIcon(dimg));
@@ -182,20 +182,20 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
     }
 
     // Fallback icon generator (simple Adwaita-like glyphs for certain tools)
-    private BufferedImage generateToolIcon(String name, int w, int h) {
-        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    private BufferedImage generateToolIcon(String name) {
+        BufferedImage img = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
         try {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             // Light toolbar bg
             g.setColor(new Color(245, 245, 245));
-            g.fillRect(0, 0, w, h);
+            g.fillRect(0, 0, 28, 28);
             if ("move".equals(name)) {
                 // Draw a cross move cursor similar to Adwaita
                 g.setColor(new Color(60, 60, 60));
-                int cx = w / 2;
-                int cy = h / 2;
-                int arm = Math.min(w, h) / 3;
+                int cx = 28 / 2;
+                int cy = 28 / 2;
+                int arm = Math.min(28, 28) / 3;
                 g.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 // vertical and horizontal lines
                 g.drawLine(cx - arm, cy, cx + arm, cy);
@@ -212,7 +212,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
             } else {
                 // Generic placeholder
                 g.setColor(new Color(80, 80, 80));
-                g.drawRect(4, 4, w - 8, h - 8);
+                g.drawRect(4, 4, 28 - 8, 28 - 8);
             }
         } finally {
             g.dispose();
@@ -254,18 +254,16 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
             changeForeColor(Integer.parseInt(ev.getComponent().getName().substring(1)));
         } else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'T') // Tools color
             changeTool(Tool.fromIndex(Integer.parseInt(ev.getComponent().getName().substring(1))));
-        else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'P') // Pencil color
-            ;
         else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'S') {
             saveImage();
         } else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'U') {
             uploadImage();
         } else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'C') {
-            colorchooser();
+            chooseColor();
         }
     }
 
-    private void colorchooser() {
+    private void chooseColor() {
         Color chosen = JColorChooser.showDialog(this, "Select a color", for_color);
         if (chosen != null) {
             Color old = for_color;
@@ -280,7 +278,7 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
      * Public wrapper to open the color chooser from menus or other UI.
      */
     public void triggerColorChooser() {
-        colorchooser();
+        chooseColor();
     }
 
     private void uploadImage() {

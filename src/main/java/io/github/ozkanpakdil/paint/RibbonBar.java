@@ -149,7 +149,7 @@ public class RibbonBar extends JPanel {
             new ToolDef("arrow", "arrow.png", 13)
         };
         for (ToolDef tool : tools) {
-            JLabel b = makeIconButton(tool.icon, 24, "T" + tool.index, capitalizeFirstLetter(tool.name));
+            JLabel b = makeIconButton(tool.icon, "T" + tool.index, capitalizeFirstLetter(tool.name));
             b.addMouseListener(controller);
             g.add(b);
         }
@@ -170,7 +170,7 @@ public class RibbonBar extends JPanel {
         };
         for (ToolDef shape : shapes) {
             String tip = shape.name.equals("line-tool") ? "Line" : sanitizeAndFormat(shape.name);
-            JLabel b = makeIconButton(shape.icon, 24, "T" + shape.index, tip);
+            JLabel b = makeIconButton(shape.icon, "T" + shape.index, tip);
             b.addMouseListener(controller);
             g.add(b);
         }
@@ -266,7 +266,7 @@ public class RibbonBar extends JPanel {
         more.setMargin(new Insets(2, 6, 2, 6));
         more.setFocusable(false);
         // Use the color chooser via SideMenu: clicking a pseudo component named C* will trigger controller.colorchooser()
-        more.addActionListener(e -> {
+        more.addActionListener(_ -> {
             // fabricate a component with name starting with 'C' and dispatch mouseClicked
             // Delegate to controller via a fake component name starting with 'C'
             JLabel hidden = new JLabel();
@@ -300,14 +300,14 @@ public class RibbonBar extends JPanel {
         if (SideMenu.getSelectedFont() >= 0 && SideMenu.getSelectedFont() < fonts.length) {
             fontCombo.setSelectedIndex(SideMenu.getSelectedFont());
         }
-        fontCombo.addActionListener(e -> controller.setFontIndex(fontCombo.getSelectedIndex()));
+        fontCombo.addActionListener(_ -> controller.setFontIndex(fontCombo.getSelectedIndex()));
         textGroup.add(new JLabel("Font:"));
         textGroup.add(fontCombo);
 
         // Size
         sizeSpinner = new JSpinner(new SpinnerNumberModel(Math.max(6, SideMenu.getFontSize()), 6, 200, 1));
         sizeSpinner.setPreferredSize(new Dimension(60, sizeSpinner.getPreferredSize().height));
-        sizeSpinner.addChangeListener(e -> controller.setFontSize((Integer) sizeSpinner.getValue()));
+        sizeSpinner.addChangeListener(_ -> controller.setFontSize((Integer) sizeSpinner.getValue()));
         textGroup.add(new JLabel("Size:"));
         textGroup.add(sizeSpinner);
 
@@ -345,7 +345,7 @@ public class RibbonBar extends JPanel {
         return new RibbonGroup(title);
     }
 
-    private JLabel makeIconButton(String resource, int size, String name, String tooltip) throws IOException {
+    private JLabel makeIconButton(String resource, String name, String tooltip) {
         BufferedImage img = null;
         try {
             java.io.InputStream in = SideMenu.class.getResourceAsStream("/images/" + resource);
@@ -357,21 +357,21 @@ public class RibbonBar extends JPanel {
         if (img == null) {
             // Fallbacks for missing resources
             if ("move.png".equalsIgnoreCase(resource)) {
-                img = generateMoveIcon(size, size);
+                img = generateMoveIcon(24, 24);
             } else {
-                img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+                img = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = img.createGraphics();
                 try {
                     g.setColor(new Color(245, 245, 245));
-                    g.fillRect(0, 0, size, size);
+                    g.fillRect(0, 0, 24, 24);
                     g.setColor(new Color(120, 120, 120));
-                    g.drawRect(3, 3, size - 6, size - 6);
+                    g.drawRect(3, 3, 24 - 6, 24 - 6);
                 } finally {
                     g.dispose();
                 }
             }
         }
-        Image scaled = img.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+        Image scaled = img.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         JLabel lab = new JLabel(new ImageIcon(scaled));
         lab.setBorder(BorderFactory.createCompoundBorder(
                 new MatteBorder(1, 1, 1, 1, new Color(220, 220, 220)),

@@ -33,7 +33,4 @@ public enum Tool {
         throw new IllegalArgumentException("Unknown tool index: " + idx);
     }
 
-    public int toIndex() {
-        return index;
-    }
 }

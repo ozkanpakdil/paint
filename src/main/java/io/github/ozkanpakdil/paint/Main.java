@@ -89,9 +89,7 @@ public class Main extends JFrame {
         String os = System.getProperty("os.name", "").toLowerCase();
         if (os.contains("linux")) {
             String gtk = System.getenv("GTK_THEME");
-            if (gtk != null && gtk.toLowerCase().contains("dark")) {
-                return true;
-            }
+            return gtk != null && gtk.toLowerCase().contains("dark");
         }
 
         return false;

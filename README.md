@@ -97,7 +97,7 @@ Steps:
    export PATH="$JAVA_HOME/bin:$PATH"
    java \
      -Djava.awt.headless=false \
-     -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image \
+     -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image \
      -jar target/paint-1.0.0.jar
 
    ```
