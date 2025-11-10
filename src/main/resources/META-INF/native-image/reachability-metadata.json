@@ -2234,6 +2234,60 @@
       ]
     },
     {
+      "type": "sun.font.FontConfigManager$FcCompFont",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "allFonts"
+        },
+        {
+          "name": "fcName"
+        },
+        {
+          "name": "firstFont"
+        }
+      ]
+    },
+    {
+      "type": "sun.font.FontConfigManager$FontConfigFont",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "familyName"
+        },
+        {
+          "name": "fontFile"
+        },
+        {
+          "name": "fullName"
+        },
+        {
+          "name": "styleStr"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.font.FontConfigManager$FontConfigFont[]"
+    },
+    {
+      "type": "sun.font.FontConfigManager$FontConfigInfo",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "cacheDirs"
+        },
+        {
+          "name": "fcVersion"
+        }
+      ]
+    },
+    {
       "type": "sun.font.FontStrike",
       "jniAccessible": true,
       "methods": [
@@ -3098,10 +3152,22 @@
       "type": "sun.text.resources.cldr.FormatData_en"
     },
     {
+      "type": "sun.text.resources.cldr.FormatData_en_US"
+    },
+    {
       "type": "sun.util.resources.cldr.CurrencyNames"
     },
     {
       "type": "sun.util.resources.cldr.CurrencyNames_en"
+    },
+    {
+      "type": "sun.util.resources.cldr.TimeZoneNames"
+    },
+    {
+      "type": "sun.util.resources.cldr.TimeZoneNames_en"
+    },
+    {
+      "type": "sun.util.resources.cldr.TimeZoneNames_en_US"
     },
     {
       "type": {
@@ -3120,6 +3186,9 @@
     },
     {
       "glob": "META-INF/services/java.net.spi.InetAddressResolverProvider"
+    },
+    {
+      "glob": "META-INF/services/java.time.zone.ZoneRulesProvider"
     },
     {
       "glob": "META-INF/services/javax.imageio.spi.ImageInputStreamSpi"

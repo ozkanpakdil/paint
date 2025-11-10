@@ -173,6 +173,92 @@ Development Release uploads:
 - Find them at: GitHub → Releases → "Development Build" (tag `development`).
 
 
+## Native-based installers & CI (DEB / RPM / DMG / MSI)
+
+This project now consolidates native-image builds and OS packaging into a single CI workflow: `.github/workflows/packaging.yml`.
+
+- On Linux and macOS the CI builds a GraalVM native image and then creates OS packages from the native binary:
+  - DEB (Debian/Ubuntu) is built from a staged filesystem using `fakeroot dpkg-deb --build` and includes desktop/menu files and the PNG icon.
+  - RPM is produced via a simple `rpmbuild` stage (a spec is generated in CI and the RPM is built from the staged files).
+  - DMG on macOS is created by building a minimal `.app` bundle (Contents/MacOS + Resources, Info.plist, app.icns) and packaging it with `hdiutil`.
+- On Windows the CI uses the existing jpackage flow (MSI) since jpackage bundles a runtime in a platform-standard way.
+
+If you want to run the packaging locally (Linux example):
+
+1) Build the native image with GraalVM:
+```bash
+export JAVA_HOME=/path/to/graalvm
+export PATH="$JAVA_HOME/bin:$PATH"
+gu install native-image # if needed
+mvn -Pnative -DskipTests clean package
+```
+
+2) Create a staging directory and populate it (example commands mimic the CI):
+```bash
+APP=paint
+STAGE=pack-$APP
+rm -rf "$STAGE" && mkdir -p "$STAGE/usr/bin" "$STAGE/usr/share/applications" "$STAGE/usr/share/icons/hicolor/256x256/apps" "$STAGE/DEBIAN"
+cp target/$APP "$STAGE/usr/bin/$APP"
+cp src/main/resources/images/app.png "$STAGE/usr/share/icons/hicolor/256x256/apps/$APP.png"
+# copy desktop entry or create one under $STAGE/usr/share/applications
+```
+
+3) Build DEB locally (requires `fakeroot`):
+```bash
+# generate control file in $STAGE/DEBIAN/control then:
+fakeroot dpkg-deb --build "$STAGE"
+mv "$STAGE.deb" paint-local.deb
+```
+
+4) Build RPM locally (example outline):
+```bash
+# create rpmbuild dirs under ~/rpmbuild or a tempdir
+# create a tar.gz of the staged filesystem as SOURCES and a minimal SPEC
+rpmbuild --define "_topdir /tmp/rpmbuild" -bb /tmp/rpmbuild/SPECS/paint.spec
+```
+
+5) Build DMG on macOS (outline):
+```bash
+# create Paint.app/Contents/{MacOS,Resources}
+# copy native binary to Contents/MacOS/paint
+# generate app.icns in Contents/Resources (use iconutil)
+hdiutil create -volname "Paint" -srcfolder "./Paint.app" -ov -format UDZO paint-macos.dmg
+```
+
+Exact Maven commands used by CI workflows
+- Build GraalVM native image (Linux/macOS):
+```bash
+mvn -B -Pnative -DskipTests -Dgraalvm.native.imageName=paint clean package
+```
+- Build jpackage installers (Windows MSI via jpackage in CI):
+```bash
+mvn -B -Pinstaller -Dinstaller.type=MSI -DskipTests clean package jpackage:jpackage
+```
+- The separate `jpackage` matrix workflow uses the template shown below in CI (DEB/DMG/MSI):
+```bash
+mvn -B -Pinstaller -Dinstaller.type=<DEB|DMG|MSI> -DskipTests clean package jpackage:jpackage
+```
+
+Packaging scripts
+- You can run the packaging scripts locally (they are used by CI):
+  - Linux: `./src/installer/ci/bin/linux-package.sh [output-dir]` — builds a DEB and tries to build an RPM (requires `fakeroot` and `rpmbuild`).
+  - macOS: `./src/installer/ci/bin/macos-package.sh [output-dir]` — creates a minimal `.app` bundle and packages a DMG (requires `iconutil`/`sips`/`hdiutil`).
+
+Example: create a fake native binary and test packaging locally (Linux):
+```bash
+printf '%s
+' "#!/bin/sh" "echo Fake paint binary" > target/paint
+chmod +x target/paint
+sudo apt-get update && sudo apt-get install -y fakeroot rpm
+./src/installer/ci/bin/linux-package.sh outdir
+ls -la outdir
+```
+
+Notes and caveats:
+- The CI packaging scripts pick up `src/installer/linux/postinst` and `postrm` if present and wire them into the DEB; keep those files in the repository for custom package hooks.
+- The Debian `Description` field formatting expects leading spaces on continuation lines; the project keeps `src/main/resources/installer.properties` with a properly escaped `app.description` which CI reads when building control metadata.
+- CI will publish artifacts to a rolling `development` prerelease (see workflow file).
+
 ### Formatting the DEB description (multi-line and blank lines)
 
 The Debian control file has strict rules for the `Description` field:

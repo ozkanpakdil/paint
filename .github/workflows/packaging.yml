@@ -1,0 +1,139 @@
+name: Build native images and OS installers
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ "v*" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Package on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            packaging: linux
+          - os: macos-latest
+            packaging: macos
+          - os: windows-latest
+            packaging: windows
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK / GraalVM
+        if: matrix.packaging != 'windows'
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up JDK (Windows)
+        if: matrix.packaging == 'windows'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: 'maven'
+
+      - name: Build (native for Linux/macOS, installer for Windows)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ matrix.packaging }}" = "windows" ]; then
+            echo "Building jar and running jpackage for Windows MSI"
+            mvn -B -Pinstaller "-Dinstaller.type=MSI" -DskipTests clean package jpackage:jpackage
+          else
+            echo "Building GraalVM native image"
+            mvn -B -Pnative -DskipTests -Dgraalvm.native.imageName=paint clean package
+          fi
+
+      - name: Prepare Linux packaging prerequisites
+        if: matrix.packaging == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y fakeroot rpm
+      - name: Check Docker availability
+        if: matrix.packaging == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v docker >/dev/null 2>&1; then
+            echo "Error: docker not found on PATH. This workflow requires Docker to build RPMs inside a Fedora container." >&2
+            echo "On GitHub-hosted runners Docker CLI is usually available on ubuntu-latest. If using self-hosted runners, ensure Docker is installed and accessible to the runner user." >&2
+            exit 1
+          fi
+      - name: Package - Linux (DEB + RPM)
+        if: matrix.packaging == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./src/installer/ci/bin/linux-package.sh || true
+          OUTDIR=outdir
+          mkdir -p "$OUTDIR"
+          # The packaging script will create the DEB and run a containerized RPM build
+          # (it uses fpm inside a Fedora container to produce the RPM so rpmbuild/rpmdb
+          # differences on Debian runners are avoided).
+          DOCKER_RPM=1 ./src/installer/ci/bin/linux-package.sh "$OUTDIR"
+          ls -la "$OUTDIR"
+
+      - name: Package - macOS (DMG)
+        if: matrix.packaging == 'macos'
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./src/installer/ci/bin/macos-package.sh || true
+          ./src/installer/ci/bin/macos-package.sh .
+
+      - name: Package - Windows (MSI)
+        if: matrix.packaging == 'windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # The jpackage step already produced installers under target/installers
+          Write-Host "Windows installer(s) are in target/installers"
+
+      - name: Upload packaged artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-${{ matrix.os }}-artifacts
+          path: |
+            outdir/**
+            paint-macos.dmg
+            target/installers/**
+            target/paint
+            target/native/paint
+          if-no-files-found: ignore
+
+      - name: Publish artifacts to Development release
+        if: github.event_name != 'pull_request'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: development
+          name: Development Build
+          prerelease: true
+          allowUpdates: true
+          removeArtifacts: false
+          artifactErrorsFailBuild: false
+          artifacts: |
+            paint-${{ matrix.os }}-artifacts

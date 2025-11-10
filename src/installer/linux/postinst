@@ -13,9 +13,9 @@ Version=1.0
 Name=Paint
 GenericName=Paint
 Comment=Simple Swing paint application
-Exec=/opt/paint/bin/Paint %F
-TryExec=/opt/paint/bin/Paint
-Icon=/opt/paint/lib/Paint.png
+Exec=/opt/paint/paint %F
+TryExec=/opt/paint/paint
+Icon=paint
 Terminal=false
 Categories=Graphics;
 StartupWMClass=Paint
@@ -38,6 +38,9 @@ chown root:root /usr/share/applications/paint.desktop 2>/dev/null || true
 if command -v update-desktop-database >/dev/null 2>&1; then
   update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 fi
+gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
+
+ # do not create global /usr/bin wrappers; the executable lives at /opt/paint/paint
 
 # Cleanup temp file
 rm -f "$TMP_DESKTOP" || true
