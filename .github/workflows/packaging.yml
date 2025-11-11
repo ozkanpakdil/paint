@@ -22,8 +22,9 @@ jobs:
             packaging: linux
           - os: macos-latest
             packaging: macos
-          - os: windows-latest
-            packaging: windows
+          # windows graalvm does not support swing yet
+          # - os: windows-latest
+          #   packaging: windows
 
     steps:
       - name: Checkout
@@ -136,4 +137,5 @@ jobs:
           removeArtifacts: false
           artifactErrorsFailBuild: false
           artifacts: |
-            paint-${{ matrix.os }}-artifacts
+            outdir/**
+            paint-macos.dmg
