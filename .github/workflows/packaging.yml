@@ -126,7 +126,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Publish artifacts to Development release
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
         uses: ncipollo/release-action@v1
         with:
           tag: development
