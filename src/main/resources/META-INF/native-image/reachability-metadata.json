@@ -857,6 +857,27 @@
       "type": "io.github.ozkanpakdil.paint.GUI"
     },
     {
+      "type": "io.github.ozkanpakdil.paint.GUIStatusUpdateTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "statusBar_updates_whenCanvasCroppedToPlacement",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "io.github.ozkanpakdil.paint.HighlighterDrawTest",
       "methods": [
         {

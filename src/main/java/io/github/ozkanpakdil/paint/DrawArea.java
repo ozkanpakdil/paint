@@ -129,10 +129,14 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         }
         redoStack.push(new LayerState(copyImage(cache), copyImage(highlightLayer)));
         // Restore previous canvas state
+        Dimension old = getPreferredSize();
         LayerState prev = undoStack.pop();
         cache = copyImage(prev.base);
         highlightLayer = copyImage(prev.highlight);
-        setPreferredSize(new Dimension(cache.getWidth(), cache.getHeight()));
+        Dimension neu = new Dimension(cache.getWidth(), cache.getHeight());
+        setPreferredSize(neu);
+        // Notify listeners (e.g., GUI) that canvas size changed
+        firePropertyChange("canvasSize", old, neu);
         revalidate();
         repaint();
     }
@@ -148,10 +152,14 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         // Save current canvas to undo stack
         undoStack.push(new LayerState(copyImage(cache), copyImage(highlightLayer)));
         // Restore next canvas state
+        Dimension old = getPreferredSize();
         LayerState next = redoStack.pop();
         cache = copyImage(next.base);
         highlightLayer = copyImage(next.highlight);
-        setPreferredSize(new Dimension(cache.getWidth(), cache.getHeight()));
+        Dimension neu = new Dimension(cache.getWidth(), cache.getHeight());
+        setPreferredSize(neu);
+        // Notify listeners (e.g., GUI) that canvas size changed
+        firePropertyChange("canvasSize", old, neu);
         revalidate();
         repaint();
     }
@@ -611,8 +619,13 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         } finally {
             g2.dispose();
         }
+        // Record old preferred size before mutating
+        Dimension old = getPreferredSize();
         cache = copy;
-        setPreferredSize(new Dimension(w, h));
+        Dimension neu = new Dimension(w, h);
+        setPreferredSize(neu);
+        // Notify listeners that canvas size changed
+        firePropertyChange("canvasSize", old, neu);
         revalidate();
         repaint();
     }
@@ -634,7 +647,12 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                 return;
             }
             // Crop to the content being placed (copy pendingImage into a new canvas at 0,0)
-            pushUndoSnapshot();
+            // If this pendingImage came from a selection cut, the undo stack already
+            // contains a snapshot from before the cut (see mouseReleased selection handling).
+            // In that case we must NOT push another snapshot here, otherwise undo will
+            // require two steps to restore the original image. Only push a snapshot
+            // when the pending image is a pasted image (selectionPlacement == false).
+            if (!selectionPlacement) pushUndoSnapshot();
             int w = Math.max(1, pendingImage.getWidth());
             int h = Math.max(1, pendingImage.getHeight());
             BufferedImage copy = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -644,10 +662,15 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             } finally {
                 g2.dispose();
             }
+            // record old size before changing
+            Dimension old = getPreferredSize();
             cache = copy;
-            setPreferredSize(new Dimension(w, h));
+            Dimension neu = new Dimension(w, h);
+            setPreferredSize(neu);
             // Clear overlays/selection/placement completely
             dropOverlayAndSelection();
+            // Notify listeners that canvas size changed
+            firePropertyChange("canvasSize", old, neu);
             revalidate();
             repaint();
             System.out.println("[CropToSelection] Cropped to placement (" + (selectionPlacement ? "selection" : "pasted image") + "): " + w + "x" + h);
@@ -677,13 +700,17 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             g2.dispose();
         }
         cache = copy;
-        setPreferredSize(new Dimension(w, h));
-        // Clear overlays/selection state
+    Dimension old = getPreferredSize();
+    Dimension neu = new Dimension(w, h);
+    setPreferredSize(neu);
+    // Clear overlays/selection state
         selecting = false;
         selectionRect = null;
         selectionPlacement = false;
         selectionCutBackup = null;
         selectionCutRect = null;
+        // Notify listeners that canvas size changed
+        firePropertyChange("canvasSize", old, neu);
         revalidate();
         repaint();
         System.out.println("[CropToSelection] Cropped to marquee selection: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
@@ -1294,7 +1321,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         } finally {
             g2.dispose();
         }
-        cache = resized;
+    cache = resized;
         // Resize highlight layer as transparent image and copy existing
         BufferedImage newHL = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
         if (highlightLayer != null) {
@@ -1306,7 +1333,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             }
         }
         highlightLayer = newHL;
-        setPreferredSize(new Dimension(newW, newH));
+        Dimension old = getPreferredSize();
+        Dimension neu = new Dimension(newW, newH);
+        setPreferredSize(neu);
+        // Notify listeners that canvas size changed
+        firePropertyChange("canvasSize", old, neu);
         revalidate();
         repaint();
     }

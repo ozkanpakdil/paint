@@ -18,6 +18,7 @@ public class GUI extends JPanel {
         sidemenu = new SideMenu();
         drawAreaPanel = new DrawArea(sidemenu);
         drawAreaPanel.setName("drawArea");
+        
         // Top Ribbon like MS Paint
         add(new RibbonBar(sidemenu), java.awt.BorderLayout.NORTH);
 
@@ -45,6 +46,21 @@ public class GUI extends JPanel {
         status.add(wSpin);
         status.add(new JLabel("H:"));
         status.add(hSpin);
+        // Listen for canvas size changes so status bar stays in sync (e.g., crop/undo/redo)
+        drawAreaPanel.addPropertyChangeListener(evt -> {
+            if ("canvasSize".equals(evt.getPropertyName())) {
+                try {
+                    Dimension d = (Dimension) evt.getNewValue();
+                    SwingUtilities.invokeLater(() -> {
+                        wSpin.setValue(d.width);
+                        hSpin.setValue(d.height);
+                        message.setText("Canvas: " + d.width + " x " + d.height);
+                        // force layout refresh so holder can update if necessary
+                        revalidate();
+                    });
+                } catch (Exception ignored) {}
+            }
+        });
         JButton apply = new JButton("Resize");
         apply.setToolTipText("Resize the canvas to the specified width and height");
         status.add(apply);
