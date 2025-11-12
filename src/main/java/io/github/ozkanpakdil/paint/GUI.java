@@ -18,17 +18,35 @@ public class GUI extends JPanel {
         sidemenu = new SideMenu();
         drawAreaPanel = new DrawArea(sidemenu);
         drawAreaPanel.setName("drawArea");
-        
-        // Top Ribbon like MS Paint
-        add(new RibbonBar(sidemenu), java.awt.BorderLayout.NORTH);
+
+        // Ribbon and status will live at the bottom so the canvas stays central
+
+        // Left sidebar with tools
+        JPanel sidebar = new JPanel();
+        sidebar.setOpaque(false);
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setBorder(new javax.swing.border.EmptyBorder(2, 2, 2, 4));
+        sidebar.add(buildToolColumn());
+        sidebar.add(Box.createVerticalStrut(4));
+        sidebar.add(buildShapeColumn());
+        sidebar.add(Box.createVerticalGlue());
+
+        // Center with canvas
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setOpaque(false);
 
         // Center holder to keep canvas centered when smaller than viewport
         JPanel holder = new JPanel(new java.awt.GridBagLayout());
         holder.setBackground(new Color(230, 230, 230));
         java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = java.awt.GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = java.awt.GridBagConstraints.CENTER;
         holder.add(drawAreaPanel, gbc);
-        add(holder, java.awt.BorderLayout.CENTER);
+
+        centerPanel.add(sidebar, BorderLayout.WEST);
+        centerPanel.add(holder, BorderLayout.CENTER);
+        add(centerPanel, java.awt.BorderLayout.CENTER);
 
         // Status bar
         JPanel status = new JPanel();
@@ -46,7 +64,8 @@ public class GUI extends JPanel {
         status.add(wSpin);
         status.add(new JLabel("H:"));
         status.add(hSpin);
-        // Listen for canvas size changes so status bar stays in sync (e.g., crop/undo/redo)
+        // Listen for canvas size changes so status bar stays in sync (e.g.,
+        // crop/undo/redo)
         drawAreaPanel.addPropertyChangeListener(evt -> {
             if ("canvasSize".equals(evt.getPropertyName())) {
                 try {
@@ -58,7 +77,8 @@ public class GUI extends JPanel {
                         // force layout refresh so holder can update if necessary
                         revalidate();
                     });
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         });
         JButton apply = new JButton("Resize");
@@ -68,7 +88,11 @@ public class GUI extends JPanel {
         message = new JLabel("Ready");
         status.add(Box.createHorizontalStrut(12));
         status.add(message);
-        add(status, java.awt.BorderLayout.SOUTH);
+        // combine ribbon and status at the bottom
+        JPanel southPanel = new JPanel(new BorderLayout());
+        southPanel.add(new RibbonBar(sidemenu), BorderLayout.NORTH);
+        southPanel.add(status, BorderLayout.SOUTH);
+        add(southPanel, java.awt.BorderLayout.SOUTH);
 
         // Apply handler
         Runnable doResize = () -> {
@@ -88,23 +112,38 @@ public class GUI extends JPanel {
         };
         apply.addActionListener((ActionEvent _) -> doResize.run());
         // Update message on spinner change; Enter to apply
-        wSpin.addChangeListener(_ -> message.setText("W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
-        hSpin.addChangeListener(_ -> message.setText("W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
-        wSpin.addKeyListener(new java.awt.event.KeyAdapter() { public void keyPressed(java.awt.event.KeyEvent e){ if(e.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER) doResize.run(); }});
-        hSpin.addKeyListener(new java.awt.event.KeyAdapter() { public void keyPressed(java.awt.event.KeyEvent e){ if(e.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER) doResize.run(); }});
+        wSpin.addChangeListener(_ -> message.setText(
+                "W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
+        hSpin.addChangeListener(_ -> message.setText(
+                "W=" + ((Number) wSpin.getValue()).intValue() + ", H=" + ((Number) hSpin.getValue()).intValue()));
+        wSpin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+                    doResize.run();
+            }
+        });
+        hSpin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+                    doResize.run();
+            }
+        });
 
         // One-time auto-size of canvas to (almost) available center size
         holder.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
-                if (initialSized) return;
+                if (initialSized)
+                    return;
                 java.awt.Dimension size = holder.getSize();
-                if (size.width <= 0 || size.height <= 0) return;
+                if (size.width <= 0 || size.height <= 0)
+                    return;
                 int margin = 40; // keep a small margin
                 int newW = Math.max(1, Math.min(20000, size.width - margin));
                 int newH = Math.max(1, Math.min(20000, size.height - margin));
                 // Avoid pointless change if already near this size
-                if (Math.abs(drawAreaPanel.getCanvasWidth() - newW) > 5 || Math.abs(drawAreaPanel.getCanvasHeight() - newH) > 5) {
+                if (Math.abs(drawAreaPanel.getCanvasWidth() - newW) > 5
+                        || Math.abs(drawAreaPanel.getCanvasHeight() - newH) > 5) {
                     drawAreaPanel.resizeCanvas(newW, newH);
                     wSpin.setValue(newW);
                     hSpin.setValue(newH);
@@ -121,5 +160,99 @@ public class GUI extends JPanel {
 
     public SideMenu getSideMenu() {
         return sidemenu;
+    }
+
+    private JPanel buildToolColumn() {
+        JPanel col = new JPanel();
+        col.setOpaque(false);
+        col.setLayout(new BoxLayout(col, BoxLayout.Y_AXIS));
+        Object[] tools = {
+                new Object[] { "pencil", "pencil.png", 0 },
+                new Object[] { "highlighter", "highlight.png", 12 },
+                new Object[] { "eraser", "eraser.png", 5 },
+                new Object[] { "text", "text.png", 6 },
+                new Object[] { "bucket", "bucket.png", 10 },
+                new Object[] { "move", "move.png", 11 },
+                new Object[] { "arrow", "arrow.png", 13 }
+        };
+        for (Object tool : tools) {
+            Object[] def = (Object[]) tool;
+            String name = (String) def[0];
+            String icon = (String) def[1];
+            int idx = (int) def[2];
+            JLabel b = makeIconButton(icon, "T" + idx, capitalize(name));
+            b.addMouseListener(sidemenu);
+            b.setAlignmentX(0.5f);
+            col.add(b);
+            col.add(Box.createVerticalStrut(2));
+        }
+        return col;
+    }
+
+    private JPanel buildShapeColumn() {
+        JPanel col = new JPanel();
+        col.setOpaque(false);
+        col.setLayout(new BoxLayout(col, BoxLayout.Y_AXIS));
+        Object[] shapes = {
+                new Object[] { "rectangle", "rectangle.png", 2 },
+                new Object[] { "oval", "oval.png", 3 },
+                new Object[] { "polygon", "polygon.png", 4 },
+                new Object[] { "rectangle_fill", "rectangle_fill.png", 7 },
+                new Object[] { "oval_fill", "oval_fill.png", 8 },
+                new Object[] { "polygon_fill", "polygon_fill.png", 9 },
+                new Object[] { "line-tool", "line-tool.png", 1 },
+        };
+        for (Object shape : shapes) {
+            Object[] def = (Object[]) shape;
+            String name = (String) def[0];
+            String icon = (String) def[1];
+            int idx = (int) def[2];
+            String tip = "line-tool".equals(name) ? "Line" : formatName(name);
+            JLabel b = makeIconButton(icon, "T" + idx, tip);
+            b.addMouseListener(sidemenu);
+            b.setAlignmentX(0.5f);
+            col.add(b);
+            col.add(Box.createVerticalStrut(2));
+        }
+        return col;
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.isEmpty())
+            return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    private String formatName(String s) {
+        return capitalize(s.replace('-', ' ').replace("_", " "));
+    }
+
+    private JLabel makeIconButton(String resource, String name, String tooltip) {
+        java.awt.image.BufferedImage img = null;
+        try {
+            java.io.InputStream in = SideMenu.class.getResourceAsStream("/images/" + resource);
+            if (in != null)
+                img = javax.imageio.ImageIO.read(in);
+        } catch (Exception ignored) {
+        }
+        if (img == null) {
+            img = new java.awt.image.BufferedImage(24, 24, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = img.createGraphics();
+            g.setColor(new Color(245, 245, 245));
+            g.fillRect(0, 0, 24, 24);
+            g.setColor(new Color(120, 120, 120));
+            g.drawRect(3, 3, 18, 18);
+            g.dispose();
+        }
+        Image scaled = img.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        JLabel lab = new JLabel(new ImageIcon(scaled));
+        lab.setBorder(BorderFactory.createCompoundBorder(
+                new javax.swing.border.MatteBorder(1, 1, 1, 1, new Color(220, 220, 220)),
+                new javax.swing.border.EmptyBorder(3, 3, 3, 3)));
+        lab.setOpaque(true);
+        lab.setBackground(new Color(250, 250, 250));
+        lab.setName(name);
+        lab.setToolTipText(tooltip);
+        return lab;
     }
 }
