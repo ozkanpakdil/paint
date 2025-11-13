@@ -21,6 +21,19 @@ if [ ! -x "$BIN" ]; then
   fi
 fi
 
+# Verify the binary matches the current system architecture
+BINARY_ARCH=$(file "$BIN" | grep -oE 'arm64|x86_64|aarch64' | head -1)
+SYSTEM_ARCH=$(uname -m)
+if [ "$BINARY_ARCH" != "$SYSTEM_ARCH" ] && [ "$BINARY_ARCH" != "aarch64" ] || [ "$SYSTEM_ARCH" = "arm64" ] && [ "$BINARY_ARCH" = "aarch64" ]; then
+  # On macOS, aarch64 is reported as arm64 by uname -m
+  SYSTEM_ARCH_NORMALIZED=$([ "$SYSTEM_ARCH" = "arm64" ] && echo "aarch64" || echo "$SYSTEM_ARCH")
+  if [ "$BINARY_ARCH" != "$SYSTEM_ARCH" ] && [ "$BINARY_ARCH" != "$SYSTEM_ARCH_NORMALIZED" ]; then
+    echo "Architecture mismatch: Binary is $BINARY_ARCH but system is $SYSTEM_ARCH" >&2
+    echo "Please rebuild with: mvn -B -Pnative -DskipTests -Dgraalvm.native.imageName=paint clean package" >&2
+    exit 1
+  fi
+fi
+
 APPDIR="$WORKDIR/${APP_NAME}.app/Contents"
 mkdir -p "$APPDIR/MacOS" "$APPDIR/Resources"
 cp "$BIN" "$APPDIR/MacOS/paint"

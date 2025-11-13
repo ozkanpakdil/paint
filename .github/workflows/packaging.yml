@@ -22,6 +22,11 @@ jobs:
             packaging: linux
           - os: macos-latest
             packaging: macos
+            arch: arm64
+          # Optionally build for Intel Macs as well (x86_64):
+          # - os: macos-13
+          #   packaging: macos
+          #   arch: x86_64
           # windows graalvm does not support swing yet
           # - os: windows-latest
           #   packaging: windows
