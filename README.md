@@ -2,7 +2,8 @@ Paint
 =======
 
 Paint Application in Java using Swing Components.
-<img width="1304" height="990" alt="Image" src="https://github.com/user-attachments/assets/7bb794af-6295-4570-a230-c3bc3413e9fd" />
+<img width="1205" height="646" alt="image" src="https://github.com/user-attachments/assets/28a850a8-d472-4914-8eff-3e756bc3c3c7" />
+
 
 Following are the features implemented.
 * Bucket Tool ( Using **Flood Fill Algorithm**)
