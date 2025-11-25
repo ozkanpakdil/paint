@@ -7,6 +7,42 @@
       "type": "char[]"
     },
     {
+      "type": "com.apple.eawt._AppEventHandler",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "handleNativeNotification",
+          "parameterTypes": [
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.apple.eawt._AppMenuBarHandler",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "initMenuStates",
+          "parameterTypes": [
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.apple.laf.AquaLookAndFeel",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.FlatLightLaf",
       "methods": [
         {
@@ -908,6 +944,7 @@
     },
     {
       "type": "io.github.ozkanpakdil.paint.Main",
+      "allDeclaredConstructors": true,
       "jniAccessible": true,
       "methods": [
         {
@@ -1146,6 +1183,21 @@
       ]
     },
     {
+      "type": "java.awt.DisplayMode",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.awt.GraphicsEnvironment",
       "jniAccessible": true,
       "methods": [
@@ -1161,6 +1213,21 @@
     },
     {
       "type": "java.awt.Image"
+    },
+    {
+      "type": "java.awt.Insets",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int"
+          ]
+        }
+      ]
     },
     {
       "type": "java.awt.Rectangle",
@@ -1181,11 +1248,32 @@
       "type": "java.awt.SequencedEvent"
     },
     {
+      "type": "java.awt.Toolkit",
+      "fields": [
+        {
+          "name": "eventListener"
+        }
+      ]
+    },
+    {
+      "type": "java.awt.event.InputEvent",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getButtonDownMasks",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "java.awt.event.KeyEvent",
       "jniAccessible": true,
       "fields": [
         {
           "name": "VK_A"
+        },
+        {
+          "name": "VK_B"
         },
         {
           "name": "VK_BACK_SLASH"
@@ -1206,10 +1294,16 @@
           "name": "VK_CUT"
         },
         {
+          "name": "VK_D"
+        },
+        {
           "name": "VK_DELETE"
         },
         {
           "name": "VK_DOWN"
+        },
+        {
+          "name": "VK_E"
         },
         {
           "name": "VK_END"
@@ -1219,6 +1313,9 @@
         },
         {
           "name": "VK_ESCAPE"
+        },
+        {
+          "name": "VK_F"
         },
         {
           "name": "VK_F10"
@@ -1254,7 +1351,13 @@
           "name": "VK_LEFT"
         },
         {
+          "name": "VK_N"
+        },
+        {
           "name": "VK_O"
+        },
+        {
+          "name": "VK_P"
         },
         {
           "name": "VK_PAGE_DOWN"
@@ -1282,6 +1385,9 @@
         },
         {
           "name": "VK_V"
+        },
+        {
+          "name": "VK_W"
         },
         {
           "name": "VK_X"
@@ -1366,6 +1472,19 @@
       ]
     },
     {
+      "type": "java.awt.geom.Point2D$Double",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "double",
+            "double"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.awt.geom.Point2D$Float",
       "jniAccessible": true,
       "fields": [
@@ -1382,6 +1501,21 @@
           "parameterTypes": [
             "float",
             "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "java.awt.geom.Rectangle2D$Double",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "double",
+            "double",
+            "double",
+            "double"
           ]
         }
       ]
@@ -1410,6 +1544,15 @@
         },
         {
           "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        },
+        {
+          "name": "setRect",
           "parameterTypes": [
             "float",
             "float",
@@ -1642,6 +1785,16 @@
       ]
     },
     {
+      "type": "java.lang.Class",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getCanonicalName",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "java.lang.InternalError",
       "jniAccessible": true,
       "methods": [
@@ -1654,7 +1807,22 @@
       ]
     },
     {
-      "type": "java.lang.String"
+      "type": "java.lang.String",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "lastIndexOf",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "name": "substring",
+          "parameterTypes": [
+            "int"
+          ]
+        }
+      ]
     },
     {
       "type": "java.lang.String[]"
@@ -1664,8 +1832,21 @@
       "jniAccessible": true,
       "methods": [
         {
+          "name": "getProperty",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
           "name": "load",
           "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "setProperty",
+          "parameterTypes": [
+            "java.lang.String",
             "java.lang.String"
           ]
         }
@@ -1694,7 +1875,43 @@
       "type": "java.rmi.Remote"
     },
     {
+      "type": "java.util.ArrayList",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "add",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
+        },
+        {
+          "name": "contains",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.util.List"
+    },
+    {
+      "type": "java.util.Locale",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
     },
     {
       "type": "javax.imageio.plugins.jpeg.JPEGHuffmanTable",
@@ -1743,6 +1960,17 @@
             "int",
             "int",
             "boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.UIManager",
+      "methods": [
+        {
+          "name": "createLookAndFeel",
+          "parameterTypes": [
+            "java.lang.String"
           ]
         }
       ]
@@ -1870,6 +2098,18 @@
       "type": "net.miginfocom.swing.MigLayout"
     },
     {
+      "type": "org.apache.maven.surefire.booter.ForkedBooter",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "main",
+          "parameterTypes": [
+            "java.lang.String[]"
+          ]
+        }
+      ]
+    },
+    {
       "type": "org.apache.maven.surefire.booter.spi.LegacyMasterProcessChannelProcessorFactory"
     },
     {
@@ -1980,6 +2220,20 @@
         },
         {
           "name": "getValue",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.awt.AWTAutoShutdown",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "notifyToolkitThreadBusy",
+          "parameterTypes": []
+        },
+        {
+          "name": "notifyToolkitThreadFree",
           "parameterTypes": []
         }
       ]
@@ -2204,6 +2458,19 @@
         {
           "name": "<init>",
           "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.font.CFontManager",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "registerFont",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String"
+          ]
         }
       ]
     },
@@ -2861,6 +3128,69 @@
       ]
     },
     {
+      "type": "sun.java2d.loops.SetDrawLineANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawPathANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawPolygonsANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetDrawRectANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetFillPathANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetFillRectANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.loops.SetFillSpansANY",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "sun.java2d.loops.SurfaceType",
       "jniAccessible": true,
       "fields": [
@@ -2996,6 +3326,43 @@
       ]
     },
     {
+      "type": "sun.java2d.metal.MTLLayer",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "drawInMTLContext",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.metal.MTLSurfaceData",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "nativeHeight"
+        },
+        {
+          "name": "nativeWidth"
+        }
+      ],
+      "methods": [
+        {
+          "name": "dispose",
+          "parameterTypes": [
+            "long",
+            "sun.java2d.metal.MTLGraphicsConfig"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sun.java2d.metal.MTLSurfaceData$MTLLayerSurfaceData"
+    },
+    {
+      "type": "sun.java2d.metal.MTLSurfaceData$MTLOffScreenSurfaceData"
+    },
+    {
       "type": "sun.java2d.pipe.Region",
       "jniAccessible": true,
       "fields": [
@@ -3099,6 +3466,141 @@
           "parameterTypes": [
             "boolean",
             "byte[]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.LWWindowPeer",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "platformWindow"
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CFRetainedResource",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "ptr"
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CInputMethod",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "fCurrentText"
+        },
+        {
+          "name": "fCurrentTextLength"
+        }
+      ],
+      "methods": [
+        {
+          "name": "unmarkText",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CPlatformView",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "deliverKeyEvent",
+          "parameterTypes": [
+            "sun.lwawt.macosx.NSEvent"
+          ]
+        },
+        {
+          "name": "deliverMouseEvent",
+          "parameterTypes": [
+            "sun.lwawt.macosx.NSEvent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.CPlatformWindow",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "deliverMoveResizeEvent",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int",
+            "boolean"
+          ]
+        },
+        {
+          "name": "deliverWindowFocusEvent",
+          "parameterTypes": [
+            "boolean",
+            "sun.lwawt.macosx.CPlatformWindow"
+          ]
+        },
+        {
+          "name": "isBlocked",
+          "parameterTypes": []
+        },
+        {
+          "name": "isSimpleWindowOwnedByEmbeddedFrame",
+          "parameterTypes": []
+        },
+        {
+          "name": "isVisible",
+          "parameterTypes": []
+        },
+        {
+          "name": "windowDidBecomeMain",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.LWCToolkit",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "installToolkitThreadInJava",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.lwawt.macosx.NSEvent",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "int",
+            "double",
+            "double",
+            "int"
+          ]
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "short",
+            "java.lang.String",
+            "java.lang.String"
           ]
         }
       ]
@@ -3251,6 +3753,9 @@
       "glob": "com/formdev/flatlaf/FlatLightLaf.properties"
     },
     {
+      "glob": "com/formdev/flatlaf/natives/libflatlaf-macos-arm64.dylib"
+    },
+    {
       "glob": "com/formdev/flatlaf/resources/Bundle.properties"
     },
     {
@@ -3357,6 +3862,14 @@
       "glob": "sun/awt/resources/awt_en_GB.properties"
     },
     {
+      "module": "java.desktop",
+      "glob": "sun/awt/resources/awtosx_en.properties"
+    },
+    {
+      "module": "java.desktop",
+      "glob": "sun/awt/resources/awtosx_en_GB.properties"
+    },
+    {
       "bundle": "com.formdev.flatlaf.resources.Bundle"
     },
     {
@@ -3367,6 +3880,9 @@
     },
     {
       "bundle": "sun.awt.resources.awt"
+    },
+    {
+      "bundle": "sun.awt.resources.awtosx"
     }
   ]
 }
