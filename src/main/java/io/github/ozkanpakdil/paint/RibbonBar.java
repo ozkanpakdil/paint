@@ -58,7 +58,11 @@ public class RibbonBar extends JPanel {
                 case "color" -> {
                     Color c = SideMenu.getSelectedForeColor();
                     if (textColorBtn != null) textColorBtn.setBackground(c);
-                    if (colorPreview != null) colorPreview.repaint();
+                    // Ensure the large preview swatch reflects the selected color immediately
+                    if (colorPreview != null) {
+                        colorPreview.setBackground(c);
+                        colorPreview.repaint();
+                    }
                 }
                 case "strokeSize" -> {
                     if (strokeSlider != null) strokeSlider.setValue(SideMenu.getStrokeSize());
