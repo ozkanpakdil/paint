@@ -18,7 +18,7 @@ Build and run with Maven
 ------------------------
 
 Requirements:
-- Java 8+ (JDK)
+- Java 25+ (JDK)
 - Maven 3.6+
 
 Commands:
@@ -42,14 +42,19 @@ Notes:
 - Source code is under `src/main/java` and resources under `src/main/resources` following standard Maven layout.
 
 
-Build as a native binary with GraalVM
--------------------------------------
+Build as a native binary with GraalVM (Linux only)
+---------------------------------------------------
 
-Requirements:
+**Important**: GraalVM native-image support for AWT/Swing GUI applications is **only available on Linux**. 
+On macOS and Windows, AWT/Swing require JVM runtime libraries that are not compatible with native-image's 
+ahead-of-time compilation. For macOS and Windows, use the jpackage installer (see below) or run the JAR 
+with a regular JVM.
+
+Requirements (Linux only):
 - GraalVM JDK (22+ recommended) installed and on PATH
 - `native-image` installed (`gu install native-image`)
-- Linux or macOS recommended for GUI native images (AWT/Swing). On Linux make sure X11/GTK libs are present.
-- Windows should have https://aka.ms/vs/17/release/vc_redist.x64.exe for native-image to work.
+- X11/Wayland session with DISPLAY set
+- GTK development libraries: `sudo apt-get install libgtk-3-dev` (Debian/Ubuntu)
 
 Steps:
 1) Point Maven to GraalVM (either set `JAVA_HOME` or run Maven from the GraalVM installation):
@@ -74,7 +79,7 @@ Steps:
 Notes for native-image:
 - Resources under `src/main/resources/images` are included automatically in the native image (configured via the plugin).
 - If you move the `Main` class into a package, update the `graalvm.native.mainClass` property in `pom.xml`.
-- Windows support exists but may require additional setup for GUI apps; Linux/macOS tend to be smoother for AWT/Swing.
+- **This only works on Linux**. For macOS and Windows distribution, use jpackage installers (see below).
 
 
 Collect metadata with GraalVM tracing agent (recommended)
@@ -118,10 +123,11 @@ Troubleshooting
   ```
 - Ensure you ran the app with the agent and exercised key features so configs are generated.
 - If problems persist, run the native binary with `GRAALVM_OPTIONS` to increase logging:
-  ```bash
-  GRAALVM_OPTIONS="-Djava.awt.headless=false" ./target/paint
-  ```
+   ```bash
+   GRAALVM_OPTIONS="-Djava.awt.headless=false" ./target/paint
+   ```
 - Share the first ~100 lines of output along with your distro and session type (x11/wayland).
+
 
 # Paint
 

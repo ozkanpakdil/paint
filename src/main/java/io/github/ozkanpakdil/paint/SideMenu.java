@@ -243,19 +243,10 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
 
     @Override
     public void mouseClicked(MouseEvent ev) {
-
-        if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'F') // foreground color
-        {
-            changeForeColor(Integer.parseInt(ev.getComponent().getName().substring(1)));
-        } else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'T') // Tools color
-            changeTool(Tool.fromIndex(Integer.parseInt(ev.getComponent().getName().substring(1))));
-        else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'S') {
-            saveImage();
-        } else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'U') {
-            uploadImage();
-        } else if (ev.getComponent().getName() != null && ev.getComponent().getName().charAt(0) == 'C') {
-            chooseColor();
-        }
+        // Some platforms (notably macOS) may not dispatch mouseClicked on the first activation
+        // of the window. To guarantee single-click selection, handle the action on both
+        // mousePressed and mouseClicked. Delegate to a shared handler.
+        handleSideMenuClick(ev.getComponent());
     }
 
     private void chooseColor() {
@@ -338,12 +329,48 @@ public class SideMenu extends JPanel implements MouseListener, ChangeListener {
 
     @Override
     public void mousePressed(MouseEvent ev) {
+        // Trigger actions immediately on press so a single click is enough everywhere.
+        handleSideMenuClick(ev.getComponent());
     }
 
     @Override
     public void mouseReleased(MouseEvent arg0) {
         // TODO Auto-generated method stub
 
+    }
+
+    /**
+     * Centralized handler for side menu interactions so both mousePressed and mouseClicked
+     * produce the same behavior. This eliminates the need for double-clicking to select a tool.
+     */
+    private void handleSideMenuClick(Component comp) {
+        if (comp == null || comp.getName() == null || comp.getName().isEmpty()) return;
+        char kind = comp.getName().charAt(0);
+        switch (kind) {
+            case 'F': // Foreground color from palette
+                try {
+                    changeForeColor(Integer.parseInt(comp.getName().substring(1)));
+                } catch (NumberFormatException ignore) {
+                }
+                break;
+            case 'T': // Tool icons
+                try {
+                    changeTool(Tool.fromIndex(Integer.parseInt(comp.getName().substring(1))));
+                } catch (NumberFormatException ignore) {
+                }
+                break;
+            case 'S': // Save
+                saveImage();
+                break;
+            case 'U': // Upload
+                uploadImage();
+                break;
+            case 'C': // Color chooser dialog
+                chooseColor();
+                break;
+            default:
+                break;
+        }
     }
 
 

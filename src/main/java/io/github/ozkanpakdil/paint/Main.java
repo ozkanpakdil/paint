@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+// macOS application integration (Java 9+)
+import java.awt.desktop.*;
 
 public class Main extends JFrame {
     private GUI gui;
@@ -33,10 +35,16 @@ public class Main extends JFrame {
         }
     }
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
+        // Workaround for GraalVM native image: set encoding early before any native library loading
+        if (System.getProperty("file.encoding") == null) {
+            System.setProperty("file.encoding", "UTF-8");
+        }
+        
         // Workaround for GraalVM native image: AWT/Swing FontConfiguration requires 'java.home' to be set.
         if (System.getProperty("java.home") == null) {
-            System.setProperty("java.home", "/");
+            // Set to user.dir instead of "/" so native libraries can find resources
+            System.setProperty("java.home", System.getProperty("user.dir", "."));
         }
 
         System.setProperty("java.awt.headless", "false");
@@ -125,6 +133,26 @@ public class Main extends JFrame {
                 confirmAndExit();
             }
         });
+
+        // On macOS, intercept Cmd+Q (application quit) and show the same confirmation dialog.
+        try {
+            String os = System.getProperty("os.name", "").toLowerCase();
+            if (os.contains("mac") && Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                // Register a QuitHandler if the API is available
+                desktop.setQuitHandler((QuitEvent e, QuitResponse response) -> {
+                    if (confirmExitApproved()) {
+                        // Dispose and allow the OS to quit the app
+                        try { dispose(); } catch (Throwable ignore) {}
+                        response.performQuit();
+                    } else {
+                        response.cancelQuit();
+                    }
+                });
+            }
+        } catch (UnsupportedOperationException | SecurityException ignore) {
+            // Best-effort: if not supported, default behavior remains
+        }
 
         // Set app/window icon so Alt-Tab/taskbar shows our custom icon instead of the Java Duke
         try {
@@ -416,7 +444,7 @@ public class Main extends JFrame {
         setJMenuBar(jMenuBar);
     }
 
-    private void confirmAndExit() {
+    private boolean confirmExitApproved() {
         int result = JOptionPane.showConfirmDialog(
                 this,
                 "Are you sure you want to exit?",
@@ -424,7 +452,11 @@ public class Main extends JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
         );
-        if (result == JOptionPane.YES_OPTION) {
+        return result == JOptionPane.YES_OPTION;
+    }
+
+    private void confirmAndExit() {
+        if (confirmExitApproved()) {
             // Dispose window and exit
             dispose();
             System.exit(0);

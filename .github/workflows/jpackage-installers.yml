@@ -20,6 +20,8 @@ jobs:
         include:
           - os: windows-latest
             installerType: MSI
+          - os: macos-latest
+            installerType: DMG
 
     steps:
       - name: Checkout

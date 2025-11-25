@@ -20,9 +20,9 @@ jobs:
         include:
           - os: ubuntu-latest
             packaging: linux
-          - os: macos-latest
-            packaging: macos
-            arch: arm64
+          # - os: macos-latest
+          #   packaging: macos
+          #   arch: arm64
           # Optionally build for Intel Macs as well (x86_64):
           # - os: macos-13
           #   packaging: macos
@@ -129,6 +129,7 @@ jobs:
             target/installers/**
             target/paint
             target/native/paint
+            target/paint*.jar
           if-no-files-found: ignore
 
       - name: Publish artifacts to Development release
@@ -144,3 +145,4 @@ jobs:
           artifacts: |
             outdir/**
             paint-macos.dmg
+            target/paint*.jar
