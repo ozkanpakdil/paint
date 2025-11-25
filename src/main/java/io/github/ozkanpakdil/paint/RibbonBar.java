@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 /**
  * A simple top ribbon inspired by MS Paint.
@@ -24,17 +23,11 @@ public class RibbonBar extends JPanel {
     private JLabel opacityLabel;
     private JSlider opacitySlider;
 
-    public RibbonBar(SideMenu controller) throws IOException {
+    public RibbonBar(SideMenu controller) {
         this.controller = controller;
         setLayout(new BorderLayout());
         add(buildRibbon(), BorderLayout.CENTER);
         setBackground(new Color(245, 247, 250));
-    }
-
-    record ToolDef(String name, String icon, int index) {
-        ToolDef(String name, int index) {
-            this(name, name + ".png", index);
-        }
     }
 
     private JComponent buildRibbon() {
