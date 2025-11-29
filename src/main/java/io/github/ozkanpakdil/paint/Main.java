@@ -40,12 +40,9 @@ public class Main extends JFrame {
         if (System.getProperty("file.encoding") == null) {
             System.setProperty("file.encoding", "UTF-8");
         }
-        
-        // Workaround for GraalVM native image: AWT/Swing FontConfiguration requires 'java.home' to be set.
-        if (System.getProperty("java.home") == null) {
-            // Set to user.dir instead of "/" so native libraries can find resources
-            System.setProperty("java.home", System.getProperty("user.dir", "."));
-        }
+
+        // GraalVM native image requires java.home and fontconfig.properties for font initialization
+        setupFontConfigForNativeImage();
 
         System.setProperty("java.awt.headless", "false");
         if (java.awt.GraphicsEnvironment.isHeadless()) {
@@ -55,25 +52,9 @@ public class Main extends JFrame {
                     Example: export DISPLAY=:0""");
             System.exit(1);
         }
-        // Setup modern, OS-aware look and feel (FlatLaf) with simple OS dark-mode detection
-        try {
-            boolean useDark = isDarkThemePreferred();
-            if (useDark) {
-                FlatDarkLaf.setup();
-            } else {
-                FlatLightLaf.setup();
-            }
-            // Ensure consistent font antialiasing
-            System.setProperty("swing.aatext", "true");
-            System.setProperty("awt.useSystemAAFontSettings", "on");
-        } catch (Exception ignore) {
-            // If FlatLaf fails for any reason, fallback to system LAF
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ignored) {
-                // last resort: do nothing
-            }
-        }
+
+        // Setup modern, OS-aware look and feel (FlatLaf) with robust fallback for GraalVM native-image
+        initLookAndFeelWithFallback();
 
         // Check if a filename was provided as command-line argument
         String fileToOpen = (args.length > 0) ? args[0] : null;
@@ -85,6 +66,125 @@ public class Main extends JFrame {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * Initialize Look & Feel in a way that is resilient under GraalVM native-image.
+     */
+    private static void initLookAndFeelWithFallback() {
+        // Anti-aliasing hints regardless of LAF
+        System.setProperty("swing.aatext", "true");
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+
+        // Try FlatLaf (works in both regular JVM and native-image)
+        boolean flatOk = false;
+        try {
+            boolean useDark = isDarkThemePreferred();
+            if (useDark) {
+                FlatDarkLaf.setup();
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+                System.setProperty("swing.defaultlaf", "com.formdev.flatlaf.FlatDarkLaf");
+            } else {
+                FlatLightLaf.setup();
+                UIManager.setLookAndFeel(new FlatLightLaf());
+                System.setProperty("swing.defaultlaf", "com.formdev.flatlaf.FlatLightLaf");
+            }
+            // Ensure UIManager defaults are loaded
+            UIManager.getLookAndFeelDefaults();
+            flatOk = true;
+        } catch (Throwable t) {
+            System.err.println("FlatLaf initialization failed: " + t.getMessage());
+            flatOk = false;
+        }
+
+        // Verify that essential UI defaults are present; if not, switch to Metal
+        if (!flatOk || !hasEssentialUIDefaults()) {
+            try {
+                // Cross-platform (Metal) LAF as fallback
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                System.setProperty("swing.defaultlaf", UIManager.getCrossPlatformLookAndFeelClassName());
+            } catch (Exception e) {
+                // As a last resort, try system LAF
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception ignore) {
+                    // give up; Swing may still work if defaults are lazily initialized later
+                }
+            }
+        }
+    }
+    
+    /**
+     * Setup font configuration for GraalVM native-image.
+     * Extracts fontconfig.properties from resources to a temp directory
+     * and sets java.home to point there.
+     */
+    private static void setupFontConfigForNativeImage() {
+        if (System.getProperty("java.home") != null) {
+            return; // Already set, don't override
+        }
+
+        try {
+            // Create a temporary directory structure: tempdir/lib/fontconfig.properties
+            java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("paint-fonts");
+            java.nio.file.Path libDir = tempDir.resolve("lib");
+            java.nio.file.Files.createDirectories(libDir);
+
+            // Copy fontconfig.properties from resources to temp lib directory
+            try (java.io.InputStream is = Main.class.getResourceAsStream("/lib/fontconfig.properties")) {
+                if (is != null) {
+                    java.nio.file.Files.copy(is, libDir.resolve("fontconfig.properties"));
+                }
+            }
+
+            // Set java.home to our temp directory
+            System.setProperty("java.home", tempDir.toString());
+
+            // Register shutdown hook to clean up temp files
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    java.nio.file.Files.deleteIfExists(libDir.resolve("fontconfig.properties"));
+                    java.nio.file.Files.deleteIfExists(libDir);
+                    java.nio.file.Files.deleteIfExists(tempDir);
+                } catch (Exception ignored) {}
+            }));
+        } catch (Exception e) {
+            // Fallback: set java.home to current directory
+            System.setProperty("java.home", System.getProperty("user.dir", "."));
+        }
+    }
+
+    /**
+     * Detect if running inside a GraalVM native-image.
+     */
+    private static boolean isRunningInNativeImage() {
+        // Check for GraalVM native-image specific property
+        String imageName = System.getProperty("org.graalvm.nativeimage.imagecode");
+        if (imageName != null) {
+            return true;
+        }
+        // Alternative check: native-image sets this class
+        try {
+            Class.forName("org.graalvm.nativeimage.ImageInfo");
+            return (Boolean) Class.forName("org.graalvm.nativeimage.ImageInfo")
+                    .getMethod("inImageCode")
+                    .invoke(null);
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+    
+
+    private static boolean hasEssentialUIDefaults() {
+        try {
+            UIDefaults d = UIManager.getDefaults();
+            return d.get("PanelUI") != null
+                    && d.get("LabelUI") != null
+                    && d.get("SpinnerUI") != null
+                    && d.get("FormattedTextFieldUI") != null;
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
     private static boolean isDarkThemePreferred() {
@@ -109,12 +209,21 @@ public class Main extends JFrame {
         // 3) Linux heuristic: check GTK theme name for "dark"
         String os = System.getProperty("os.name", "").toLowerCase();
         if (os.contains("linux")) {
-            String gtk = System.getenv("GTK_THEME");
+            String gtk = execCmd("gsettings", "get", "org.gnome.desktop.interface","color-scheme");
             return gtk != null && gtk.toLowerCase().contains("dark");
         }
 
         return false;
     }
+
+    static String execCmd(String... cmd) {
+        try {
+            return new String(new ProcessBuilder(cmd).start().getInputStream().readAllBytes());
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
 
     public void initializeGUI() throws IOException {
         gui = new GUI();

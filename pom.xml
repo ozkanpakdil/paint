@@ -153,7 +153,7 @@
                                     <buildArgs>
                                         <buildArg>-H:+ReportExceptionStackTraces</buildArg>
                                         <buildArg>--report-unsupported-elements-at-runtime</buildArg>
-                                        <buildArg>--initialize-at-run-time=java.awt,javax.swing,sun.awt,com.sun.java.swing,com.sun.awt,java.beans,javax.imageio</buildArg>
+                                        <buildArg>--initialize-at-run-time=java.awt,javax.swing,sun.awt,sun.font,sun.java2d,com.sun.java.swing,com.sun.awt,java.beans,javax.imageio,com.formdev.flatlaf</buildArg>
                                     </buildArgs>
                                 </configuration>
                             </execution>
