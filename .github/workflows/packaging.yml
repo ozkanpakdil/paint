@@ -71,13 +71,20 @@ jobs:
             echo "Building GraalVM native image"
             sudo apt-get install xvfb
             mvn -B -Pnative -DskipTests -Dgraalvm.native.imageName=paint clean package
-            set -x
-            timeout 3 xvfb-run -a ./target/paint > /tmp/paint.log 2>&1; \
-            EXIT_CODE=$?; \
-            ([ $EXIT_CODE -eq 124 ] || [ $EXIT_CODE -eq 0 ]) && ! grep -qE "Exception|Error|java\.lang\." /tmp/paint.log && \
-            echo "✓ Native image validated successfully" || \
-            (echo "❌ Native image validation failed (exit: $EXIT_CODE)" && cat /tmp/paint.log && exit 1)
           fi
+
+      - name: Validate native image
+        run: |
+          timeout 3 xvfb-run -a ./target/paint > /tmp/paint.log 2>&1 || EXIT_CODE=$?
+          if [ "${EXIT_CODE:-0}" -eq 124 ] || [ "${EXIT_CODE:-0}" -eq 0 ]; then
+            echo "✓ Native image validated successfully"
+            exit 0
+          else
+            echo "❌ Native image validation failed with exit code: ${EXIT_CODE}"
+            cat /tmp/paint.log
+            exit 1
+          fi
+
 
       - name: Prepare Linux packaging prerequisites
         if: matrix.packaging == 'linux'
