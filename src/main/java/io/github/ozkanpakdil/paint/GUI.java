@@ -37,7 +37,9 @@ public class GUI extends JPanel {
 
         // Center holder to keep canvas centered when smaller than viewport
         JPanel holder = new JPanel(new java.awt.GridBagLayout());
-        holder.setBackground(new Color(230, 230, 230));
+        // Use theme color if dark theme, otherwise light gray
+        Color holderBg = isDarkTheme() ? UIManager.getColor("Panel.background") : new Color(230, 230, 230);
+        holder.setBackground(holderBg);
         java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -227,6 +229,12 @@ public class GUI extends JPanel {
         return capitalize(s.replace('-', ' ').replace("_", " "));
     }
 
+    private boolean isDarkTheme() {
+        // Check if FlatLaf dark theme is active
+        String lafClass = UIManager.getLookAndFeel().getClass().getName();
+        return lafClass.contains("FlatDark");
+    }
+
     private JLabel makeIconButton(String resource, String name, String tooltip) {
         java.awt.image.BufferedImage img = null;
         try {
@@ -238,19 +246,27 @@ public class GUI extends JPanel {
         if (img == null) {
             img = new java.awt.image.BufferedImage(24, 24, java.awt.image.BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = img.createGraphics();
-            g.setColor(new Color(245, 245, 245));
+            // Use theme-aware colors for fallback icon
+            Color bgColor = isDarkTheme() ? new Color(60, 60, 60) : new Color(245, 245, 245);
+            Color fgColor = isDarkTheme() ? new Color(180, 180, 180) : new Color(120, 120, 120);
+            g.setColor(bgColor);
             g.fillRect(0, 0, 24, 24);
-            g.setColor(new Color(120, 120, 120));
+            g.setColor(fgColor);
             g.drawRect(3, 3, 18, 18);
             g.dispose();
         }
         Image scaled = img.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         JLabel lab = new JLabel(new ImageIcon(scaled));
+        // Use theme colors if dark theme, otherwise light colors
+        Color borderColor = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(220, 220, 220);
+        Color bgColor = isDarkTheme() ? UIManager.getColor("Button.background") : new Color(250, 250, 250);
+        if (borderColor == null) borderColor = new Color(220, 220, 220);
+        if (bgColor == null) bgColor = new Color(250, 250, 250);
         lab.setBorder(BorderFactory.createCompoundBorder(
-                new javax.swing.border.MatteBorder(1, 1, 1, 1, new Color(220, 220, 220)),
+                new javax.swing.border.MatteBorder(1, 1, 1, 1, borderColor),
                 new javax.swing.border.EmptyBorder(3, 3, 3, 3)));
         lab.setOpaque(true);
-        lab.setBackground(new Color(250, 250, 250));
+        lab.setBackground(bgColor);
         lab.setName(name);
         lab.setToolTipText(tooltip);
         return lab;

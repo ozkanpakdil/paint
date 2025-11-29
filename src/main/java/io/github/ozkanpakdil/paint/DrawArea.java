@@ -312,7 +312,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
                 redo();
             }
         });
-        setBackground(new Color(230, 230, 230)); // non-paintable area background
+        // Use theme color if dark theme, otherwise light gray
+        Color bgColor = isDarkTheme() ? UIManager.getColor("Panel.background") : new Color(230, 230, 230);
+        setBackground(bgColor); // non-paintable area background
         setOpaque(true);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -324,7 +326,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         // Set initial cursor based on current tool
         SwingUtilities.invokeLater(this::updateCursorForCurrentTool);
-        setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+        Color borderColor = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(200, 200, 200);
+        if (borderColor == null) borderColor = new Color(200, 200, 200);
+        setBorder(BorderFactory.createLineBorder(borderColor, 1));
         // Allow absolute positioning of inline editor
         setLayout(null);
 
@@ -775,7 +779,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
     private void startTextEditorAt(int x, int y) {
         if (textEditor == null) {
             textEditor = new JTextField();
-            textEditor.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
+            Color editorBorder = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(150, 150, 150);
+            if (editorBorder == null) editorBorder = new Color(150, 150, 150);
+            textEditor.setBorder(BorderFactory.createLineBorder(editorBorder));
             textEditor.addKeyListener(new java.awt.event.KeyAdapter() {
                 @Override
                 public void keyPressed(java.awt.event.KeyEvent e) {
@@ -854,7 +860,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             g2.drawImage(highlightLayer, 0, 0, null);
         }
         // Draw a subtle border around the canvas to delineate from non-paintable area
-        g2.setColor(new Color(180, 180, 180));
+        Color borderColor = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(180, 180, 180);
+        if (borderColor == null) borderColor = new Color(180, 180, 180);
+        g2.setColor(borderColor);
         g2.drawRect(0, 0, cache.getWidth() - 1, cache.getHeight() - 1);
 
         // While placing an image, render it above the cache
@@ -1362,5 +1370,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             tooltipOriginalDismiss = null;
             tooltipOriginalInitial = null;
         }
-        }
+    }
+
+    private boolean isDarkTheme() {
+        // Check if FlatLaf dark theme is active
+        String lafClass = UIManager.getLookAndFeel().getClass().getName();
+        return lafClass.contains("FlatDark");
+    }
 }

@@ -27,7 +27,9 @@ public class RibbonBar extends JPanel {
         this.controller = controller;
         setLayout(new BorderLayout());
         add(buildRibbon(), BorderLayout.CENTER);
-        setBackground(new Color(245, 247, 250));
+        // Use theme background if dark theme, otherwise light color
+        Color bgColor = isDarkTheme() ? UIManager.getColor("Panel.background") : new Color(245, 247, 250);
+        setBackground(bgColor);
     }
 
     private JComponent buildRibbon() {
@@ -111,18 +113,22 @@ public class RibbonBar extends JPanel {
         colorPreview = new JPanel();
         colorPreview.setPreferredSize(new Dimension(24, 24));
         colorPreview.setBackground(SideMenu.getSelectedForeColor());
-        colorPreview.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+        Color borderColor = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(180, 180, 180);
+        if (borderColor == null) borderColor = new Color(180, 180, 180);
+        colorPreview.setBorder(BorderFactory.createLineBorder(borderColor));
         colorPreview.setName("C0");
         colorPreview.addMouseListener(controller);
         p.add(colorPreview);
-        
+
         JPanel palette = new JPanel(new GridLayout(2, 7, 2, 2));
         Color[] cols = new Color[]{Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.WHITE, Color.YELLOW};
+        Color paletteBorder = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(200, 200, 200);
+        if (paletteBorder == null) paletteBorder = new Color(200, 200, 200);
         for (int i = 0; i < cols.length; i++) {
             JPanel sw = new JPanel();
             sw.setPreferredSize(new Dimension(14, 14));
             sw.setBackground(cols[i]);
-            sw.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+            sw.setBorder(BorderFactory.createLineBorder(paletteBorder));
             sw.setName("F" + i);
             sw.addMouseListener(controller);
             palette.add(sw);
@@ -166,7 +172,9 @@ public class RibbonBar extends JPanel {
         
         textColorBtn = new JPanel();
         textColorBtn.setPreferredSize(new Dimension(20, 20));
-        textColorBtn.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+        Color textBorderColor = isDarkTheme() ? UIManager.getColor("Component.borderColor") : new Color(180, 180, 180);
+        if (textBorderColor == null) textBorderColor = new Color(180, 180, 180);
+        textColorBtn.setBorder(BorderFactory.createLineBorder(textBorderColor));
         textColorBtn.setBackground(SideMenu.getSelectedForeColor());
         textColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -195,5 +203,11 @@ public class RibbonBar extends JPanel {
         MouseEvent ev = new MouseEvent(comp, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), 0, 0, 0, 1, false, MouseEvent.BUTTON1);
         comp.setName("C1");
         controller.mouseClicked(ev);
+    }
+
+    private boolean isDarkTheme() {
+        // Check if FlatLaf dark theme is active
+        String lafClass = UIManager.getLookAndFeel().getClass().getName();
+        return lafClass.contains("FlatDark");
     }
 }
