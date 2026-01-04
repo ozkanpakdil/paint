@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="/main.js" defer></script>
+</head>
+<body>
+    <div id="app">
+        <header id="menu-bar">
+            <div class="menu-item" id="menu-file">
+                File
+                <div class="dropdown">
+                    <div id="file-new">New (Ctrl+N)</div>
+                    <hr>
+                    <div id="file-open">Open (Ctrl+O)</div>
+                    <div id="file-save">Save (Ctrl+S)</div>
+                    <hr>
+                    <div id="file-exit">Exit (Ctrl+Q)</div>
+                </div>
+            </div>
+            <div class="menu-item" id="menu-edit">
+                Edit
+                <div class="dropdown">
+                    <div id="edit-undo">Undo (Ctrl+Z)</div>
+                    <div id="edit-redo">Redo (Ctrl+Y)</div>
+                    <hr>
+                    <div id="edit-copy">Copy (Ctrl+C)</div>
+                    <div id="edit-select-all">Select All (Ctrl+A)</div>
+                    <hr>
+                    <div id="edit-crop-selection">Crop to Selection</div>
+                    <div id="edit-crop-image">Crop to Image Size</div>
+                    <hr>
+                    <div id="edit-clear">Clear</div>
+                </div>
+            </div>
+            <div class="menu-item" id="menu-tools">
+                Tools
+                <div class="dropdown">
+                    <div id="tools-pencil">Pencil</div>
+                    <div id="tools-line">Line</div>
+                    <div id="tools-rect">Rectangle</div>
+                    <div id="tools-oval">Oval</div>
+                    <div id="tools-rounded-rect">Rounded Rectangle</div>
+                    <div id="tools-polygon">Polygon</div>
+                    <div id="tools-rect-filled">Rectangle (Filled)</div>
+                    <div id="tools-oval-filled">Oval (Filled)</div>
+                    <div id="tools-rounded-rect-filled">Rounded Rectangle (Filled)</div>
+                    <div id="tools-polygon-filled">Polygon (Filled)</div>
+                    <div id="tools-bucket">Bucket</div>
+                    <div id="tools-move">Move (Ctrl+M)</div>
+                    <hr>
+                    <div id="tools-color">Choose Color...</div>
+                </div>
+            </div>
+            <div class="menu-item" id="menu-help">
+                Help
+                <div class="dropdown">
+                    <div id="help-shortcuts">Keyboard Shortcuts</div>
+                </div>
+            </div>
+        </header>
+        <div id="middle-section">
+            <aside id="toolbar">
+                <div class="tool-btn active" id="tool-pencil" title="Pencil"><img src="assets/images/pencil.png" alt="Pencil"></div>
+                <div class="tool-btn" id="tool-highlighter" title="Highlighter"><img src="assets/images/highlight.png" alt="Highlighter"></div>
+                <div class="tool-btn" id="tool-eraser" title="Eraser"><img src="assets/images/eraser.png" alt="Eraser"></div>
+                <div class="tool-btn" id="tool-text" title="Text"><img src="assets/images/text.png" alt="Text"></div>
+                <div class="tool-btn" id="tool-bucket" title="Bucket"><img src="assets/images/bucket.png" alt="Bucket"></div>
+                <div class="tool-btn" id="tool-move" title="Move"><img src="assets/images/move.png" alt="Move"></div>
+                <div class="tool-btn" id="tool-arrow" title="Arrow"><img src="assets/images/arrow.png" alt="Arrow"></div>
+                <div style="flex-basis: 100%; height: 0; margin: 2px 0;"></div>
+                <div class="tool-btn" id="tool-rect" title="Rectangle"><img src="assets/images/rectangle.png" alt="Rect"></div>
+                <div class="tool-btn" id="tool-oval" title="Oval"><img src="assets/images/oval.png" alt="Oval"></div>
+                <div class="tool-btn" id="tool-rounded-rect" title="Rounded Rectangle"><img src="assets/images/rectangle.png" alt="RRect"></div>
+                <div class="tool-btn" id="tool-polygon" title="Polygon"><img src="assets/images/polygon.png" alt="Polygon"></div>
+                <div class="tool-btn" id="tool-rect-filled" title="Filled Rectangle"><img src="assets/images/rectangle_fill.png" alt="RectF"></div>
+                <div class="tool-btn" id="tool-oval-filled" title="Filled Oval"><img src="assets/images/oval_fill.png" alt="OvalF"></div>
+                <div class="tool-btn" id="tool-rounded-rect-filled" title="Filled Rounded Rectangle"><img src="assets/images/rectangle_fill.png" alt="RRectF"></div>
+                <div class="tool-btn" id="tool-polygon-filled" title="Filled Polygon"><img src="assets/images/polygon_fill.png" alt="PolygonF"></div>
+                <div class="tool-btn" id="tool-line" title="Line"><img src="assets/images/line-tool.png" alt="Line"></div>
+            </aside>
+            <main id="canvas-container">
+                <div id="canvas-wrapper">
+                    <canvas id="paint-canvas"></canvas>
+                    <canvas id="preview-canvas"></canvas>
+                </div>
+            </main>
+        </div>
+        <footer id="footer">
+            <div id="ribbon-bar">
+                <div class="control-group">
+                    <label>S:</label>
+                    <input type="range" id="size-slider" min="1" max="100" value="5">
+                </div>
+                <div class="control-group">
+                    <label id="opacity-label">O:</label>
+                    <input type="range" id="opacity-slider" min="5" max="100" value="30">
+                </div>
+                <div id="text-controls" style="display: none;">
+                    <select id="font-family">
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Segoe UI">Segoe UI</option>
+                    </select>
+                    <input type="number" id="font-size" value="14" min="6" max="200">
+                </div>
+                <div id="active-color-preview" title="Current Color"></div>
+                <div id="color-palette">
+                    <div class="color-swatch active" style="background-color: black;"></div>
+                    <div class="color-swatch" style="background-color: white;"></div>
+                    <div class="color-swatch" style="background-color: #808080;"></div>
+                    <div class="color-swatch" style="background-color: #c0c0c0;"></div>
+                    <div class="color-swatch" style="background-color: red;"></div>
+                    <div class="color-swatch" style="background-color: #800000;"></div>
+                    <div class="color-swatch" style="background-color: yellow;"></div>
+                    <div class="color-swatch" style="background-color: #808000;"></div>
+                    <div class="color-swatch" style="background-color: lime;"></div>
+                    <div class="color-swatch" style="background-color: green;"></div>
+                    <div class="color-swatch" style="background-color: aqua;"></div>
+                    <div class="color-swatch" style="background-color: teal;"></div>
+                    <div class="color-swatch" style="background-color: blue;"></div>
+                    <div class="color-swatch" style="background-color: navy;"></div>
+                    <div class="color-swatch" style="background-color: fuchsia;"></div>
+                    <div class="color-swatch" style="background-color: purple;"></div>
+                </div>
+            </div>
+            <div id="status-bar">
+                <span>Canvas: W:</span>
+                <input type="number" id="canvas-w" value="800">
+                <span>H:</span>
+                <input type="number" id="canvas-h" value="600">
+                <button id="resize-btn">Resize</button>
+                <span id="status-message">Ready</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
