@@ -345,6 +345,22 @@ public class Main extends JFrame {
         });
         edit.add(cropSelItem);
 
+        // Copy menu item
+        JMenuItem copyItem = new JMenuItem("Copy");
+        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        copyItem.addActionListener(_ -> {
+            if (gui != null) gui.getDrawArea().copyToClipboard();
+        });
+        edit.add(copyItem);
+
+        // Select All menu item
+        JMenuItem selectAllItem = new JMenuItem("Select All");
+        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        selectAllItem.addActionListener(_ -> {
+            if (gui != null) gui.getDrawArea().selectAll();
+        });
+        edit.add(selectAllItem);
+
         // Edit > Undo / Redo
         JMenuItem undoItem = new JMenuItem("Undo");
         undoItem.setToolTipText("Undo the last action");
@@ -419,8 +435,10 @@ public class Main extends JFrame {
         bucketToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.BUCKET); });
         tools.add(bucketToolItem);
 
+        // Move tool menu item
         JMenuItem moveToolItem = new JMenuItem("Move");
         moveToolItem.setName("moveTool");
+        moveToolItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         moveToolItem.setToolTipText("Select Move tool");
         moveToolItem.addActionListener(_ -> { if (gui != null) gui.getSideMenu().selectTool(Tool.MOVE); });
         tools.add(moveToolItem);
@@ -494,6 +512,9 @@ public class Main extends JFrame {
                     - New: Ctrl+N
                     - Open: Ctrl+O
                     - Save: Ctrl+S
+                    - Copy: Ctrl+C
+                    - Select All: Ctrl+A
+                    - Move Tool: Ctrl+M
                     - Undo: Ctrl+Z
                     - Redo: Ctrl+Y or Ctrl+Shift+Z
                     - Exit: Ctrl+Q (Cmd+Q on macOS)""";

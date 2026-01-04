@@ -382,12 +382,40 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
             });
         }
 
+        // Key binding: Ctrl+M to select Move tool
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK), "selectMoveTool");
+        getActionMap().put("selectMoveTool", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                SideMenu ctrl = controllerSupplier.get();
+                if (ctrl != null) {
+                    ctrl.selectTool(Tool.MOVE);
+                }
+            }
+        });
+
         // Key binding: Ctrl+V to paste image from clipboard
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), "pasteImage");
         getActionMap().put("pasteImage", new AbstractAction() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 pasteFromClipboard();
+            }
+        });
+        // Key binding: Ctrl+C to copy image to clipboard
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK), "copyImage");
+        getActionMap().put("copyImage", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                copyToClipboard();
+            }
+        });
+        // Key binding: Ctrl+A to select all
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK), "selectAll");
+        getActionMap().put("selectAll", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                selectAll();
             }
         });
         // Placement accept/abort keys
@@ -489,6 +517,50 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
         } catch (Exception ignore) {
             // Silently ignore paste errors
         }
+    }
+
+    // Copy entire image or selection to system clipboard
+    public void copyToClipboard() {
+        BufferedImage img;
+        if (selectionRect != null && selectionRect.width > 0 && selectionRect.height > 0) {
+            BufferedImage flattened = getFlattenedImage();
+            if (flattened == null) return;
+            int x = Math.max(0, Math.min(selectionRect.x, flattened.getWidth() - 1));
+            int y = Math.max(0, Math.min(selectionRect.y, flattened.getHeight() - 1));
+            int w = Math.max(1, Math.min(selectionRect.width, flattened.getWidth() - x));
+            int h = Math.max(1, Math.min(selectionRect.height, flattened.getHeight() - y));
+            img = flattened.getSubimage(x, y, w, h);
+        } else {
+            img = getFlattenedImage();
+        }
+        if (img == null) return;
+
+        final BufferedImage finalImg = img;
+        Transferable transferable = new Transferable() {
+            @Override
+            public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[]{DataFlavor.imageFlavor};
+            }
+
+            @Override
+            public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return DataFlavor.imageFlavor.equals(flavor);
+            }
+
+            @Override
+            public Object getTransferData(DataFlavor flavor) throws UnsupportedOperationException {
+                if (isDataFlavorSupported(flavor)) return finalImg;
+                throw new UnsupportedOperationException();
+            }
+        };
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transferable, null);
+    }
+
+    public void selectAll() {
+        ensureCache();
+        selecting = false; // We are not in the middle of dragging a selection
+        selectionRect = new Rectangle(0, 0, cache.getWidth(), cache.getHeight());
+        repaint();
     }
 
     private BufferedImage toBufferedImage(Image img) {

@@ -7,495 +7,6 @@
       "type": "char[]"
     },
     {
-      "type": "javax.swing.plaf.basic.BasicPanelUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicLabelUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicButtonUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicToggleButtonUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicCheckBoxUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicRadioButtonUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicMenuBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicMenuUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicMenuItemUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicCheckBoxMenuItemUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicRadioButtonMenuItemUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicPopupMenuUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicPopupMenuSeparatorUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicSeparatorUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicScrollBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicScrollPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicViewportUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicSliderUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicSpinnerUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicSplitPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTabbedPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTableUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTableHeaderUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTextFieldUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicPasswordFieldUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicFormattedTextFieldUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTextAreaUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTextPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicEditorPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicToolBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicToolBarSeparatorUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicToolTipUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicTreeUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicRootPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicColorChooserUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicComboBoxUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicDesktopIconUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicDesktopPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicFileChooserUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicInternalFrameUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicListUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicOptionPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.basic.BasicProgressBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalLookAndFeel",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalPanelUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalLabelUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalButtonUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalToggleButtonUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalCheckBoxUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalRadioButtonUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalMenuBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalMenuUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalPopupMenuSeparatorUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalSeparatorUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalScrollBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalScrollPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalSliderUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalSpinnerUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalSplitPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalTabbedPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalTextFieldUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalToolBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalToolTipUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalTreeUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalRootPaneUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalComboBoxUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalDesktopIconUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalFileChooserUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalInternalFrameUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
-      "type": "javax.swing.plaf.metal.MetalProgressBarUI",
-      "methods": [
-        {"name": "<init>", "parameterTypes": []},
-        {"name": "createUI", "parameterTypes": ["javax.swing.JComponent"]}
-      ]
-    },
-    {
       "type": "com.apple.eawt._AppEventHandler",
       "jniAccessible": true,
       "methods": [
@@ -950,6 +461,15 @@
       ]
     },
     {
+      "type": "com.formdev.flatlaf.ui.FlatEmptyBorder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "com.formdev.flatlaf.ui.FlatFileChooserUI",
       "methods": [
         {
@@ -962,15 +482,6 @@
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatFileChooserUI$FlatShortcutsPanel"
-    },
-    {
-      "type": "com.formdev.flatlaf.ui.FlatEmptyBorder",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
     },
     {
       "type": "com.formdev.flatlaf.ui.FlatFormattedTextFieldUI",
@@ -1792,6 +1303,27 @@
         },
         {
           "name": "tearDown",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.github.ozkanpakdil.paint.SelectAllCopyTest",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "setUp",
+          "parameterTypes": []
+        },
+        {
+          "name": "tearDown",
+          "parameterTypes": []
+        },
+        {
+          "name": "testSelectAllAndCopy",
           "parameterTypes": []
         }
       ]
@@ -2687,6 +2219,156 @@
       ]
     },
     {
+      "type": "javax.swing.plaf.basic.BasicButtonUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicCheckBoxMenuItemUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicCheckBoxUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicColorChooserUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicComboBoxUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicDesktopIconUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicDesktopPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicEditorPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicFileChooserUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicFormattedTextFieldUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
       "type": "javax.swing.plaf.basic.BasicGraphicsUtils",
       "methods": [
         {
@@ -2703,8 +2385,63 @@
       ]
     },
     {
+      "type": "javax.swing.plaf.basic.BasicInternalFrameUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicLabelUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicListUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
       "type": "javax.swing.plaf.basic.BasicMenuBarUI",
       "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
         {
           "name": "loadActionMap",
           "parameterTypes": [
@@ -2717,9 +2454,34 @@
       "type": "javax.swing.plaf.basic.BasicMenuItemUI",
       "methods": [
         {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
+        {
           "name": "loadActionMap",
           "parameterTypes": [
             "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicMenuUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
           ]
         }
       ]
@@ -2728,9 +2490,64 @@
       "type": "javax.swing.plaf.basic.BasicOptionPaneUI",
       "methods": [
         {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
+        {
           "name": "loadActionMap",
           "parameterTypes": [
             "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicPanelUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicPasswordFieldUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicPopupMenuSeparatorUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
           ]
         }
       ]
@@ -2739,9 +2556,64 @@
       "type": "javax.swing.plaf.basic.BasicPopupMenuUI",
       "methods": [
         {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
+        {
           "name": "loadActionMap",
           "parameterTypes": [
             "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicProgressBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicRadioButtonMenuItemUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicRadioButtonUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
           ]
         }
       ]
@@ -2750,9 +2622,79 @@
       "type": "javax.swing.plaf.basic.BasicRootPaneUI",
       "methods": [
         {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
+        {
           "name": "loadActionMap",
           "parameterTypes": [
             "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicScrollBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicScrollPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicSeparatorUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicSliderUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
           ]
         }
       ]
@@ -2761,6 +2703,16 @@
       "type": "javax.swing.plaf.basic.BasicSpinnerUI",
       "methods": [
         {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
+        {
           "name": "loadActionMap",
           "parameterTypes": [
             "javax.swing.plaf.basic.LazyActionMap"
@@ -2769,12 +2721,601 @@
       ]
     },
     {
+      "type": "javax.swing.plaf.basic.BasicSplitPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
       "type": "javax.swing.plaf.basic.BasicTabbedPaneUI",
       "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        },
         {
           "name": "loadActionMap",
           "parameterTypes": [
             "javax.swing.plaf.basic.LazyActionMap"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTableHeaderUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTableUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTextAreaUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTextFieldUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTextPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicToggleButtonUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicToolBarSeparatorUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicToolBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicToolTipUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicTreeUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.basic.BasicViewportUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalButtonUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalCheckBoxUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalComboBoxUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalDesktopIconUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalFileChooserUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalInternalFrameUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalLabelUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalLookAndFeel",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalMenuBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalMenuUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalPanelUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalPopupMenuSeparatorUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalProgressBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalRadioButtonUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalRootPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalScrollBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalScrollPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalSeparatorUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalSliderUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalSpinnerUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalSplitPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalTabbedPaneUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalTextFieldUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalToggleButtonUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalToolBarUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalToolTipUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.swing.plaf.metal.MetalTreeUI",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "createUI",
+          "parameterTypes": [
+            "javax.swing.JComponent"
           ]
         }
       ]
@@ -3005,6 +3546,16 @@
     },
     {
       "type": "sun.awt.X11.XFramePeer"
+    },
+    {
+      "type": "sun.awt.X11.XRootWindow",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getXRootWindow",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "sun.awt.X11.XToolkit",
@@ -4438,7 +4989,10 @@
       "glob": "com/formdev/flatlaf/*.properties"
     },
     {
-      "glob": "com/formdev/flatlaf/themes/*.properties"
+      "glob": "com/formdev/flatlaf/FlatLaf.properties"
+    },
+    {
+      "glob": "com/formdev/flatlaf/FlatLightLaf.properties"
     },
     {
       "glob": "com/formdev/flatlaf/natives/libflatlaf-macos-arm64.dylib"
@@ -4451,6 +5005,9 @@
     },
     {
       "glob": "com/formdev/flatlaf/resources/Bundle_en_GB.properties"
+    },
+    {
+      "glob": "com/formdev/flatlaf/themes/*.properties"
     },
     {
       "glob": "images/Save.png"
