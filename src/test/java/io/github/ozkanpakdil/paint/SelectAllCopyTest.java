@@ -96,21 +96,21 @@ public class SelectAllCopyTest {
     }
 
     private static void click(Component target, int x, int y) {
-        dispatchMouse(target, java.awt.event.MouseEvent.MOUSE_PRESSED, x, y, java.awt.event.MouseEvent.BUTTON1_DOWN_MASK);
-        dispatchMouse(target, java.awt.event.MouseEvent.MOUSE_RELEASED, x, y, java.awt.event.MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_PRESSED, x, y, MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_RELEASED, x, y, MouseEvent.BUTTON1_DOWN_MASK);
         sleep(30);
     }
 
     private static void drag(Component target, int x1, int y1, int x2, int y2) {
-        dispatchMouse(target, java.awt.event.MouseEvent.MOUSE_PRESSED, x1, y1, java.awt.event.MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_PRESSED, x1, y1, MouseEvent.BUTTON1_DOWN_MASK);
         int steps = 5;
         for (int i = 1; i <= steps; i++) {
             int xi = x1 + (x2 - x1) * i / steps;
             int yi = y1 + (y2 - y1) * i / steps;
-            dispatchMouse(target, java.awt.event.MouseEvent.MOUSE_DRAGGED, xi, yi, java.awt.event.MouseEvent.BUTTON1_DOWN_MASK);
+            dispatchMouse(target, MouseEvent.MOUSE_DRAGGED, xi, yi, MouseEvent.BUTTON1_DOWN_MASK);
             sleep(10);
         }
-        dispatchMouse(target, java.awt.event.MouseEvent.MOUSE_RELEASED, x2, y2, java.awt.event.MouseEvent.BUTTON1_DOWN_MASK);
+        dispatchMouse(target, MouseEvent.MOUSE_RELEASED, x2, y2, MouseEvent.BUTTON1_DOWN_MASK);
         sleep(30);
     }
 
