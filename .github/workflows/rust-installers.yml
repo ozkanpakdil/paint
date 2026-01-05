@@ -24,7 +24,7 @@ jobs:
             args: "--formats all"
           - os: windows-latest
             platform: windows
-            args: "--formats all"
+            args: "--formats msi"
 
     steps:
       - name: Checkout
@@ -32,6 +32,8 @@ jobs:
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ runner.os == 'Windows' && 'x86_64-pc-windows-gnu' || '' }}
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
@@ -43,31 +45,56 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install gtk4 cairo pkg-config
+          echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig" >> $GITHUB_ENV
 
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gtk4
+            mingw-w64-x86_64-gettext
+            mingw-w64-x86_64-libadwaita
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-pkg-config
+
+      - name: Add MSYS2 to PATH (Windows)
+        if: runner.os == 'Windows'
         shell: bash
         run: |
-          # Install GTK4 and pkg-config via vcpkg or similar might be needed, 
-          # but usually for cargo-packager we just need the tool to be present if it's linking.
-          # cargo-packager itself might need certain tools for installers.
-          choco install pkgconfiglite nsis wix
-          echo "Windows build might need manual GTK4 bundling"
+          echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
+          echo "PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig:/mingw64/lib/pkgconfig:/mingw64/share/pkgconfig" >> $GITHUB_ENV
+
+      - name: Install Windows Tools
+        if: runner.os == 'Windows'
+        run: |
+          choco install nsis wix
 
       - name: Install cargo-packager
         run: cargo install cargo-packager --locked
 
       - name: Build and Package
+        shell: bash
         run: |
           cd rust
-          cargo build --release
-          cargo packager --release ${{ matrix.args }}
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            export PATH="/C/msys64/mingw64/bin:$PATH"
+            cargo build --release --target x86_64-pc-windows-gnu
+            cargo packager --release --target x86_64-pc-windows-gnu ${{ matrix.args }}
+          else
+            cargo build --release
+            cargo packager --release ${{ matrix.args }}
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: rust-paint-${{ matrix.os }}
-          path: rust/target/release/packager/*
+          path: |
+            rust/target/release/packager/*
+            rust/target/x86_64-pc-windows-gnu/release/packager/*
           if-no-files-found: warn
 
       - name: Publish to Development release
@@ -81,4 +108,4 @@ jobs:
           removeArtifacts: false
           replacesArtifacts: true
           artifactErrorsFailBuild: false
-          artifacts: "rust/target/release/packager/**/*"
+          artifacts: "rust/target/release/packager/**/*,rust/target/x86_64-pc-windows-gnu/release/packager/**/*"
