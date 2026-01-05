@@ -1,0 +1,82 @@
+name: Build and Release Rust Installers
+
+on:
+  push:
+    branches: [ rust-gtk4 ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            args: "--formats deb,rpm"
+          - os: macos-latest
+            platform: macos
+            args: "--formats dmg"
+          - os: windows-latest
+            platform: windows
+            args: "--formats msi"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-4-dev libcairo2-dev libglib2.0-dev libadwaita-1-dev pkg-config build-essential libssl-dev
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install gtk4 cairo pkg-config
+
+      - name: Install system dependencies (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          # Note: GTK4 on Windows is hard to bundle. 
+          # We'll try to build but running might require system libs.
+          echo "Windows build might need manual GTK4 bundling"
+
+      - name: Install cargo-packager
+        run: cargo install cargo-packager --locked
+
+      - name: Build and Package
+        run: |
+          cd rust
+          cargo build --release
+          cargo packager --release ${{ matrix.args }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-paint-${{ matrix.os }}
+          path: rust/target/release/packager/*
+          if-no-files-found: warn
+
+      - name: Publish to Development release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: development
+          commit: ${{ github.sha }}
+          name: Development Build
+          prerelease: true
+          allowUpdates: true
+          removeArtifacts: false
+          replacesArtifacts: true
+          artifactErrorsFailBuild: false
+          artifacts: "rust/target/release/packager/*/*.deb,rust/target/release/packager/*/*.rpm,rust/target/release/packager/*/*.dmg,rust/target/release/packager/*/*.msi"

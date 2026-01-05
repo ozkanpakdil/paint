@@ -1,3 +1,5 @@
 .idea
 /target/
 outdir*
+/rust/target/
+.output.txt

@@ -1,0 +1,25 @@
+[package]
+name = "rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gtk4 = { version = "0.9", package = "gtk4", features = ["v4_10"] }
+cairo-rs = { version = "0.20", features = ["png"] }
+gdk4 = "0.9"
+glib = "0.20"
+
+[package.metadata.packager]
+product_name = "RustPaint"
+identifier = "io.github.ozkanpakdil.paint"
+binaries = [
+    { filename = "rust-paint", main = true }
+]
+resources = ["assets/**/*"]
+icons = ["assets/pencil.png"] # Fallback if app.ico/icns not present
+
+[package.metadata.packager.platforms.linux]
+depends = ["libgtk-4-1", "libcairo2"]
+
+[package.metadata.packager.platforms.macos]
+minimum_system_version = "11.0"
