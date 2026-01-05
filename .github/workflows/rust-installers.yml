@@ -18,13 +18,13 @@ jobs:
         include:
           - os: ubuntu-latest
             platform: linux
-            args: "--formats deb,rpm"
+            args: "--formats all"
           - os: macos-latest
             platform: macos
-            args: "--formats dmg"
+            args: "--formats all"
           - os: windows-latest
             platform: windows
-            args: "--formats msi"
+            args: "--formats all"
 
     steps:
       - name: Checkout
@@ -48,8 +48,10 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          # Note: GTK4 on Windows is hard to bundle. 
-          # We'll try to build but running might require system libs.
+          # Install GTK4 and pkg-config via vcpkg or similar might be needed, 
+          # but usually for cargo-packager we just need the tool to be present if it's linking.
+          # cargo-packager itself might need certain tools for installers.
+          choco install pkgconfiglite nsis wix
           echo "Windows build might need manual GTK4 bundling"
 
       - name: Install cargo-packager
@@ -79,4 +81,4 @@ jobs:
           removeArtifacts: false
           replacesArtifacts: true
           artifactErrorsFailBuild: false
-          artifacts: "rust/target/release/packager/*/*.deb,rust/target/release/packager/*/*.rpm,rust/target/release/packager/*/*.dmg,rust/target/release/packager/*/*.msi"
+          artifacts: "rust/target/release/packager/**/*"

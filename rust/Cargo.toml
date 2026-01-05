@@ -13,7 +13,7 @@ glib = "0.20"
 product_name = "RustPaint"
 identifier = "io.github.ozkanpakdil.paint"
 binaries = [
-    { filename = "rust-paint", main = true }
+    { path = "rust-paint", main = true }
 ]
 resources = ["assets/**/*"]
 icons = ["assets/pencil.png"] # Fallback if app.ico/icns not present
