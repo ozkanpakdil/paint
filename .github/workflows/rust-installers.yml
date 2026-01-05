@@ -21,10 +21,10 @@ jobs:
             args: "--formats all"
           - os: macos-latest
             platform: macos
-            args: "--formats all"
+            args: "--formats dmg"
           - os: windows-latest
             platform: windows
-            args: "--formats msi"
+            args: "--formats nsis"
 
     steps:
       - name: Checkout
@@ -44,7 +44,7 @@ jobs:
       - name: Install system dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install gtk4 cairo pkg-config
+          brew install gtk4 cairo pkg-config libadwaita
           echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig" >> $GITHUB_ENV
 
       - name: Install system dependencies (Windows)
@@ -70,7 +70,7 @@ jobs:
       - name: Install Windows Tools
         if: runner.os == 'Windows'
         run: |
-          choco install nsis wix
+          choco install nsis
 
       - name: Install cargo-packager
         run: cargo install cargo-packager --locked

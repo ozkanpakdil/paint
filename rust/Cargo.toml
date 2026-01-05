@@ -18,8 +18,8 @@ binaries = [
 resources = ["assets/**/*"]
 icons = ["assets/pencil.png"] # Fallback if app.ico/icns not present
 
-[package.metadata.packager.platforms.linux]
+[package.metadata.packager.deb]
 depends = ["libgtk-4-1", "libcairo2"]
 
-[package.metadata.packager.platforms.macos]
+[package.metadata.packager.macos]
 minimum_system_version = "11.0"
