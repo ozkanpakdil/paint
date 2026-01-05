@@ -93,8 +93,16 @@ jobs:
         with:
           name: rust-paint-${{ matrix.os }}
           path: |
-            rust/target/release/packager/*
-            rust/target/x86_64-pc-windows-gnu/release/packager/*
+            rust/target/release/rust-paint*
+            rust/target/release/RustPaint*
+            rust/target/release/*.dmg
+            rust/target/release/*.AppImage
+            rust/target/release/*.deb
+            rust/target/release/*.pacman
+            rust/target/release/PKGBUILD
+            rust/target/x86_64-pc-windows-gnu/release/*.exe
+            rust/target/x86_64-pc-windows-gnu/release/*.msi
+            rust/target/x86_64-pc-windows-gnu/release/RustPaint*
           if-no-files-found: warn
 
       - name: Publish to Development release
@@ -108,4 +116,4 @@ jobs:
           removeArtifacts: false
           replacesArtifacts: true
           artifactErrorsFailBuild: false
-          artifacts: "rust/target/release/packager/**/*,rust/target/x86_64-pc-windows-gnu/release/packager/**/*"
+          artifacts: "rust/target/release/rust-paint*,rust/target/release/RustPaint*,rust/target/release/*.dmg,rust/target/release/*.AppImage,rust/target/release/*.deb,rust/target/release/*.pacman,rust/target/release/PKGBUILD,rust/target/x86_64-pc-windows-gnu/release/*.exe,rust/target/x86_64-pc-windows-gnu/release/*.msi,rust/target/x86_64-pc-windows-gnu/release/RustPaint*"
