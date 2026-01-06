@@ -65,7 +65,8 @@ jobs:
         shell: bash
         run: |
           echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
-          echo "PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig:/mingw64/lib/pkgconfig:/mingw64/share/pkgconfig" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=/mingw64/lib/pkgconfig:/mingw64/share/pkgconfig" >> $GITHUB_ENV
+          echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
 
       - name: Install Windows Tools
         if: runner.os == 'Windows'
@@ -80,7 +81,6 @@ jobs:
         run: |
           cd rust
           if [ "${{ runner.os }}" == "Windows" ]; then
-            export PATH="/C/msys64/mingw64/bin:$PATH"
             cargo build --release --target x86_64-pc-windows-gnu
             cargo packager --release --target x86_64-pc-windows-gnu ${{ matrix.args }}
           else
@@ -88,21 +88,25 @@ jobs:
             cargo packager --release ${{ matrix.args }}
           fi
 
+      - name: List generated artifacts (Debug)
+        shell: bash
+        run: |
+          echo "Looking for artifacts in rust/target..."
+          find rust/target -name "*.deb" -o -name "*.AppImage" -o -name "*.dmg" -o -name "*.exe" -o -name "*.msi" -o -name "PKGBUILD" -o -name "*.tar.gz" -o -name "*.pacman"
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: rust-paint-${{ matrix.os }}
           path: |
-            rust/target/release/rust-paint*
-            rust/target/release/RustPaint*
-            rust/target/release/*.dmg
-            rust/target/release/*.AppImage
-            rust/target/release/*.deb
-            rust/target/release/*.pacman
-            rust/target/release/PKGBUILD
-            rust/target/x86_64-pc-windows-gnu/release/*.exe
-            rust/target/x86_64-pc-windows-gnu/release/*.msi
-            rust/target/x86_64-pc-windows-gnu/release/RustPaint*
+            rust/target/**/*.deb
+            rust/target/**/*.AppImage
+            rust/target/**/*.dmg
+            rust/target/**/*.exe
+            rust/target/**/*.msi
+            rust/target/**/*.pacman
+            rust/target/**/PKGBUILD
+            rust/target/**/*.tar.gz
           if-no-files-found: warn
 
       - name: Publish to Development release
@@ -116,4 +120,4 @@ jobs:
           removeArtifacts: false
           replacesArtifacts: true
           artifactErrorsFailBuild: false
-          artifacts: "rust/target/release/rust-paint*,rust/target/release/RustPaint*,rust/target/release/*.dmg,rust/target/release/*.AppImage,rust/target/release/*.deb,rust/target/release/*.pacman,rust/target/release/PKGBUILD,rust/target/x86_64-pc-windows-gnu/release/*.exe,rust/target/x86_64-pc-windows-gnu/release/*.msi,rust/target/x86_64-pc-windows-gnu/release/RustPaint*"
+          artifacts: "rust/target/**/*.deb,rust/target/**/*.AppImage,rust/target/**/*.dmg,rust/target/**/*.exe,rust/target/**/*.msi,rust/target/**/*.pacman,rust/target/**/PKGBUILD,rust/target/**/*.tar.gz"
