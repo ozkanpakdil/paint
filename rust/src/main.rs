@@ -7,6 +7,7 @@ use std::cell::RefCell;
 use cairo::{ImageSurface, Context, Format};
 use std::collections::VecDeque;
 use std::fs::File;
+use std::path::{Path, PathBuf};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Tool {
@@ -44,6 +45,48 @@ struct AppState {
     pending_pos: RefCell<(f64, f64)>,
     last_pasted_rect: RefCell<Option<(f64, f64, f64, f64)>>,
     text_entry: RefCell<Option<gtk4::Entry>>,
+}
+
+fn resolve_asset_path(icon_name: &str) -> Option<PathBuf> {
+    // Development: prefer the local ./assets directory when present (cargo run).
+    let dev_assets = Path::new("assets");
+    let dev_candidate = dev_assets.join(icon_name);
+    if dev_assets.exists() && dev_candidate.exists() {
+        return Some(dev_candidate);
+    }
+
+    if let Ok(exe_path) = std::env::current_exe() {
+        if let Some(exe_dir) = exe_path.parent() {
+            // Installed or bundled: try next to the executable.
+            let sibling = exe_dir.join(icon_name);
+            if sibling.exists() {
+                return Some(sibling);
+            }
+
+            // If assets are in an assets/ subfolder next to the executable.
+            let bundled = exe_dir.join("assets").join(icon_name);
+            if bundled.exists() {
+                return Some(bundled);
+            }
+
+            // Installed via system package: binary may live in /usr/bin while assets are under /usr/lib/rust-paint.
+            if exe_dir.ends_with("bin") {
+                if let Some(prefix) = exe_dir.parent() {
+                    let lib_candidate = prefix.join("lib").join("rust-paint").join(icon_name);
+                    if lib_candidate.exists() {
+                        return Some(lib_candidate);
+                    }
+
+                    let lib_assets = prefix.join("lib").join("rust-paint").join("assets").join(icon_name);
+                    if lib_assets.exists() {
+                        return Some(lib_assets);
+                    }
+                }
+            }
+        }
+    }
+
+    None
 }
 
 fn main() {
@@ -540,9 +583,8 @@ fn build_ui(app: &Application) {
     ];
 
     for (i, (icon_name, tool, tooltip)) in tools.into_iter().enumerate() {
-        let icon_path = format!("assets/{}", icon_name);
-        let btn = if std::path::Path::new(&icon_path).exists() {
-            let img = Image::from_file(&icon_path);
+        let btn = if let Some(icon_path) = resolve_asset_path(icon_name) {
+            let img = Image::from_file(icon_path);
             img.set_pixel_size(24);
             Button::builder().child(&img).tooltip_text(tooltip).css_classes(["tool-button"]).build()
         } else {

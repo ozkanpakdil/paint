@@ -2,6 +2,9 @@
 name = "rust-paint"
 version = "0.1.0"
 edition = "2024"
+authors = ["Ozkan Pakdil <ozkanpakdil@users.noreply.github.com>"]
+description = "Paint - simple GTK paint application with common drawing tools"
+homepage = "https://github.com/ozkanpakdil/paint"
 
 [dependencies]
 gtk4 = { version = "0.9", package = "gtk4", features = ["v4_10"] }
@@ -12,11 +15,19 @@ glib = "0.20"
 [package.metadata.packager]
 product_name = "RustPaint"
 identifier = "io.github.ozkanpakdil.paint"
+description = "Paint - simple GTK paint application. A simple paint program with common drawing tools."
+long_description = "Paint - simple GTK paint application\n A simple paint program with common drawing tools.\n - Pencil\n - Eraser, lines/rectangles/ovals/polygons (stroke or filled)\n - Bucket fill\n - Text tool with font and size selection\n - Color palette and custom colors\n - Adjustable stroke width\n - Image open/save.\n .\n Project website: https://github.com/ozkanpakdil/paint"
+category = "GraphicsAndDesign"
 binaries = [
     { path = "rust-paint", main = true }
 ]
-resources = ["assets/**/*"]
-icons = ["assets/pencil.png"] # Fallback if app.ico/icns not present
+resources = ["assets/*.png", "assets/icons/*.png"]
+icons = [
+    "assets/icons/rust-paint-64.png",
+    "assets/icons/rust-paint-128.png",
+    "assets/icons/rust-paint-256.png",
+    "assets/pencil.png"
+] # Fallback if app.ico/icns not present
 
 [package.metadata.packager.deb]
 depends = ["libgtk-4-1", "libcairo2"]
