@@ -1,6 +1,6 @@
 [package]
 name = "rust-paint"
-version = "0.1.0"
+version = "0.1.4"
 edition = "2024"
 authors = ["Ozkan Pakdil <ozkanpakdil@users.noreply.github.com>"]
 description = "Paint - simple GTK paint application with common drawing tools"
@@ -34,3 +34,4 @@ depends = ["libgtk-4-1", "libcairo2"]
 
 [package.metadata.packager.macos]
 minimum_system_version = "11.0"
+entitlements = "entitlements.plist"

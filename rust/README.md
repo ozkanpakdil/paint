@@ -30,6 +30,9 @@ cd rust
 cargo run
 ```
 
+### Packaging and Signing for macOS
+For detailed instructions on how to create a signed `.app` bundle and `.dmg` for macOS, see [MACOS_SIGNING.md](../MACOS_SIGNING.md).
+
 ## Features
 - Drawing tools: Pencil, Line, Rectangles, Ovals, Rounded Rectangles, Eraser, Bucket Fill, Highlighter, Arrow, and Text.
 - UI: Sidebar for tool selection, Color selection, Stroke size selection.

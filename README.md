@@ -154,6 +154,8 @@ Commands:
   - macOS (DMG): `mvn -B -Pinstaller -Dinstaller.type=DMG -DskipTests clean package jpackage:jpackage`
   - Windows (MSI): `mvn -B -Pinstaller -Dinstaller.type=MSI -DskipTests clean package jpackage:jpackage`
 
+For macOS signing and notarization of the Rust application, see [MACOS_SIGNING.md](MACOS_SIGNING.md).
+
 - Two-step (alternative):
   1) Build jar: `mvn -B -DskipTests clean package`
   2) Build installer: `mvn -B -Pinstaller -Dinstaller.type=<DEB|DMG|MSI> -DskipTests jpackage:jpackage`

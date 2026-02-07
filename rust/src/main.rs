@@ -57,6 +57,16 @@ fn resolve_asset_path(icon_name: &str) -> Option<PathBuf> {
 
     if let Ok(exe_path) = std::env::current_exe() {
         if let Some(exe_dir) = exe_path.parent() {
+            // macOS bundle: exe is in Contents/MacOS, resources are in Contents/Resources
+            if exe_dir.ends_with("MacOS") {
+                if let Some(contents_dir) = exe_dir.parent() {
+                    let bundle_resource = contents_dir.join("Resources").join(icon_name);
+                    if bundle_resource.exists() {
+                        return Some(bundle_resource);
+                    }
+                }
+            }
+
             // Installed or bundled: try next to the executable.
             let sibling = exe_dir.join(icon_name);
             if sibling.exists() {
