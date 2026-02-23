@@ -103,6 +103,14 @@ Apple requires apps distributed outside the Mac App Store to be notarized.
 
 #### Troubleshooting
 
+- If a user launches the raw CLI binary instead of the `.app` bundle and sees an error like:
+  ```
+  Library not loaded: /opt/homebrew/.../libgtk-4.1.dylib
+  ```
+  this happens in the macOS dynamic loader before app code runs. You cannot show a dialog there. Either:
+  - Instruct the user to install GTK4 (`brew install gtk4`), or
+  - Distribute the `.app` built by `rust/build_macos.sh`, which bundles the required `.dylib`s under `Contents/Frameworks` and updates load commands to use `@rpath`.
+
 -   **Finding your Signing Identity**:
     `security find-identity -v -p codesigning`
 -   **Entitlements**:

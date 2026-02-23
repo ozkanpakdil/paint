@@ -41,3 +41,26 @@ For detailed instructions on how to create a signed `.app` bundle and `.dmg` for
 ---
 
 ![Preview](https://github.com/user-attachments/assets/28a850a8-d472-4914-8eff-3e756bc3c3c7)
+
+## macOS runtime requirements & troubleshooting
+
+- GTK cannot be fully statically linked on macOS when using Homebrew/gtk4-rs. The correct approach is to ship a self‑contained `.app` that bundles the non‑system `.dylib`s.
+- Preferred: build the `.app` with the provided script so dependencies are bundled under `Contents/Frameworks`:
+  ```bash
+  cd rust
+  ./build_macos.sh
+  open target/release/RustPaint.app
+  ```
+- If you run the raw CLI binary directly (outside of the `.app`) and see an error like:
+  ```
+  Library not loaded: /opt/homebrew/.../libgtk-4.1.dylib
+  Reason: tried: '/opt/homebrew/...'
+  ```
+  then install GTK4 locally:
+  ```bash
+  brew install gtk4
+  ```
+  After installing, re‑launch the program, or use the `.app` bundle created by the script above.
+
+Notes
+- Showing a dialog for the above error is not possible: the process fails in the macOS dynamic loader (dyld) before the application code runs. That’s why we either bundle the libraries in the `.app` or ensure GTK4 is installed on the target Mac.
